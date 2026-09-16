@@ -3,7 +3,7 @@
 Sitio web del curso **Señales y Sistemas** del programa de Ingeniería Electrónica
 (Universidad Surcolombiana, microdiseño MI-FOR-FO-34 v2).
 
-**Sitio publicado:** [(https://johnchia-dev.github.io/senales-y-sistemas/)]
+**Sitio publicado:** (https://johnchia-dev.github.io/senales-y-sistemas/)
 
 Sitio estático: HTML5 + CSS3 + JavaScript (ES5, sin dependencias ni proceso de compilación).
 
