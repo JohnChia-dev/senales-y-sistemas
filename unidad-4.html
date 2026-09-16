@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Unidad 4 del curso Señales y Sistemas: Transformada Z, región de convergencia, propiedades, transformada inversa, función de transferencia H(z), estabilidad en el círculo unitario, respuesta en frecuencia y realizaciones FIR e IIR, con ejemplos en MATLAB.">
+<title>Unidad 4 · Transformada Z</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<a class="saltar" href="#principal">Saltar al contenido</a>
+
+<div class="franja">
+  <div class="shell">
+    <span>Facultad de Ingeniería</span>
+    <span>Programa de Ingeniería Electrónica</span>
+    <span class="sede">Neiva, Huila</span>
+  </div>
+</div>
+
+<header class="cabecera">
+  <div class="shell">
+    <a class="marca" href="index.html">
+      <img src="img/universidad-surcolombiana.png" alt="Universidad Surcolombiana" width="347" height="90">
+      <span class="curso">Señales y Sistemas<small>Ingeniería Electrónica</small></span>
+    </a>
+    <form class="buscador" role="search" onsubmit="return false">
+      <label class="sr-only" for="q">Buscar en el sitio</label>
+      <input type="search" id="q" placeholder="Buscar un tema…" autocomplete="off" aria-describedby="q-ayuda">
+      <span class="sr-only" id="q-ayuda">Escribe para buscar entre las secciones del sitio</span>
+      <div class="resultados" id="resultados" hidden></div>
+    </form>
+    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="nav-principal">Menú</button>
+    <nav class="nav" id="nav-principal" aria-label="Navegación principal">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="unidad-1.html">1. Fundamentos</a></li>
+        <li><a href="unidad-2.html">2. LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Laplace</a></li>
+        <li><a href="unidad-4.html" aria-current="page">4. Transformada Z</a></li>
+        <li><a href="matlab.html">MATLAB</a></li>
+        <li><a href="formulario.html">Formulario</a></li>
+        <li><a href="talleres.html">Talleres</a></li>
+        <li><a href="programa.html">Programa</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="principal">
+
+  <div class="unidad-portada">
+    <div class="shell">
+      <p class="miga"><a href="index.html">Inicio</a> › Unidad 4</p>
+      <p class="etiqueta">Unidad 4</p>
+      <h1>Transformada Z</h1>
+      <p>La herramienta equivalente a Laplace para el mundo discreto. Cambian el símbolo y la geometría —el semiplano izquierdo se convierte en el interior del círculo unitario— pero el método de trabajo es el mismo.</p>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="disposicion">
+
+      <aside class="rail">
+        <h2>Contenido</h2>
+        <ol>
+          <li><a href="#definicion">4.1 Definición y ROC</a></li>
+          <li><a href="#relacion">4.2 Relación con Laplace</a></li>
+          <li><a href="#propiedades">4.3 Propiedades</a></li>
+          <li><a href="#pares">4.4 Pares de transformadas</a></li>
+          <li><a href="#inversa">4.5 Transformada inversa</a></li>
+          <li><a href="#transferencia">4.6 H(z) y estabilidad</a></li>
+          <li><a href="#frecuencia">4.7 Respuesta en frecuencia</a></li>
+          <li><a href="#diferencias">4.8 Ecuaciones de diferencias</a></li>
+          <li><a href="#matlab">4.9 Laboratorio en MATLAB</a></li>
+        </ol>
+      </aside>
+
+      <article class="articulo">
+
+        <section id="definicion">
+          <h2><span class="num-seccion">4.1</span>Definición y región de convergencia</h2>
+          <div class="ec">
+            \[ \underbrace{X(z) = \sum_{n=-\infty}^{\infty} x[n]\,z^{-n}}_{\text{bilateral}}
+            \qquad\qquad
+            \underbrace{X(z) = \sum_{n=0}^{\infty} x[n]\,z^{-n}}_{\text{unilateral}} \]
+            <span class="nota">z = r e<sup>jΩ</sup> es una variable compleja. Evaluar X(z) sobre |z| = 1 da la transformada de Fourier de tiempo discreto.</span>
+          </div>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 4.1 — la transformada de aⁿu[n] desde la definición</h4>
+            <ol>
+              <li>X(z) = Σ<sub>n=0</sub><sup>∞</sup> aⁿz<sup>−n</sup> = Σ<sub>n=0</sub><sup>∞</sup> (a/z)ⁿ, una serie geométrica de razón a/z.</li>
+              <li>Converge si |a/z| &lt; 1, es decir, |z| &gt; |a|.</li>
+              <li>Su suma es 1/(1 − a/z) = z/(z − a).</li>
+            </ol>
+            <p class="resultado">aⁿu[n] ⟷ z/(z − a), ROC |z| &gt; |a|. El polo está en z = a y el cero en z = 0.</p>
+          </div>
+
+          <div class="definicion">
+            <h4>ROC en el plano z</h4>
+            <ul>
+              <li>Señal causal de duración infinita → exterior de un círculo, |z| &gt; r<sub>máx</sub>, con r<sub>máx</sub> el módulo del polo más alejado.</li>
+              <li>Señal anticausal → interior de un círculo.</li>
+              <li>Señal bilateral → anillo entre dos polos.</li>
+              <li>Señal de duración finita → todo el plano salvo, quizá, z = 0 o z = ∞.</li>
+              <li>Nunca contiene polos. Si incluye |z| = 1, el sistema es estable.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="relacion">
+          <h2><span class="num-seccion">4.2</span>Relación con Laplace y con el muestreo</h2>
+          <p>El vínculo entre ambos dominios es z = e<sup>sT</sup>, con T el periodo de muestreo. Esa exponencial traduce cada región del plano s en una región del plano z:</p>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Correspondencia entre el plano s y el plano z</caption>
+              <thead>
+                <tr><th>Plano s (continuo)</th><th>Plano z (discreto)</th><th>Comportamiento</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mono">\( \operatorname{Re}\{s\} &lt; 0 \)</td><td class="mono">\( |z| &lt; 1 \)</td><td>Estable, la respuesta decae</td></tr>
+                <tr><td class="mono">\( \operatorname{Re}\{s\} = 0 (\text\{eje \} j\omega) \)</td><td class="mono">\( |z| = 1 (\text\{círculo unitario\}) \)</td><td>Marginalmente estable</td></tr>
+                <tr><td class="mono">\( \operatorname{Re}\{s\} &gt; 0 \)</td><td class="mono">\( |z| &gt; 1 \)</td><td>Inestable</td></tr>
+                <tr><td class="mono">\( s = 0 \)</td><td class="mono">\( z = 1 \)</td><td>Componente continua</td></tr>
+                <tr><td class="mono">\( \omega = \omega _\{s\}/2 \)</td><td class="mono">\( z = -1 \)</td><td>Frecuencia de Nyquist</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>De ahí también la periodicidad de la frecuencia discreta: como e<sup>jΩ</sup> se repite cada 2π, el plano s se «enrolla» infinitas veces sobre el plano z. Es la misma advertencia sobre el <a href="unidad-1.html#muestreo">aliasing</a> de la unidad 1, vista ahora en variable compleja.</p>
+        </section>
+
+        <section id="propiedades">
+          <h2><span class="num-seccion">4.3</span>Propiedades</h2>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Propiedades de la Transformada Z</caption>
+              <thead>
+                <tr><th>Propiedad</th><th class="mono">\( x[n] \)</th><th class="mono">\( X(z) \)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Linealidad</td><td class="mono">\( a x_{1}[n] + b x_{2}[n] \)</td><td class="mono">\( a X_{1}(z) + b X_{2}(z) \)</td></tr>
+                <tr><td>Retardo</td><td class="mono">\( x[n - n_{0}] \)</td><td class="mono">\( z^\{-n_{0}\} X(z) \)</td></tr>
+                <tr><td>Adelanto (unilateral)</td><td class="mono">\( x[n + 1] \)</td><td class="mono">\( z X(z) - z x[0] \)</td></tr>
+                <tr><td>Escalamiento en z</td><td class="mono">\( a^{n} x[n] \)</td><td class="mono">\( X(z/a) \)</td></tr>
+                <tr><td>Reflexión</td><td class="mono">\( x[-n] \)</td><td class="mono">\( X(1/z) \)</td></tr>
+                <tr><td>Derivada en z</td><td class="mono">\( n x[n] \)</td><td class="mono">\( -z dX(z)/dz \)</td></tr>
+                <tr><td>Convolución</td><td class="mono">\( x[n] \ast h[n] \)</td><td class="mono">\( X(z) H(z) \)</td></tr>
+                <tr><td>Acumulación</td><td class="mono">\( \sum _\{k \le n\} x[k] \)</td><td class="mono">\( X(z) \cdot z/(z - 1) \)</td></tr>
+                <tr><td>Valor inicial</td><td class="mono">\( x[0] \)</td><td class="mono">\( lím_\{z \to \infty\} X(z) \)</td></tr>
+                <tr><td>Valor final</td><td class="mono">\( x[\infty] \)</td><td class="mono">\( lím_\{z \to 1\} (z - 1)X(z) \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>La propiedad de retardo es la que convierte una ecuación de diferencias en una ecuación algebraica: cada z<sup>−1</sup> representa un registro de memoria.</p>
+        </section>
+
+        <section id="pares">
+          <h2><span class="num-seccion">4.4</span>Pares de transformadas más usados</h2>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Pares de la Transformada Z para señales causales</caption>
+              <thead>
+                <tr><th class="mono">\( x[n], \ n \ge 0 \)</th><th class="mono">\( X(z) \)</th><th class="mono">ROC</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mono">\( \delta [n] \)</td><td class="mono">\( 1 \)</td><td class="mono">\( \text\{todo \} z \)</td></tr>
+                <tr><td class="mono">\( \delta [n - m] \)</td><td class="mono">\( z^\{-m\} \)</td><td class="mono">\( z \ne 0 \)</td></tr>
+                <tr><td class="mono">\( u[n] \)</td><td class="mono">\( z/(z - 1) \)</td><td class="mono">\( |z| &gt; 1 \)</td></tr>
+                <tr><td class="mono">\( a^{n} u[n] \)</td><td class="mono">\( z/(z - a) \)</td><td class="mono">\( |z| &gt; |a| \)</td></tr>
+                <tr><td class="mono">\( n u[n] \)</td><td class="mono">\( z/(z - 1)^{2} \)</td><td class="mono">\( |z| &gt; 1 \)</td></tr>
+                <tr><td class="mono">\( n a^{n} u[n] \)</td><td class="mono">\( az/(z - a)^{2} \)</td><td class="mono">\( |z| &gt; |a| \)</td></tr>
+                <tr><td class="mono">\( \cos(\Omega _{0}n) u[n] \)</td><td class="mono">\( z(z - \cos\Omega _{0})/(z^{2} - 2z \cos\Omega _{0} + 1) \)</td><td class="mono">\( |z| &gt; 1 \)</td></tr>
+                <tr><td class="mono">\( \operatorname{sen}(\Omega _{0}n) u[n] \)</td><td class="mono">\( z \operatorname{sen}\Omega _{0}/(z^{2} - 2z \cos\Omega _{0} + 1) \)</td><td class="mono">\( |z| &gt; 1 \)</td></tr>
+                <tr><td class="mono">\( a^{n}\cos(\Omega _{0}n) u[n] \)</td><td class="mono">\( z(z - a \cos\Omega _{0})/(z^{2} - 2az \cos\Omega _{0} + a^{2}) \)</td><td class="mono">\( |z| &gt; |a| \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="inversa">
+          <h2><span class="num-seccion">4.5</span>Transformada inversa</h2>
+          <p>Tres caminos, según lo que se necesite:</p>
+          <ul>
+            <li><strong>Fracciones parciales.</strong> El estándar del curso. Se descompone X(z)/z en lugar de X(z), porque así cada término queda con la forma z/(z − a) que aparece en la tabla.</li>
+            <li><strong>División larga.</strong> Da directamente los primeros valores de x[n] como coeficientes de z<sup>−1</sup>, z<sup>−2</sup>, … Útil para verificar los primeros términos sin resolver todo.</li>
+            <li><strong>Expansión en series de potencias</strong> para expresiones no racionales, como logaritmos o exponenciales de z.</li>
+          </ul>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 4.2 — fracciones parciales sobre X(z)/z</h4>
+            <p class="enunciado">X(z) = z / [(z − 0.5)(z − 0.8)], con ROC |z| &gt; 0.8.</p>
+            <ol>
+              <li><strong>Dividir entre z.</strong> X(z)/z = 1/[(z − 0.5)(z − 0.8)].</li>
+              <li><strong>Descomponer.</strong> A = 1/(0.5 − 0.8) = −10/3 y B = 1/(0.8 − 0.5) = 10/3.</li>
+              <li><strong>Multiplicar de nuevo por z.</strong> X(z) = (−10/3)·z/(z − 0.5) + (10/3)·z/(z − 0.8).</li>
+              <li><strong>Leer la tabla</strong> término a término, usando la ROC causal.</li>
+            </ol>
+            <p class="resultado">x[n] = (10/3)[(0.8)ⁿ − (0.5)ⁿ] u[n]. Verificación: x[0] = 0, que coincide con lím<sub>z→∞</sub>X(z) = 0.</p>
+          </div>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 4.3 — división larga como comprobación</h4>
+            <p class="enunciado">Obtenga las primeras muestras de X(z) = z/(z − 0.8) sin usar la tabla.</p>
+            <ol>
+              <li>Se reescribe en potencias de z<sup>−1</sup>: X(z) = 1/(1 − 0.8z<sup>−1</sup>).</li>
+              <li>Se divide: 1 + 0.8z<sup>−1</sup> + 0.64z<sup>−2</sup> + 0.512z<sup>−3</sup> + …</li>
+              <li>El coeficiente de z<sup>−n</sup> es x[n].</li>
+            </ol>
+            <p class="resultado">x[n] = {1, 0.8, 0.64, 0.512, …} = (0.8)ⁿu[n]. Coincide con la tabla, como debía.</p>
+          </div>
+        </section>
+
+        <section id="transferencia">
+          <h2><span class="num-seccion">4.6</span>Función de transferencia y estabilidad</h2>
+          <div class="ec">
+            \[ H(z) = \frac{Y(z)}{X(z)}
+            = \frac{b_0 + b_1 z^{-1} + \dots + b_M z^{-M}}{1 + a_1 z^{-1} + \dots + a_N z^{-N}} \]
+          </div>
+          <p>Un sistema discreto causal es <strong>estable si y solo si todos sus polos están estrictamente dentro del círculo unitario</strong>, |p<sub>k</sub>| &lt; 1. Un polo sobre la circunferencia produce una respuesta que no decae; fuera, una que crece sin límite.</p>
+
+          <div class="lab">
+            <h3>Laboratorio · polo en el plano z</h3>
+            <p class="ayuda">Para H(z) = z/(z − a), la respuesta al impulso es h[n] = aⁿu[n]. Desplaza el polo y observa el efecto sobre h[n] y sobre la estabilidad.</p>
+            <div class="controles">
+              <div class="control">
+                <label for="rng-polo">Posición del polo a = <output id="out-polo" for="rng-polo">0.85</output></label>
+                <input type="range" id="rng-polo" min="-1.3" max="1.3" step="0.05" value="0.85">
+              </div>
+            </div>
+            <div class="par">
+              <figure>
+                <figcaption>Plano z — polo (×), cero (○) y círculo unitario</figcaption>
+                <canvas id="g-plano-z" class="plano" width="420" height="420" role="img" aria-label="Plano complejo z con el círculo unitario, el polo y el cero del sistema."></canvas>
+              </figure>
+              <figure>
+                <figcaption>Respuesta al impulso h[n]</figcaption>
+                <canvas id="g-impulso-z" width="480" height="270" role="img" aria-label="Gráfica de tallos de la respuesta al impulso del sistema discreto."></canvas>
+              </figure>
+            </div>
+            <p class="mono" id="ft-z">H(z) = …</p>
+            <p class="veredicto estable" id="vered-z">…</p>
+          </div>
+
+          <div class="aviso">
+            <strong>Polo negativo.</strong> Con a &lt; 0 la respuesta al impulso alterna de signo en cada muestra: es la frecuencia máxima representable, Ω = π. Muévelo en el laboratorio para verlo.
+          </div>
+        </section>
+
+        <section id="frecuencia">
+          <h2><span class="num-seccion">4.7</span>Respuesta en frecuencia</h2>
+          <p>Evaluar H(z) sobre el círculo unitario da la respuesta en frecuencia del sistema discreto:</p>
+          <div class="ec">
+            \[ H\!\left(e^{j\Omega}\right) = H(z)\,\Big|_{\,z = e^{j\Omega}}
+            \qquad\qquad \Omega = \omega T = 2\pi\,\frac{f}{f_s} \]
+            <span class="nota">Ω = 0 corresponde a la componente continua y Ω = π a la frecuencia de Nyquist, f<sub>s</sub>/2.</span>
+          </div>
+          <p>La interpretación geométrica es directa y muy útil para diseñar filtros: al recorrer el círculo unitario, el módulo |H| <strong>crece</strong> cuando el punto de evaluación pasa cerca de un polo y <strong>cae</strong> cuando pasa cerca de un cero. Un cero exactamente sobre el círculo anula por completo esa frecuencia.</p>
+          <div class="definicion">
+            <h4>Diseño rápido de un filtro rechaza-banda</h4>
+            <p>Para eliminar una frecuencia Ω₀ basta colocar un par de ceros en z = e<sup>±jΩ₀</sup> y un par de polos en el mismo ángulo pero con radio r &lt; 1: cuanto más cerca esté r de 1, más estrecho es el rechazo. Es el equivalente digital del filtro notch Twin-T del quiz.</p>
+          </div>
+        </section>
+
+        <section id="diferencias">
+          <h2><span class="num-seccion">4.8</span>Ecuaciones de diferencias, FIR e IIR</h2>
+          <p>Aplicar la Transformada Z a una ecuación de diferencias produce H(z) de inmediato. En sentido inverso, de H(z) se obtiene el algoritmo que ejecuta el procesador:</p>
+          <div class="ec">
+            \[ y[n] = \frac{1}{a_0}\left(\ \sum_{k=0}^{M} b_k\,x[n-k]
+            \;-\; \sum_{k=1}^{N} a_k\,y[n-k] \ \right) \]
+            <span class="nota">Cada z<sup>−1</sup> es un registro de retardo: la ecuación se implementa con sumadores, multiplicadores y memoria.</span>
+          </div>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 4.4 — de la ecuación de diferencias a H(z) y de vuelta</h4>
+            <p class="enunciado">y[n] − 0.6y[n − 1] = x[n] + 0.2x[n − 1], con reposo inicial.</p>
+            <ol>
+              <li><strong>Transformar.</strong> Y(z) − 0.6z<sup>−1</sup>Y(z) = X(z) + 0.2z<sup>−1</sup>X(z).</li>
+              <li><strong>Despejar.</strong> H(z) = (1 + 0.2z<sup>−1</sup>)/(1 − 0.6z<sup>−1</sup>) = (z + 0.2)/(z − 0.6).</li>
+              <li><strong>Polos y ceros.</strong> Polo en z = 0.6 (dentro del círculo: estable) y cero en z = −0.2.</li>
+              <li><strong>Respuesta al impulso.</strong> Dividiendo H(z)/z en fracciones parciales se obtiene h[n] = δ[n]·(−1/3) + (4/3)(0.6)ⁿu[n]; en la práctica, se comprueba con <span class="mono">impz</span>.</li>
+            </ol>
+            <p class="resultado">Sistema IIR de primer orden, causal y estable. La ganancia en continua es H(1) = 1.2/0.4 = 3.</p>
+          </div>
+
+          <h3>FIR frente a IIR</h3>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Comparación entre sistemas FIR e IIR</caption>
+              <thead>
+                <tr><th>Característica</th><th>FIR</th><th>IIR</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Ecuación</td><td class="mono">Sin realimentación (N = 0)</td><td class="mono">Con realimentación de la salida</td></tr>
+                <tr><td>Respuesta al impulso</td><td>De longitud finita</td><td>De longitud infinita</td></tr>
+                <tr><td>Estabilidad</td><td>Siempre estable</td><td>Hay que verificar los polos</td></tr>
+                <tr><td>Fase</td><td>Puede ser exactamente lineal</td><td>No lineal en general</td></tr>
+                <tr><td>Orden necesario</td><td>Alto</td><td>Bajo, más eficiente</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Las estructuras de realización —forma directa I y II, cascada y paralelo— corresponden a los mismos diagramas de bloques de la unidad 2, donde los bloques ahora son retardos z<sup>−1</sup>.</p>
+        </section>
+
+        <section id="matlab">
+          <h2><span class="num-seccion">4.9</span>Laboratorio en MATLAB</h2>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">transformada_z.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Transformada Z directa e inversa, en forma simbólica</span>
+syms n z a
+ztrans(a^n)                      <span class="c">% z/(z-a)</span>
+ztrans(n)                        <span class="c">% z/(z-1)^2</span>
+
+X = z/((z - 0.5)*(z - 0.8));
+x = iztrans(X);
+x = simplify(x)                  <span class="c">% (10/3)*(0.8^n - 0.5^n)</span>
+
+<span class="c">%% Comprobación numérica de las primeras muestras</span>
+N = 0:6;
+disp(double(subs(x, n, N)))      <span class="c">% 0, 0.3, 0.51, 0.651, ...</span>
+
+<span class="c">%% Fracciones parciales en el dominio z</span>
+[r, p, k] = residuez([0 1], [1 -1.3 0.4])
+<span class="c">% r: residuos | p: polos (0.8 y 0.5) | k: término directo</span></code></pre>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">sistema_discreto.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Análisis de un sistema discreto: polos, estabilidad y respuestas</span>
+b = [1 0.2];          <span class="c">% numerador:   1 + 0.2 z^-1</span>
+a = [1 -0.6];         <span class="c">% denominador: 1 - 0.6 z^-1</span>
+Ts = 1;               <span class="c">% periodo de muestreo</span>
+
+Hd = tf(b, a, Ts);
+
+p = roots(a);
+if all(abs(p) &lt; 1)
+    disp('ESTABLE: todos los polos dentro del círculo unitario')
+else
+    disp('INESTABLE: hay polos sobre o fuera del círculo unitario')
+end
+
+figure
+subplot(1,3,1), zplane(b, a),   title('Plano z')
+subplot(1,3,2), impz(b, a, 25), title('h[n]'), grid on
+subplot(1,3,3), stepz(b, a, 25), title('Respuesta al escalón'), grid on
+
+<span class="c">%% Respuesta en frecuencia</span>
+figure, freqz(b, a, 512)
+title('|H(e^{j\Omega})| y fase')
+
+<span class="c">%% Simular la ecuación de diferencias con una entrada arbitraria</span>
+n = 0:40;
+x = double(n &gt;= 0);              <span class="c">% escalón</span>
+y = filter(b, a, x);
+stem(n, y, 'filled'), grid on
+xlabel('n'), ylabel('y[n]'), title('Salida ante escalón')
+fprintf('Ganancia en continua: %.3f (teórica: %.3f)\n', y(end), sum(b)/sum(a))</code></pre>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">filtro_notch_digital.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Filtro rechaza-banda (notch) por colocación de polos y ceros</span>
+fs = 1000;                       <span class="c">% frecuencia de muestreo [Hz]</span>
+f0 = 60;                         <span class="c">% frecuencia a eliminar  [Hz]</span>
+r  = 0.95;                       <span class="c">% radio de los polos (cercano a 1 -> notch estrecho)</span>
+
+W0 = 2*pi*f0/fs;                 <span class="c">% frecuencia digital</span>
+b  = [1 -2*cos(W0) 1];           <span class="c">% ceros sobre el círculo unitario</span>
+a  = [1 -2*r*cos(W0) r^2];       <span class="c">% polos al mismo ángulo, radio r</span>
+
+figure
+subplot(1,2,1), zplane(b, a), title('Ceros en e^{\pm jW_0}')
+subplot(1,2,2), freqz(b, a, 1024, fs), title('Respuesta en frecuencia')
+
+<span class="c">%% Prueba: señal útil de 10 Hz contaminada con 60 Hz</span>
+t = 0:1/fs:1;
+x = sin(2*pi*10*t) + 0.8*sin(2*pi*f0*t);
+y = filter(b, a, x);
+
+figure
+plot(t, x, t, y, 'LineWidth', 1.2), grid on, xlim([0 0.3])
+legend('contaminada', 'filtrada'), xlabel('t [s]')
+title('El notch elimina la interferencia de 60 Hz')</code></pre>
+          </div>
+
+          <h3>Material de la unidad</h3>
+          <p>El material de apoyo de esta unidad está en la <a href="talleres.html">página de talleres</a> y los pares de transformadas, en el <a href="formulario.html">formulario</a>.</p>
+        </section>
+
+        <nav class="paginacion" aria-label="Navegación entre unidades">
+          <a href="unidad-3.html"><small>Unidad anterior</small>3. Transformada de Laplace</a>
+          <a class="siguiente" href="matlab.html"><small>Siguiente</small>Guía de MATLAB</a>
+        </nav>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer class="pie">
+  <div class="shell">
+    <div>
+      <h2>El curso</h2>
+      <p>Señales y Sistemas</p>
+      <p>Programa de Ingeniería Electrónica</p>
+      <p>Requisitos: Variable Compleja y Ecuaciones Diferenciales</p>
+    </div>
+    <div>
+      <h2>Unidades</h2>
+      <ul>
+        <li><a href="unidad-1.html">1. Fundamentos sobre sistemas</a></li>
+        <li><a href="unidad-2.html">2. Sistemas LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Transformada de Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Material</h2>
+      <ul>
+        <li><a href="matlab.html">Guía de MATLAB</a></li>
+        <li><a href="formulario.html">Formulario y tablas</a></li>
+        <li><a href="talleres.html">Talleres y prácticas</a></li>
+        <li><a href="programa.html">Programa del curso</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Universidad</h2>
+      <ul>
+        <li><a href="https://www.usco.edu.co/">Universidad Surcolombiana</a></li>
+        <li><a href="https://www.usco.edu.co/imagen-institucional/">Identidad e imagen institucional</a></li>
+      </ul>
+      <p>Vigilada Mineducación</p>
+    </div>
+  </div>
+  <div class="pie-legal">
+    <div class="shell">
+      Universidad Surcolombiana · Facultad de Ingeniería · Programa de Ingeniería Electrónica.
+      El logotipo institucional corresponde al archivo oficial publicado en
+      usco.edu.co/imagen-institucional y se emplea sin modificaciones, conforme al Manual de Identidad e Imagen Institucional
+      (Acuerdo 046 de 2016 del CSU) y a la Circular N.º 2 de 2026.
+    </div>
+  </div>
+</footer>
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']]
+  },
+  svg: { fontCache: 'global', scale: 1.02 },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+document.documentElement.className += ' math-pendiente';
+</script>
+<script id="MathJax-script" src="js/tex-svg.js"></script>
+<script src="js/indice.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

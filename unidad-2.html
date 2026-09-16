@@ -1,0 +1,605 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Unidad 2 del curso Señales y Sistemas: respuesta al impulso, suma e integral de convolución, propiedades de los sistemas LTI, respuesta al escalón y reducción de diagramas de bloques, con ejemplos en MATLAB.">
+<title>Unidad 2 · Sistemas LTI y convolución</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<a class="saltar" href="#principal">Saltar al contenido</a>
+
+<div class="franja">
+  <div class="shell">
+    <span>Facultad de Ingeniería</span>
+    <span>Programa de Ingeniería Electrónica</span>
+    <span class="sede">Neiva, Huila</span>
+  </div>
+</div>
+
+<header class="cabecera">
+  <div class="shell">
+    <a class="marca" href="index.html">
+      <img src="img/universidad-surcolombiana.png" alt="Universidad Surcolombiana" width="347" height="90">
+      <span class="curso">Señales y Sistemas<small>Ingeniería Electrónica</small></span>
+    </a>
+    <form class="buscador" role="search" onsubmit="return false">
+      <label class="sr-only" for="q">Buscar en el sitio</label>
+      <input type="search" id="q" placeholder="Buscar un tema…" autocomplete="off" aria-describedby="q-ayuda">
+      <span class="sr-only" id="q-ayuda">Escribe para buscar entre las secciones del sitio</span>
+      <div class="resultados" id="resultados" hidden></div>
+    </form>
+    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="nav-principal">Menú</button>
+    <nav class="nav" id="nav-principal" aria-label="Navegación principal">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="unidad-1.html">1. Fundamentos</a></li>
+        <li><a href="unidad-2.html" aria-current="page">2. LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+        <li><a href="matlab.html">MATLAB</a></li>
+        <li><a href="formulario.html">Formulario</a></li>
+        <li><a href="talleres.html">Talleres</a></li>
+        <li><a href="programa.html">Programa</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="principal">
+
+  <div class="unidad-portada">
+    <div class="shell">
+      <p class="miga"><a href="index.html">Inicio</a> › Unidad 2</p>
+      <p class="etiqueta">Unidad 2</p>
+      <h1>Sistemas LTI y convolución</h1>
+      <p>Si un sistema es lineal e invariante en el tiempo, su respuesta al impulso lo describe por completo. Esta unidad convierte esa afirmación en un procedimiento de cálculo —la convolución— y en un lenguaje gráfico: los diagramas de bloques.</p>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="disposicion">
+
+      <aside class="rail">
+        <h2>Contenido</h2>
+        <ol>
+          <li><a href="#impulso">2.1 Respuesta al impulso</a></li>
+          <li><a href="#suma">2.2 Suma de convolución</a></li>
+          <li><a href="#integral">2.3 Integral de convolución</a></li>
+          <li><a href="#propiedades">2.4 Propiedades e interconexión</a></li>
+          <li><a href="#causalidad">2.5 Causalidad y estabilidad</a></li>
+          <li><a href="#escalon">2.6 Respuesta al escalón</a></li>
+          <li><a href="#bloques">2.7 Diagramas de bloques</a></li>
+          <li><a href="#matlab">2.8 Laboratorio en MATLAB</a></li>
+        </ol>
+      </aside>
+
+      <article class="articulo">
+
+        <section id="impulso">
+          <h2><span class="num-seccion">2.1</span>Respuesta al impulso</h2>
+          <p>La unidad 1 mostró que toda señal discreta puede escribirse como una suma de impulsos desplazados y ponderados. Si el sistema es lineal, la respuesta a esa suma es la suma de las respuestas; si además es invariante en el tiempo, la respuesta a δ[n − k] es h[n − k]. Encadenando ambas ideas aparece la convolución.</p>
+          <div class="ec">
+            \[ x[n] = \sum_{k} x[k]\,\delta[n-k]
+            \quad\xrightarrow{\;T\{\cdot\}\;}\quad
+            y[n] = \sum_{k} x[k]\,h[n-k] \]
+            <span class="nota">El primer paso usa la propiedad de muestreo; el segundo, linealidad e invarianza. Sin alguna de las dos, la fórmula no vale.</span>
+          </div>
+          <div class="definicion">
+            <h4>Respuesta al impulso</h4>
+            <p>h[n] = T{δ[n]} es la salida del sistema cuando la entrada es un impulso unitario. Para un sistema LTI, h caracteriza completamente al sistema: no hace falta conocer su estructura interna. En tiempo continuo, h(t) = T{δ(t)}.</p>
+          </div>
+        </section>
+
+        <section id="suma">
+          <h2><span class="num-seccion">2.2</span>Suma de convolución</h2>
+          <div class="ec">
+            \[ y[n] = x[n] \ast h[n] = \sum_{k=-\infty}^{\infty} x[k]\,h[n-k] \]
+            <span class="nota">La variable de suma es k; n queda fijo en cada evaluación y se recorre después.</span>
+          </div>
+
+          <h3>Convolución gráfica, paso a paso</h3>
+          <ol>
+            <li><strong>Cambiar de variable:</strong> dibujar x[k] y h[k] en función de k.</li>
+            <li><strong>Reflejar:</strong> obtener h[−k] espejando respecto al eje vertical.</li>
+            <li><strong>Desplazar:</strong> correr la señal reflejada n muestras para formar h[n − k].</li>
+            <li><strong>Multiplicar y sumar:</strong> sumar los productos x[k]·h[n − k] en la zona de solapamiento. Ese número es y[n].</li>
+            <li><strong>Repetir</strong> para cada n hasta que deje de existir solapamiento.</li>
+          </ol>
+          <p>Tres verificaciones rápidas que ahorran errores:</p>
+          <ul>
+            <li>Si x tiene L<sub>x</sub> muestras y h tiene L<sub>h</sub>, entonces y tiene <strong>L<sub>x</sub> + L<sub>h</sub> − 1</strong> muestras.</li>
+            <li>El índice inicial de y es la <strong>suma</strong> de los índices iniciales de x y de h; el final, la suma de los finales.</li>
+            <li>La suma de todos los valores de y es el producto de las sumas de x y de h.</li>
+          </ul>
+
+          <div class="lab">
+            <h3>Laboratorio · convolución discreta paso a paso</h3>
+            <p class="ayuda">Edita las muestras de x[n] y h[n], y desplaza n para ver el solapamiento entre x[k] (vinotinto) y h[n − k] (ocre). El panel inferior acumula el resultado.</p>
+            <div class="controles">
+              <div class="control ancho">
+                <span class="rotulo-grupo">Muestras de x[n], desde n = 0</span>
+                <div class="entradas-secuencia">
+                  <span class="campo"><label for="x0">x[0]</label><input class="campo-x" id="x0" type="number" step="0.5" value="1"></span>
+                  <span class="campo"><label for="x1">x[1]</label><input class="campo-x" id="x1" type="number" step="0.5" value="2"></span>
+                  <span class="campo"><label for="x2">x[2]</label><input class="campo-x" id="x2" type="number" step="0.5" value="3"></span>
+                  <span class="campo"><label for="x3">x[3]</label><input class="campo-x" id="x3" type="number" step="0.5" value="1"></span>
+                </div>
+              </div>
+              <div class="control ancho">
+                <span class="rotulo-grupo">Muestras de h[n], desde n = 0</span>
+                <div class="entradas-secuencia">
+                  <span class="campo"><label for="h0">h[0]</label><input class="campo-h" id="h0" type="number" step="0.5" value="1"></span>
+                  <span class="campo"><label for="h1">h[1]</label><input class="campo-h" id="h1" type="number" step="0.5" value="1"></span>
+                  <span class="campo"><label for="h2">h[2]</label><input class="campo-h" id="h2" type="number" step="0.5" value="-1"></span>
+                </div>
+              </div>
+              <div class="control ancho">
+                <label for="rng-n">Desplazamiento n = <output id="out-n" for="rng-n">2</output></label>
+                <input type="range" id="rng-n" min="-4" max="8" step="1" value="2">
+              </div>
+            </div>
+            <canvas id="g-conv-a" width="720" height="405" role="img" aria-label="Gráfica de x[k] y de h[n menos k] mostrando la región de solapamiento."></canvas>
+            <canvas id="g-conv-b" width="720" height="405" role="img" aria-label="Gráfica de la señal resultante y[n] con la muestra actual resaltada."></canvas>
+            <p class="veredicto mono" id="conv-detalle">y[n] = …</p>
+            <div class="leyenda">
+              <span class="c-cont"><i></i> x[k] y muestra actual de y[n]</span>
+              <span class="c-disc"><i></i> h[n − k] reflejada y desplazada</span>
+              <span class="c-res"><i></i> y[n] completa</span>
+            </div>
+          </div>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 2.1 — convolución con señales que empiezan antes de n = 0</h4>
+            <p class="enunciado">x[n] = −2δ[n+2] − δ[n+1] + δ[n], h[n] = δ[n+1] + δ[n] − 2δ[n−1] (taller 4, punto 2).</p>
+            <ol>
+              <li><strong>Escribir las secuencias con su índice inicial.</strong> x = {−2, −1, 1} desde n = −2; h = {1, 1, −2} desde n = −1.</li>
+              <li><strong>Longitud e índices del resultado.</strong> 3 + 3 − 1 = 5 muestras, desde n = −2 + (−1) = −3 hasta n = 0 + 1 = 1.</li>
+              <li><strong>Calcular cada muestra</strong> como suma de productos cruzados:
+                <div class="ec">
+            \[ \begin{aligned}
+            y[-3] &amp;= (-2)(1) = -2 \\
+            y[-2] &amp;= (-2)(1) + (-1)(1) = -3 \\
+            y[-1] &amp;= (-2)(-2) + (-1)(1) + (1)(1) = 4 \\
+            y[\,0\,] &amp;= (-1)(-2) + (1)(1) = 3 \\
+            y[\,1\,] &amp;= (1)(-2) = -2
+            \end{aligned} \]
+          </div>
+              </li>
+              <li><strong>Verificar.</strong> Σx = −2, Σh = 0, luego Σy debe ser 0: −2 − 3 + 4 + 3 − 2 = 0. ✔</li>
+            </ol>
+            <p class="resultado">y[n] = {−2, −3, 4, 3, −2} para n = −3 … 1</p>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">convolucion_discreta.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Convolución discreta con manejo correcto de índices</span>
+x  = [-2 -1 1];   nx = -2:0;      <span class="c">% x[n] y su eje</span>
+h  = [ 1  1 -2];  nh = -1:1;      <span class="c">% h[n] y su eje</span>
+
+y  = conv(x, h);
+ny = (nx(1)+nh(1)) : (nx(end)+nh(end));
+
+stem(ny, y, 'filled'), grid on
+xlabel('n'), ylabel('y[n]'), title('y[n] = x[n] * h[n]')
+
+<span class="c">% Verificaciones que siempre deben cumplirse</span>
+assert(numel(y) == numel(x) + numel(h) - 1)
+assert(abs(sum(y) - sum(x)*sum(h)) &lt; 1e-9)
+fprintf('y[n] = %s  (n = %d a %d)\n', mat2str(y), ny(1), ny(end))</code></pre>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">convolucion_animada.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Animación del proceso gráfico: reflejar, desplazar, multiplicar, sumar</span>
+x = [1 2 3 1];  nx = 0:3;
+h = [1 1 -1];   nh = 0:2;
+ny = (nx(1)+nh(1)):(nx(end)+nh(end));
+y  = conv(x, h);
+
+k  = -4:8;
+xk = interp1(nx, x, k, 'nearest', 0);
+
+for n = ny
+    hk = interp1(nh, h, n - k, 'nearest', 0);   <span class="c">% h[n-k]</span>
+
+    subplot(2,1,1)
+    stem(k, xk, 'filled'), hold on
+    stem(k + 0.15, hk, 'Marker', 's'), hold off
+    grid on, xlabel('k'), legend('x[k]', sprintf('h[%d-k]', n))
+    title(sprintf('Solapamiento para n = %d   ->   y[%d] = %g', n, n, sum(xk.*hk)))
+
+    subplot(2,1,2)
+    stem(ny(ny &lt;= n), y(ny &lt;= n), 'filled'), grid on
+    xlim([ny(1) ny(end)]), xlabel('n'), ylabel('y[n]')
+
+    pause(0.6)                                  <span class="c">% ritmo de la animación</span>
+end</code></pre>
+          </div>
+        </section>
+
+        <section id="integral">
+          <h2><span class="num-seccion">2.3</span>Integral de convolución</h2>
+          <div class="ec">
+            \[ y(t) = x(t) \ast h(t) = \int_{-\infty}^{\infty} x(\tau)\,h(t - \tau)\,d\tau \]
+          </div>
+          <p>El procedimiento es el mismo, con una diferencia decisiva: el solapamiento cambia de forma en <em>intervalos</em> de t, y en cada intervalo los límites de integración son distintos. La disciplina consiste en identificar primero los puntos de quiebre —aquellos valores de t donde un borde de h(t − τ) cruza un borde de x(τ)— y resolver una integral por tramo.</p>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 2.2 — pulso contra exponencial</h4>
+            <p class="enunciado">x(t) = 1 para 0 ≤ t ≤ 2 (cero fuera) y h(t) = 2e<sup>−t</sup>u(t), como en el taller 5.</p>
+            <ol>
+              <li><strong>Puntos de quiebre.</strong> El borde móvil de h(t − τ) está en τ = t. Los bordes de x están en τ = 0 y τ = 2, así que los tramos son t &lt; 0, 0 ≤ t &lt; 2 y t ≥ 2.</li>
+              <li><strong>Tramo t &lt; 0.</strong> No hay solapamiento: y(t) = 0.</li>
+              <li><strong>Tramo 0 ≤ t &lt; 2.</strong> Solapamiento parcial, de τ = 0 a τ = t:
+                <div class="ec">
+            \[ y(t) = \int_{0}^{t} 1 \cdot 2e^{-(t-\tau)}\,d\tau
+            = 2e^{-t}\Big[\,e^{\tau}\,\Big]_{0}^{t}
+            = 2\big(1 - e^{-t}\big) \]
+          </div>
+              </li>
+              <li><strong>Tramo t ≥ 2.</strong> Solapamiento total, de τ = 0 a τ = 2:
+                <div class="ec">
+            \[ y(t) = \int_{0}^{2} 2e^{-(t-\tau)}\,d\tau = 2e^{-t}\big(e^{2} - 1\big) \]
+          </div>
+              </li>
+              <li><strong>Verificación de continuidad.</strong> En t = 2 el primer tramo da 2(1 − e<sup>−2</sup>) y el segundo 2e<sup>−2</sup>(e² − 1) = 2(1 − e<sup>−2</sup>). Coinciden. ✔</li>
+            </ol>
+            <p class="resultado">y(t) = 0 para t &lt; 0;&nbsp; 2(1 − e<sup>−t</sup>) para 0 ≤ t &lt; 2;&nbsp; 2(e² − 1)e<sup>−t</sup> para t ≥ 2</p>
+          </div>
+
+          <div class="aviso">
+            <strong>Regla práctica.</strong> Conviene reflejar y desplazar la señal <em>más sencilla</em>: la convolución es conmutativa, así que elegir bien reduce a la mitad el trabajo algebraico. Con un pulso y una exponencial, se refleja el pulso.
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">convolucion_continua.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Convolución continua: aproximación numérica y solución simbólica</span>
+dt = 1e-3;  t = -2:dt:10;
+u  = @(t) double(t &gt;= 0);
+
+x = u(t) - u(t-2);            <span class="c">% pulso de 0 a 2</span>
+h = 2*exp(-t).*u(t);          <span class="c">% exponencial causal</span>
+
+<span class="c">% La convolución discreta por dt aproxima la integral</span>
+y  = conv(x, h)*dt;
+ty = (2*t(1)) : dt : (2*t(end));
+ty = ty(1:numel(y));
+
+plot(ty, y, 'LineWidth', 1.6), grid on, xlim([-2 10])
+xlabel('t [s]'), ylabel('y(t)'), title('y(t) = x(t) * h(t)')
+
+<span class="c">%% Comprobación simbólica tramo por tramo</span>
+syms tau T
+y1 = int(2*exp(-(T-tau)), tau, 0, T)      <span class="c">% 0 &lt;= T &lt; 2 -> 2 - 2*exp(-T)</span>
+y2 = int(2*exp(-(T-tau)), tau, 0, 2)      <span class="c">% T &gt;= 2      -> 2*exp(-T)*(exp(2)-1)</span></code></pre>
+          </div>
+        </section>
+
+        <section id="propiedades">
+          <h2><span class="num-seccion">2.4</span>Propiedades e interconexión de sistemas</h2>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Propiedades de la convolución y su lectura como interconexión</caption>
+              <thead>
+                <tr><th>Propiedad</th><th class="mono">Expresión</th><th>Lectura en el sistema</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Conmutativa</td><td class="mono">\( x \ast h = h \ast x \)</td><td>Da igual cuál señal se refleja.</td></tr>
+                <tr><td>Asociativa</td><td class="mono">\( (x \ast h_{1}) \ast h_{2} = x \ast (h_{1} \ast h_{2}) \)</td><td>Cascada: h<sub>eq</sub> = h₁ ∗ h₂</td></tr>
+                <tr><td>Distributiva</td><td class="mono">\( x \ast (h_{1} + h_{2}) = x \ast h_{1} + x \ast h_{2} \)</td><td>Paralelo: h<sub>eq</sub> = h₁ + h₂</td></tr>
+                <tr><td>Elemento neutro</td><td class="mono">\( x \ast \delta = x \)</td><td>El sistema identidad.</td></tr>
+                <tr><td>Desplazamiento</td><td class="mono">\( x(t) \ast \delta (t - t_{0}) = x(t - t_{0}) \)</td><td>Línea de retardo.</td></tr>
+                <tr><td>Derivación</td><td class="mono">\( (x \ast h)' = x' \ast h = x \ast h' \)</td><td>Basta derivar una de las dos señales.</td></tr>
+                <tr><td>Ancho del soporte</td><td class="mono">\( T_\{y\} = T_\{x\} + T_\{h\} \)</td><td>La convolución ensancha la señal.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>La asociatividad y la distributividad son exactamente las reglas de serie y paralelo que reaparecerán en los diagramas de bloques, y en las unidades 3 y 4 se volverán simples productos y sumas de funciones de transferencia.</p>
+        </section>
+
+        <section id="causalidad">
+          <h2><span class="num-seccion">2.5</span>Causalidad y estabilidad desde h</h2>
+          <p>Para un sistema LTI, dos propiedades de la unidad 1 se leen directamente en la respuesta al impulso:</p>
+          <div class="ec">
+            \[ \begin{aligned}
+            \text{Causal:}\quad &amp; h[n] = 0 \ \text{ para } n &lt; 0
+            &amp;\qquad &amp; h(t) = 0 \ \text{ para } t &lt; 0 \\
+            \text{Estable (BIBO):}\quad &amp; \sum_{n} |h[n]| &lt; \infty
+            &amp;\qquad &amp; \int_{-\infty}^{\infty} |h(t)|\,dt &lt; \infty
+            \end{aligned} \]
+            <span class="nota">La condición de estabilidad es la sumabilidad o integrabilidad absoluta de h, no que h sea acotada.</span>
+          </div>
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 2.3 — tres respuestas al impulso</h4>
+            <ol>
+              <li><strong>h₁[n] = (0.8)ⁿu[n].</strong> Σ|h₁| = 1/(1 − 0.8) = 5 &lt; ∞. Causal y estable.</li>
+              <li><strong>h₂[n] = u[n].</strong> Σ|h₂| = ∞ aunque h₂ está acotada por 1. Causal pero <strong>inestable</strong>: el acumulador ante un escalón crece sin límite.</li>
+              <li><strong>h₃(t) = e<sup>−2t</sup>u(t).</strong> ∫₀<sup>∞</sup>e<sup>−2t</sup>dt = 1/2 &lt; ∞. Causal y estable.</li>
+            </ol>
+            <p class="resultado">Estar acotada no basta: lo que decide es que el área bajo |h| sea finita.</p>
+          </div>
+        </section>
+
+        <section id="escalon">
+          <h2><span class="num-seccion">2.6</span>Respuesta al escalón</h2>
+          <p>La respuesta al escalón s(t) es la salida ante u(t) y guarda con h una relación directa que se usa constantemente en el laboratorio: generar un escalón es fácil, generar un impulso no.</p>
+          <div class="ec">
+            \[ \begin{aligned}
+            s(t) &amp;= \int_{-\infty}^{t} h(\tau)\,d\tau
+            &amp;\Longleftrightarrow&amp;\qquad h(t) &amp;= \frac{d\,s(t)}{dt} \\
+            s[n] &amp;= \sum_{k \le n} h[k]
+            &amp;\Longleftrightarrow&amp;\qquad h[n] &amp;= s[n] - s[n-1]
+            \end{aligned} \]
+            <span class="nota">En la práctica se excita el circuito con un escalón y la respuesta al impulso se obtiene derivando la medida.</span>
+          </div>
+        </section>
+
+        <section id="bloques">
+          <h2><span class="num-seccion">2.7</span>Diagramas de bloques y su reducción</h2>
+          <p>Un diagrama de bloques representa el mismo sistema con tres elementos: bloques (ganancias o funciones de transferencia), puntos de suma y puntos de bifurcación. Reducirlo consiste en aplicar reglas hasta dejar un único bloque entre la entrada y la salida.</p>
+
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Reglas de reducción de diagramas de bloques</caption>
+              <thead>
+                <tr><th>Configuración</th><th class="mono">Bloque equivalente</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Serie (cascada)</td><td class="mono">\( G_{1} G_{2} \)</td></tr>
+                <tr><td>Paralelo</td><td class="mono">\( G_{1} \pm G_{2} \)</td></tr>
+                <tr><td>Realimentación negativa</td><td class="mono">\( G / (1 + G H) \)</td></tr>
+                <tr><td>Realimentación positiva</td><td class="mono">\( G / (1 - G H) \)</td></tr>
+                <tr><td>Realimentación unitaria</td><td class="mono">\( G / (1 + G) \)</td></tr>
+                <tr><td>Mover un sumador tras un bloque</td><td class="mono">Multiplicar la rama que entra por G</td></tr>
+                <tr><td>Mover un sumador antes de un bloque</td><td class="mono">Dividir la rama que entra entre G</td></tr>
+                <tr><td>Mover una bifurcación tras un bloque</td><td class="mono">Dividir la rama derivada entre G</td></tr>
+                <tr><td>Mover una bifurcación antes de un bloque</td><td class="mono">Multiplicar la rama derivada por G</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Las tres configuraciones básicas</h3>
+
+          <figure class="diagrama">
+            <svg viewBox="0 0 600 90" role="img" aria-label="Diagrama de bloques en serie: la entrada X de s pasa por el bloque G uno y después por el bloque G dos para dar la salida Y de s.">
+              <defs>
+                <marker id="punta-serie" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" class="punta"></path>
+                </marker>
+              </defs>
+              <text class="senal" x="26" y="38">X(s)</text>
+              <line class="linea" x1="52" y1="45" x2="150" y2="45" marker-end="url(#punta-serie)"></line>
+              <rect class="bloque" x="155" y="23" width="110" height="44" rx="3"></rect>
+              <text class="rotulo" x="210" y="50">G₁(s)</text>
+              <line class="linea" x1="265" y1="45" x2="330" y2="45" marker-end="url(#punta-serie)"></line>
+              <rect class="bloque" x="335" y="23" width="110" height="44" rx="3"></rect>
+              <text class="rotulo" x="390" y="50">G₂(s)</text>
+              <line class="linea" x1="445" y1="45" x2="545" y2="45" marker-end="url(#punta-serie)"></line>
+              <text class="senal" x="572" y="38">Y(s)</text>
+            </svg>
+            <figcaption>Serie o cascada: G<sub>eq</sub> = G₁G₂. La salida de un bloque es la entrada del siguiente.</figcaption>
+          </figure>
+
+          <figure class="diagrama">
+            <svg viewBox="0 0 600 170" role="img" aria-label="Diagrama de bloques en paralelo: la entrada se bifurca hacia los bloques G uno y G dos, y sus salidas se suman.">
+              <defs>
+                <marker id="punta-par" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" class="punta"></path>
+                </marker>
+              </defs>
+              <text class="senal" x="26" y="78">X(s)</text>
+              <line class="linea" x1="52" y1="85" x2="110" y2="85"></line>
+              <circle cx="110" cy="85" r="3.5" class="nodo"></circle>
+              <line class="linea" x1="110" y1="85" x2="110" y2="40"></line>
+              <line class="linea" x1="110" y1="40" x2="175" y2="40" marker-end="url(#punta-par)"></line>
+              <line class="linea" x1="110" y1="85" x2="110" y2="130"></line>
+              <line class="linea" x1="110" y1="130" x2="175" y2="130" marker-end="url(#punta-par)"></line>
+              <rect class="bloque" x="180" y="18" width="110" height="44" rx="3"></rect>
+              <text class="rotulo" x="235" y="45">G₁(s)</text>
+              <rect class="bloque" x="180" y="108" width="110" height="44" rx="3"></rect>
+              <text class="rotulo" x="235" y="135">G₂(s)</text>
+              <line class="linea" x1="290" y1="40" x2="400" y2="40"></line>
+              <line class="linea" x1="400" y1="40" x2="400" y2="70" marker-end="url(#punta-par)"></line>
+              <line class="linea" x1="290" y1="130" x2="400" y2="130"></line>
+              <line class="linea" x1="400" y1="130" x2="400" y2="100" marker-end="url(#punta-par)"></line>
+              <circle class="suma" cx="400" cy="85" r="15"></circle>
+              <text class="signo" x="386" y="66">+</text>
+              <text class="signo" x="386" y="112">+</text>
+              <line class="linea" x1="415" y1="85" x2="545" y2="85" marker-end="url(#punta-par)"></line>
+              <text class="senal" x="572" y="78">Y(s)</text>
+            </svg>
+            <figcaption>Paralelo: G<sub>eq</sub> = G₁ + G₂. Las dos ramas reciben la misma entrada y sus salidas se suman.</figcaption>
+          </figure>
+
+          <figure class="diagrama">
+            <svg viewBox="0 0 600 180" role="img" aria-label="Diagrama de realimentación negativa: la entrada entra a un sumador, pasa por el bloque G y la salida regresa al sumador a través del bloque H con signo negativo.">
+              <defs>
+                <marker id="punta-rea" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" class="punta"></path>
+                </marker>
+                <marker id="punta-rea-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+                  <path d="M0 0 L10 5 L0 10 z" class="punta-r"></path>
+                </marker>
+              </defs>
+              <text class="senal" x="26" y="43">X(s)</text>
+              <line class="linea" x1="52" y1="50" x2="118" y2="50" marker-end="url(#punta-rea)"></line>
+              <circle class="suma" cx="140" cy="50" r="16"></circle>
+              <text class="signo" x="126" y="31">+</text>
+              <text class="signo" x="124" y="78">−</text>
+              <line class="linea" x1="156" y1="50" x2="225" y2="50" marker-end="url(#punta-rea)"></line>
+              <text class="senal" x="192" y="40">E(s)</text>
+              <rect class="bloque" x="230" y="28" width="120" height="44" rx="3"></rect>
+              <text class="rotulo" x="290" y="55">G(s)</text>
+              <line class="linea" x1="350" y1="50" x2="545" y2="50" marker-end="url(#punta-rea)"></line>
+              <text class="senal" x="572" y="43">Y(s)</text>
+              <circle cx="440" cy="50" r="3.5" class="nodo"></circle>
+              <line class="realimenta" x1="440" y1="50" x2="440" y2="130"></line>
+              <line class="realimenta" x1="440" y1="130" x2="360" y2="130" marker-end="url(#punta-rea-r)"></line>
+              <rect class="bloque" x="230" y="108" width="120" height="44" rx="3"></rect>
+              <text class="rotulo" x="290" y="135">H(s)</text>
+              <line class="realimenta" x1="230" y1="130" x2="140" y2="130"></line>
+              <line class="realimenta" x1="140" y1="130" x2="140" y2="66" marker-end="url(#punta-rea-r)"></line>
+            </svg>
+            <figcaption>Realimentación negativa: la señal de error E(s) = X(s) − H(s)Y(s) es lo que realmente entra a G(s).</figcaption>
+          </figure>
+
+          <p>La configuración canónica de realimentación resume la estrategia de análisis que se usará en las unidades 3 y 4:</p>
+          <div class="ec">
+            \[ \frac{Y(s)}{X(s)} = \frac{G(s)}{1 + G(s)\,H(s)} \]
+            <span class="nota">El denominador 1 + G(s)H(s) igualado a cero es la ecuación característica: sus raíces son los polos del sistema realimentado y deciden su estabilidad.</span>
+          </div>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 2.4 — reducción en tres pasos</h4>
+            <p class="enunciado">G₁ = 4/(s+2) en cascada con G₂ = 1/s, realimentados negativamente por H = 0.5, y con un bloque G₃ = 2 en paralelo.</p>
+            <ol>
+              <li><strong>Cascada:</strong> G = G₁G₂ = 4 / [s(s + 2)].</li>
+              <li><strong>Lazo cerrado:</strong> G<sub>lc</sub> = G/(1 + GH) = [4/(s² + 2s)] / [1 + 2/(s² + 2s)] = 4 / (s² + 2s + 2).</li>
+              <li><strong>Paralelo:</strong> G<sub>eq</sub> = G<sub>lc</sub> + 2 = (2s² + 4s + 8) / (s² + 2s + 2).</li>
+            </ol>
+            <p class="resultado">Ecuación característica: s² + 2s + 2 = 0 → polos en s = −1 ± j. Parte real negativa: el lazo cerrado es estable.</p>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">reduccion_bloques.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Reducción de diagramas de bloques con la Control System Toolbox</span>
+s  = tf('s');
+G1 = 4/(s + 2);
+G2 = 1/s;
+H  = 0.5;
+G3 = 2;
+
+G   = series(G1, G2);          <span class="c">% cascada     (equivale a G1*G2)</span>
+Glc = feedback(G, H);          <span class="c">% lazo cerrado, realimentación negativa</span>
+Geq = parallel(Glc, G3);       <span class="c">% paralelo    (equivale a Glc + G3)</span>
+
+Geq = minreal(Geq)             <span class="c">% cancela polos y ceros repetidos</span>
+pole(Geq)
+step(Geq), grid on, title('Respuesta al escalón del sistema reducido')</code></pre>
+          </div>
+        </section>
+
+        <section id="matlab">
+          <h2><span class="num-seccion">2.8</span>Laboratorio en MATLAB</h2>
+          <p>El curso pide construir una interfaz gráfica —GUIDE o, en versiones recientes, App Designer— que realice la convolución gráfica paso a paso. El núcleo de cálculo cabe en pocas líneas; el valor está en animar el desplazamiento y mostrar el solapamiento.</p>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">actualizar_convolucion.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Núcleo de cálculo para la interfaz de convolución</span>
+<span class="c">% Se invoca desde el callback del deslizador que controla n.</span>
+function actualizar_convolucion(app)
+
+    x   = str2num(app.EntradaX.Value);     <span class="c">% vector x[n]</span>
+    h   = str2num(app.EntradaH.Value);     <span class="c">% vector h[n]</span>
+    n0x = app.InicioX.Value;               <span class="c">% índice de la primera muestra de x</span>
+    n0h = app.InicioH.Value;
+
+    nx = n0x:(n0x + numel(x) - 1);
+    nh = n0h:(n0h + numel(h) - 1);
+    ny = (nx(1) + nh(1)):(nx(end) + nh(end));
+    y  = conv(x, h);
+
+    n  = round(app.Deslizador.Value);      <span class="c">% desplazamiento actual</span>
+    k  = (ny(1) - 2):(ny(end) + 2);
+    xk = interp1(nx, x, k,     'nearest', 0);
+    hk = interp1(nh, h, n - k, 'nearest', 0);
+
+    stem(app.EjeSuperior, k, xk, 'filled'), hold(app.EjeSuperior, 'on')
+    stem(app.EjeSuperior, k, hk, 'Marker', 's'), hold(app.EjeSuperior, 'off')
+    legend(app.EjeSuperior, 'x[k]', sprintf('h[%d-k]', n))
+
+    stem(app.EjeInferior, ny, y, 'filled')
+    app.Etiqueta.Text = sprintf('y[%d] = %g', n, sum(xk.*hk));
+end</code></pre>
+          </div>
+
+          <div class="aviso">
+            <strong>Sobre GUIDE.</strong> MATLAB retiró GUIDE en las versiones recientes y ofrece migrar la interfaz a App Designer desde el propio entorno. La lógica de cálculo es idéntica; solo cambia cómo se accede a los componentes: <span class="mono">handles.eje</span> en GUIDE frente a <span class="mono">app.Eje</span> en App Designer.
+          </div>
+
+          <h3>Talleres de la unidad</h3>
+          <ul>
+            <li><a href="docs/taller_04.pdf">Taller 4 — Convolución discreta</a></li>
+            <li><a href="docs/taller_05.pdf">Taller 5 — Convolución continua</a></li>
+            <li><a href="docs/lab3_sol.pdf">Solución del laboratorio 3</a></li>
+          </ul>
+          <p>Más ejemplos ejecutables en la <a href="matlab.html">guía de MATLAB</a>.</p>
+        </section>
+
+        <nav class="paginacion" aria-label="Navegación entre unidades">
+          <a href="unidad-1.html"><small>Unidad anterior</small>1. Fundamentos sobre sistemas</a>
+          <a class="siguiente" href="unidad-3.html"><small>Siguiente unidad</small>3. Transformada de Laplace</a>
+        </nav>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer class="pie">
+  <div class="shell">
+    <div>
+      <h2>El curso</h2>
+      <p>Señales y Sistemas</p>
+      <p>Programa de Ingeniería Electrónica</p>
+      <p>Requisitos: Variable Compleja y Ecuaciones Diferenciales</p>
+    </div>
+    <div>
+      <h2>Unidades</h2>
+      <ul>
+        <li><a href="unidad-1.html">1. Fundamentos sobre sistemas</a></li>
+        <li><a href="unidad-2.html">2. Sistemas LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Transformada de Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Material</h2>
+      <ul>
+        <li><a href="matlab.html">Guía de MATLAB</a></li>
+        <li><a href="formulario.html">Formulario y tablas</a></li>
+        <li><a href="talleres.html">Talleres y prácticas</a></li>
+        <li><a href="programa.html">Programa del curso</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Universidad</h2>
+      <ul>
+        <li><a href="https://www.usco.edu.co/">Universidad Surcolombiana</a></li>
+        <li><a href="https://www.usco.edu.co/imagen-institucional/">Identidad e imagen institucional</a></li>
+      </ul>
+      <p>Vigilada Mineducación</p>
+    </div>
+  </div>
+  <div class="pie-legal">
+    <div class="shell">
+      Universidad Surcolombiana · Facultad de Ingeniería · Programa de Ingeniería Electrónica.
+      El logotipo institucional corresponde al archivo oficial publicado en
+      usco.edu.co/imagen-institucional y se emplea sin modificaciones, conforme al Manual de Identidad e Imagen Institucional
+      (Acuerdo 046 de 2016 del CSU) y a la Circular N.º 2 de 2026.
+    </div>
+  </div>
+</footer>
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']]
+  },
+  svg: { fontCache: 'global', scale: 1.02 },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+document.documentElement.className += ' math-pendiente';
+</script>
+<script id="MathJax-script" src="js/tex-svg.js"></script>
+<script src="js/indice.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

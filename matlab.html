@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Guía de MATLAB del curso Señales y Sistemas: scripts listos para ejecutar sobre señales, convolución, diagramas de bloques, Transformada de Laplace, Transformada Z y filtros digitales.">
+<title>Guía de MATLAB</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<a class="saltar" href="#principal">Saltar al contenido</a>
+
+<div class="franja">
+  <div class="shell">
+    <span>Facultad de Ingeniería</span>
+    <span>Programa de Ingeniería Electrónica</span>
+    <span class="sede">Neiva, Huila</span>
+  </div>
+</div>
+
+<header class="cabecera">
+  <div class="shell">
+    <a class="marca" href="index.html">
+      <img src="img/universidad-surcolombiana.png" alt="Universidad Surcolombiana" width="347" height="90">
+      <span class="curso">Señales y Sistemas<small>Ingeniería Electrónica</small></span>
+    </a>
+    <form class="buscador" role="search" onsubmit="return false">
+      <label class="sr-only" for="q">Buscar en el sitio</label>
+      <input type="search" id="q" placeholder="Buscar un tema…" autocomplete="off" aria-describedby="q-ayuda">
+      <span class="sr-only" id="q-ayuda">Escribe para buscar entre las secciones del sitio</span>
+      <div class="resultados" id="resultados" hidden></div>
+    </form>
+    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="nav-principal">Menú</button>
+    <nav class="nav" id="nav-principal" aria-label="Navegación principal">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="unidad-1.html">1. Fundamentos</a></li>
+        <li><a href="unidad-2.html">2. LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+        <li><a href="matlab.html" aria-current="page">MATLAB</a></li>
+        <li><a href="formulario.html">Formulario</a></li>
+        <li><a href="talleres.html">Talleres</a></li>
+        <li><a href="programa.html">Programa</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="principal">
+
+  <div class="unidad-portada">
+    <div class="shell">
+      <p class="miga"><a href="index.html">Inicio</a> › Guía de MATLAB</p>
+      <p class="etiqueta">Herramienta transversal de las cuatro unidades</p>
+      <h1>Guía de MATLAB</h1>
+      <p>MATLAB es la herramienta de soporte del curso. Aquí están los guiones completos, ordenados por tema y listos para copiar y ejecutar: cada uno resuelve un tipo de ejercicio de los talleres y termina con una comprobación.</p>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="disposicion">
+
+      <aside class="rail">
+        <h2>Contenido</h2>
+        <ol>
+          <li><a href="#entorno">M.1 Entorno y convenios</a></li>
+          <li><a href="#senales">M.2 Graficar y clasificar señales</a></li>
+          <li><a href="#operaciones">M.3 Operaciones y señales por tramos</a></li>
+          <li><a href="#convolucion">M.4 Convolución</a></li>
+          <li><a href="#bloques">M.5 Diagramas de bloques</a></li>
+          <li><a href="#laplace">M.6 Transformada de Laplace</a></li>
+          <li><a href="#estabilidad">M.7 Estabilidad y transitorio</a></li>
+          <li><a href="#zeta">M.8 Transformada Z y filtros</a></li>
+          <li><a href="#errores">M.9 Errores frecuentes</a></li>
+          <li><a href="#referencia">M.10 Funciones de referencia</a></li>
+        </ol>
+      </aside>
+
+      <article class="articulo">
+
+        <section id="entorno">
+          <h2><span class="num-seccion">M.1</span>Entorno y convenios</h2>
+          <p>Los guiones de esta página usan tres toolboxes. Se puede comprobar cuáles están instaladas con el comando <span class="mono">ver</span>:</p>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Toolboxes utilizadas en el curso</caption>
+              <thead>
+                <tr><th>Toolbox</th><th>Se usa para</th><th class="mono">Funciones típicas</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Symbolic Math</td><td>Transformadas y soluciones analíticas</td><td class="mono">syms, laplace, ilaplace, ztrans, iztrans, dsolve</td></tr>
+                <tr><td>Control System</td><td>Funciones de transferencia y respuestas</td><td class="mono">tf, pole, zero, pzmap, step, impulse, feedback</td></tr>
+                <tr><td>Signal Processing</td><td>Sistemas discretos y filtros</td><td class="mono">impz, stepz, freqz, zplane, filter, residuez</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="definicion">
+            <h4>Convenios que se repiten en todos los guiones</h4>
+            <ul>
+              <li><strong>Tiempo continuo:</strong> vector con paso fino (<span class="mono">t = a:1e-3:b</span>) y gráficas con <span class="mono">plot</span>.</li>
+              <li><strong>Tiempo discreto:</strong> vector de enteros (<span class="mono">n = a:b</span>) y gráficas con <span class="mono">stem</span>.</li>
+              <li><strong>Escalón:</strong> función anónima <span class="mono">u = @(t) double(t &gt;= 0)</span>, más segura que <span class="mono">heaviside</span> porque en t = 0 devuelve 1 y no 0.5.</li>
+              <li><strong>Operaciones elemento a elemento:</strong> siempre con punto: <span class="mono">.*</span>, <span class="mono">./</span>, <span class="mono">.^</span>.</li>
+              <li><strong>Ejes:</strong> rotular con <span class="mono">xlabel</span>, <span class="mono">ylabel</span>, <span class="mono">title</span> y activar <span class="mono">grid on</span>. En el informe, una gráfica sin ejes rotulados no puntúa.</li>
+            </ul>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">plantilla_taller.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% PLANTILLA DE INFORME - Señales y Sistemas</span>
+<span class="c">%  Autor:   Nombre Apellido</span>
+<span class="c">%  Taller:  N.º y título</span>
+<span class="c">%  Fecha:   dd/mm/aaaa</span>
+
+clear; close all; clc            <span class="c">% arrancar siempre desde un estado limpio</span>
+
+<span class="c">%% Parámetros del problema</span>
+u  = @(t) double(t &gt;= 0);
+dt = 1e-3;
+t  = -5:dt:5;
+n  = -5:5;
+
+<span class="c">%% Punto 1 - enunciado resumido</span>
+<span class="c">% ... desarrollo ...</span>
+
+<span class="c">%% Verificación</span>
+<span class="c">% Toda respuesta numérica debe contrastarse con el resultado analítico.</span></code></pre>
+          </div>
+          <p>Guardado como <span class="mono">.mlx</span> (live script), este archivo produce directamente un informe con código, gráficas y texto, que es el formato que pide el curso.</p>
+        </section>
+
+        <section id="senales">
+          <h2><span class="num-seccion">M.2</span>Graficar y clasificar señales</h2>
+          <p>Relacionado con la <a href="unidad-1.html#clasificacion">unidad 1</a> y el taller 1. Este guion automatiza las tres preguntas del taller: gráfica, simetría y periodicidad.</p>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">clasificar_senal.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Función que clasifica una señal discreta y la grafica</span>
+function info = clasificar_senal(x, n, nombre)
+<span class="c">% x: vector de muestras | n: eje de índices (simétrico) | nombre: texto</span>
+
+    xr = fliplr(x);                        <span class="c">% x[-n] si n es simétrico</span>
+    info.par   = max(abs(x - xr)) &lt; 1e-9;
+    info.impar = max(abs(x + xr)) &lt; 1e-9;
+
+    <span class="c">% Búsqueda del periodo: se ensayan desplazamientos sucesivos</span>
+    info.N = NaN;
+    for N = 1:floor(numel(x)/2)
+        if max(abs(x(1:end-N) - x(1+N:end))) &lt; 1e-9
+            info.N = N;  break
+        end
+    end
+    info.periodica = ~isnan(info.N);
+
+    <span class="c">% Energía y potencia</span>
+    info.energia  = sum(abs(x).^2);
+    info.potencia = info.energia/numel(x);
+
+    stem(n, x, 'filled'), grid on
+    xlabel('n'), ylabel(nombre)
+    if info.par,   simetria = 'par';
+    elseif info.impar, simetria = 'impar';
+    else,          simetria = 'ni par ni impar';
+    end
+    if info.periodica
+        title(sprintf('%s: %s, periódica con N = %d', nombre, simetria, info.N))
+    else
+        title(sprintf('%s: %s, no periódica', nombre, simetria))
+    end
+end
+
+<span class="c">%% Uso con las señales del taller 1</span>
+<span class="c">% n = -20:20;</span>
+<span class="c">% clasificar_senal(sin(pi*n/10 + 2),      n, 'x_1[n]')</span>
+<span class="c">% clasificar_senal(3*cos(pi*n/10) - 2,    n, 'x_2[n]')</span>
+<span class="c">% clasificar_senal(-5*n.^2 - 2*n + 1,     n, 'x_6[n]')</span></code></pre>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">varias_senales.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Seis señales continuas del taller 1 en una sola figura</span>
+t = -10:1e-3:10;
+
+x7  = cos(2*t/3 + 1).^2;
+x8  = t.^2 - 3;
+x9  = (t + 3).^2;
+x10 = 2*exp(-t/5).*sin(pi*t/4);
+x11 = 3*cos(pi*t/5 - pi) + 10;
+x12 = 2./(1 + exp(-2*t)) - 1;
+
+senales = {x7, x8, x9, x10, x11, x12};
+nombres = {'cos^2(2t/3+1)', 't^2-3', '(t+3)^2', ...
+           '2e^{-t/5}sin(\pi t/4)', '3cos(\pi t/5-\pi)+10', '2/(1+e^{-2t})-1'};
+
+figure('Name','Taller 1 - señales continuas')
+for k = 1:6
+    subplot(3,2,k)
+    plot(t, senales{k}, 'LineWidth', 1.3), grid on
+    title(nombres{k}), xlabel('t [s]')
+end</code></pre>
+          </div>
+        </section>
+
+        <section id="operaciones">
+          <h2><span class="num-seccion">M.3</span>Operaciones y señales por tramos</h2>
+          <p>Relacionado con la <a href="unidad-1.html#operaciones">unidad 1</a> y el taller 2. La clave está en definir la señal como función, no como vector: así se puede evaluar en cualquier argumento transformado.</p>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">transformaciones.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Comparación de los cuatro efectos sobre la variable independiente</span>
+u = @(t) double(t &gt;= 0);
+x = @(t) (t+2).*(t&gt;=-2 &amp; t&lt;0) + 2*(t&gt;=0 &amp; t&lt;2);   <span class="c">% rampa + meseta</span>
+
+t = -8:1e-3:8;
+casos = {x(t), x(t-2), x(2*t), x(-t), x(-2*t + 4)};
+etiquetas = {'x(t)', 'x(t-2)', 'x(2t)', 'x(-t)', 'x(-2t+4)'};
+
+figure
+for k = 1:5
+    subplot(5,1,k)
+    plot(t, casos{k}, 'LineWidth', 1.4), grid on
+    ylabel(etiquetas{k}), ylim([-0.5 2.5])
+end
+xlabel('t [s]')
+
+<span class="c">%% Comprobación numérica de un punto característico</span>
+<span class="c">% Si x(2) = 2, entonces x(-2t+4) vale 2 cuando -2t+4 = 2, es decir t = 1</span>
+fprintf('x(-2*1+4) = %g\n', x(-2*1 + 4))</code></pre>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">derivar_integrar.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Derivada e integral de una señal definida por tramos (taller 3)</span>
+dt = 1e-4;  t = -3:dt:6;
+u  = @(t) double(t &gt;= 0);
+
+<span class="c">% Señal trapezoidal: sube, se mantiene, baja</span>
+x = (t+2).*(t&gt;=-2 &amp; t&lt;-1) + 1*(t&gt;=-1 &amp; t&lt;1) + (2-t).*(t&gt;=1 &amp; t&lt;2);
+
+dx = gradient(x, dt);        <span class="c">% derivada centrada, más suave que diff</span>
+ix = cumtrapz(t, x);         <span class="c">% integral por regla del trapecio</span>
+
+figure
+subplot(3,1,1), plot(t, x,  'LineWidth', 1.5), grid on, ylabel('x(t)')
+subplot(3,1,2), plot(t, dx, 'LineWidth', 1.2), grid on, ylabel('dx/dt')
+title('Los saltos de pendiente aparecen como escalones')
+subplot(3,1,3), plot(t, ix, 'LineWidth', 1.5), grid on, ylabel('\int x'), xlabel('t [s]')
+
+fprintf('Área total de x(t): %.4f\n', ix(end))</code></pre>
+          </div>
+        </section>
+
+        <section id="convolucion">
+          <h2><span class="num-seccion">M.4</span>Convolución</h2>
+          <p>Relacionado con la <a href="unidad-2.html#suma">unidad 2</a> y los talleres 4 y 5. El error más común no está en <span class="mono">conv</span> sino en el eje de índices del resultado.</p>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">convolucion_con_ejes.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Función de convolución que devuelve también el eje correcto</span>
+function [y, ny] = convolucion_con_ejes(x, nx, h, nh)
+    y  = conv(x, h);
+    ny = (nx(1) + nh(1)) : (nx(end) + nh(end));
+
+    <span class="c">% Verificaciones automáticas</span>
+    assert(numel(y) == numel(ny), 'El eje no coincide con la longitud')
+    assert(abs(sum(y) - sum(x)*sum(h)) &lt; 1e-9, 'Falla la suma de comprobación')
+end
+
+<span class="c">%% Uso con el punto 2 del taller 4</span>
+<span class="c">% [y, ny] = convolucion_con_ejes([-2 -1 1], -2:0, [1 1 -2], -1:1);</span>
+<span class="c">% stem(ny, y, 'filled'), grid on</span>
+<span class="c">% resultado esperado: y = [-2 -3 4 3 -2] para n = -3:1</span></code></pre>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">convolucion_exponencial.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Convolución de un pulso con una exponencial: numérica vs. analítica</span>
+dt = 1e-4;  t = -2:dt:12;
+u  = @(t) double(t &gt;= 0);
+
+x = u(t) - u(t-2);
+h = 2*exp(-t).*u(t);
+
+y_num = conv(x, h)*dt;
+ty    = t(1)*2 : dt : t(end)*2;
+y_num = y_num(1:numel(ty));
+
+<span class="c">% Solución analítica por tramos (ver ejemplo 2.2 de la unidad 2)</span>
+y_ana = 2*(1 - exp(-t)).*(t&gt;=0 &amp; t&lt;2) + 2*(exp(2)-1)*exp(-t).*(t&gt;=2);
+
+figure
+plot(ty, y_num, 'LineWidth', 2), hold on
+plot(t, y_ana, '--', 'LineWidth', 1.4), hold off
+grid on, xlim([-1 10]), legend('numérica', 'analítica')
+xlabel('t [s]'), ylabel('y(t)'), title('Contraste numérico-analítico')
+
+<span class="c">% Error máximo en la zona común</span>
+y_int = interp1(ty, y_num, t);
+fprintf('Error máximo: %.2e\n', max(abs(y_int - y_ana), [], 'omitnan'))</code></pre>
+          </div>
+        </section>
+
+        <section id="bloques">
+          <h2><span class="num-seccion">M.5</span>Diagramas de bloques</h2>
+          <p>Relacionado con la <a href="unidad-2.html#bloques">unidad 2</a>. MATLAB tiene una función por cada regla de reducción, así que el guion sirve para comprobar el resultado hecho a mano.</p>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">verificar_reduccion.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Comprobar a mano vs. MATLAB una reducción de bloques</span>
+s  = tf('s');
+G1 = 4/(s + 2);
+G2 = 1/s;
+H  = 0.5;
+
+<span class="c">% Reducción paso a paso</span>
+G_serie = series(G1, G2);
+G_lazo  = feedback(G_serie, H);        <span class="c">% negativa por defecto</span>
+G_total = parallel(G_lazo, tf(2, 1));
+
+<span class="c">% Resultado esperado calculado a mano</span>
+G_mano = (2*s^2 + 4*s + 8)/(s^2 + 2*s + 2);
+
+<span class="c">% Comparación: la diferencia debe ser prácticamente cero</span>
+dif = minreal(G_total - G_mano);
+fprintf('Norma de la diferencia: %.2e\n', norm(dif, inf))
+
+<span class="c">% Realimentación positiva: feedback(G, H, +1)</span>
+G_pos = feedback(G_serie, H, +1);
+fprintf('Polos con realimentación positiva: %s\n', mat2str(pole(G_pos), 3))</code></pre>
+          </div>
+        </section>
+
+        <section id="laplace">
+          <h2><span class="num-seccion">M.6</span>Transformada de Laplace</h2>
+          <p>Relacionado con la <a href="unidad-3.html">unidad 3</a> y el taller 7. Conviene resolver siempre por los dos caminos: simbólico para el informe, numérico para las gráficas.</p>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">taller07_laplace.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Taller 7 completo: ecuaciones diferenciales e inversión</span>
+clear; clc
+syms t s y(t)
+
+<span class="c">%% 1a) y'' + 12y' + 32y = 32u(t)</span>
+Dy   = diff(y, t);
+edo1 = diff(y, t, 2) + 12*Dy + 32*y == 32*heaviside(t);
+sol1 = simplify(dsolve(edo1, y(0) == 0, Dy(0) == 0))
+<span class="c">%  resultado: 1 - 2*exp(-4*t) + exp(-8*t)</span>
+
+<span class="c">%% 1b) y'' + 3y' + 2y = 5r(t), con r(t) = t*u(t)</span>
+edo2 = diff(y, t, 2) + 3*Dy + 2*y == 5*t*heaviside(t);
+sol2 = simplify(dsolve(edo2, y(0) == 0, Dy(0) == 0))
+
+<span class="c">%% 2a) Inversa de G1(s) = (s+2)/(s^3+7s^2+19s+13)</span>
+G1 = (s + 2)/(s^3 + 7*s^2 + 19*s + 13);
+factor(s^3 + 7*s^2 + 19*s + 13)        <span class="c">% (s+1)(s^2+6s+13)</span>
+g1 = simplify(ilaplace(G1))
+
+<span class="c">%% 2b) Inversa de G2(s) = (s-2)/(s^4+2s^3+5s^2+8s+4)</span>
+G2 = (s - 2)/(s^4 + 2*s^3 + 5*s^2 + 8*s + 4);
+g2 = simplify(ilaplace(G2))
+
+<span class="c">%% Gráficas de las respuestas obtenidas</span>
+figure
+fplot(sol1, [0 2], 'LineWidth', 1.6), grid on
+xlabel('t [s]'), ylabel('y(t)'), title('Respuesta al escalón, punto 1a')</code></pre>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">fracciones_parciales.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Fracciones parciales: residuos, polos y término directo</span>
+num = [1 2];
+den = [1 7 19 13];
+
+[r, p, k] = residue(num, den);
+
+for m = 1:numel(p)
+    if imag(p(m)) == 0
+        fprintf('Polo real     %+.4f  ->  residuo %+.4f\n', p(m), r(m));
+    else
+        fprintf('Polo complejo %+.4f%+.4fj  ->  residuo %+.4f%+.4fj\n', ...
+                real(p(m)), imag(p(m)), real(r(m)), imag(r(m)));
+    end
+end
+
+<span class="c">% Reconstrucción de la respuesta temporal a partir de los residuos</span>
+t = 0:1e-3:6;
+y = zeros(size(t));
+for m = 1:numel(p)
+    y = y + real(r(m)*exp(p(m)*t));
+end
+plot(t, y, 'LineWidth', 1.6), grid on
+xlabel('t [s]'), title('Respuesta reconstruida desde los residuos')</code></pre>
+          </div>
+        </section>
+
+        <section id="estabilidad">
+          <h2><span class="num-seccion">M.7</span>Estabilidad y respuesta transitoria</h2>
+          <p>Relacionado con la <a href="unidad-3.html#transitoria">unidad 3</a>. El guion barre el amortiguamiento y muestra en una sola figura cómo se relacionan la posición de los polos y la forma de la respuesta.</p>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">barrido_amortiguamiento.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Cómo cambia la respuesta al mover el amortiguamiento</span>
+wn    = 4;
+zetas = [0.1 0.35 0.707 1 1.8];
+t     = 0:1e-3:5;
+
+figure
+subplot(1,2,1), hold on
+subplot(1,2,2), hold on
+
+for z = zetas
+    H = tf(wn^2, [1 2*z*wn wn^2]);
+
+    subplot(1,2,1)
+    plot(real(pole(H)), imag(pole(H)), 'x', 'MarkerSize', 10, 'LineWidth', 2)
+
+    subplot(1,2,2)
+    plot(t, step(H, t), 'LineWidth', 1.4)
+end
+
+subplot(1,2,1), grid on, axis equal
+xlabel('\sigma'), ylabel('j\omega'), title('Polos en el plano s')
+
+subplot(1,2,2), grid on
+xlabel('t [s]'), ylabel('y(t)'), title('Respuesta al escalón')
+legend(compose('\\zeta = %.3f', zetas), 'Location', 'southeast')
+
+<span class="c">%% Parámetros medidos frente a los teóricos</span>
+z  = 0.35;
+H  = tf(wn^2, [1 2*z*wn wn^2]);
+S  = stepinfo(H);
+Mp = exp(-pi*z/sqrt(1 - z^2))*100;
+fprintf('Sobreimpulso medido: %.2f %% | teórico: %.2f %%\n', S.Overshoot, Mp)
+fprintf('Establecimiento medido: %.3f s | teórico (4/zwn): %.3f s\n', ...
+        S.SettlingTime, 4/(z*wn))</code></pre>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">routh_hurwitz.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Arreglo de Routh-Hurwitz para un polinomio característico</span>
+function R = routh_hurwitz(den)
+    n = numel(den);
+    R = zeros(n, ceil(n/2));
+    R(1, 1:numel(den(1:2:end))) = den(1:2:end);
+    R(2, 1:numel(den(2:2:end))) = den(2:2:end);
+
+    for i = 3:n
+        for j = 1:size(R,2)-1
+            a = R(i-2, 1);  b = R(i-1, 1);
+            if b == 0, b = eps; end            <span class="c">% evita la división por cero</span>
+            R(i, j) = (b*R(i-2, j+1) - a*R(i-1, j+1))/b;
+        end
+    end
+
+    cambios = sum(diff(sign(R(:,1)) ~= 0) ~= 0);
+    fprintf('Primera columna: %s\n', mat2str(R(:,1)', 4))
+    if all(R(:,1) &gt; 0)
+        disp('ESTABLE: sin cambios de signo en la primera columna')
+    else
+        fprintf('INESTABLE: %d raíz/raíces en el semiplano derecho\n', cambios)
+    end
+end
+
+<span class="c">% Uso:  routh_hurwitz([1 7 19 13])  ->  estable</span>
+<span class="c">%       routh_hurwitz([1 1 2 24])   ->  inestable</span></code></pre>
+          </div>
+        </section>
+
+        <section id="zeta">
+          <h2><span class="num-seccion">M.8</span>Transformada Z y filtros digitales</h2>
+          <p>Relacionado con la <a href="unidad-4.html">unidad 4</a>. Además de invertir transformadas, MATLAB permite comprobar en segundos si un polo cae dentro del círculo unitario.</p>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">estabilidad_discreta.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Barrido del polo: efecto sobre h[n] y sobre la estabilidad</span>
+polos = [0.5 0.85 1.0 1.05 -0.85];
+N     = 0:25;
+
+figure
+for k = 1:numel(polos)
+    a = polos(k);
+    h = a.^N;                        <span class="c">% h[n] = a^n u[n]</span>
+
+    subplot(numel(polos), 1, k)
+    stem(N, h, 'filled'), grid on
+    ylabel(sprintf('a = %.2f', a))
+
+    if abs(a) &lt; 1
+        veredicto = sprintf('estable, suma |h| = %.2f', 1/(1-abs(a)));
+    else
+        veredicto = 'inestable';
+    end
+    title(veredicto)
+end
+xlabel('n')</code></pre>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">fir_vs_iir.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Dos filtros pasa-bajas discretos: media móvil (FIR) vs. un polo (IIR)</span>
+M  = 8;
+bF = ones(1, M)/M;    aF = 1;             <span class="c">% FIR: media móvil de 8 muestras</span>
+bI = 1 - 0.85;        aI = [1 -0.85];     <span class="c">% IIR: un solo polo</span>
+
+figure
+subplot(2,2,1), zplane(bF, aF), title('FIR: solo ceros')
+subplot(2,2,2), zplane(bI, aI), title('IIR: un polo en 0.85')
+subplot(2,2,3), impz(bF, aF, 20), title('h[n] finita')
+subplot(2,2,4), impz(bI, aI, 40), title('h[n] infinita')
+
+figure
+freqz(bF, aF, 512), hold on
+freqz(bI, aI, 512), hold off
+title('Ambos atenúan las altas frecuencias, con distinta fase')
+
+<span class="c">%% Prueba sobre una señal con ruido</span>
+n = 0:200;
+x = sin(2*pi*n/50) + 0.35*randn(size(n));
+figure
+plot(n, x, 'Color', [.7 .7 .7]), hold on
+plot(n, filter(bF, aF, x), 'LineWidth', 1.5)
+plot(n, filter(bI, aI, x), 'LineWidth', 1.5), hold off
+grid on, legend('ruidosa', 'FIR', 'IIR'), xlabel('n')</code></pre>
+          </div>
+        </section>
+
+        <section id="errores">
+          <h2><span class="num-seccion">M.9</span>Errores frecuentes</h2>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Errores frecuentes en MATLAB y su solución</caption>
+              <thead>
+                <tr><th>Síntoma</th><th>Causa</th><th>Solución</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mono">Matrix dimensions must agree</td><td>Se usó <span class="mono">*</span> en lugar del producto elemento a elemento</td><td class="mono">Usar .* ./ .^</td></tr>
+                <tr><td>La convolución aparece desplazada</td><td>Se graficó <span class="mono">y</span> contra un eje que no corresponde</td><td class="mono">ny = nx(1)+nh(1) : nx(end)+nh(end)</td></tr>
+                <tr><td>La señal discreta parece continua</td><td>Se usó <span class="mono">plot</span> con índices enteros</td><td class="mono">stem(n, x, 'filled')</td></tr>
+                <tr><td>La integral numérica da el doble o la mitad</td><td>Falta multiplicar por el paso dt</td><td class="mono">conv(x,h)*dt</td></tr>
+                <tr><td class="mono">Undefined function 'ilaplace'</td><td>No está instalada la Symbolic Math Toolbox</td><td>Resolver por <span class="mono">residue</span> y la tabla</td></tr>
+                <tr><td>El escalón vale 0.5 en t = 0</td><td>Comportamiento propio de <span class="mono">heaviside</span></td><td class="mono">u = @(t) double(t &gt;= 0)</td></tr>
+                <tr><td>La respuesta al escalón sale plana</td><td>El vector de tiempo es demasiado corto</td><td>Ampliar t a varias veces 1/(ζω<sub>n</sub>)</td></tr>
+                <tr><td>Los polos salen mal en tiempo discreto</td><td>Se mezclaron coeficientes en z y en z<sup>−1</sup></td><td>Mantener una sola convención en b y a</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="referencia">
+          <h2><span class="num-seccion">M.10</span>Funciones de referencia</h2>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Funciones de MATLAB usadas en el curso</caption>
+              <thead>
+                <tr><th class="mono">Función</th><th>Para qué sirve</th><th>Unidad</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mono">plot / stem</td><td>Graficar señales continuas y discretas</td><td>1</td></tr>
+                <tr><td class="mono">fliplr</td><td>Reflejar una secuencia: x[−n]</td><td>1</td></tr>
+                <tr><td class="mono">interp1</td><td>Reindexar una secuencia con relleno de ceros</td><td>1</td></tr>
+                <tr><td class="mono">gradient / cumtrapz</td><td>Derivada e integral numéricas</td><td>1</td></tr>
+                <tr><td class="mono">conv</td><td>Suma de convolución</td><td>2</td></tr>
+                <tr><td class="mono">series / parallel / feedback</td><td>Reducción de diagramas de bloques</td><td>2</td></tr>
+                <tr><td class="mono">minreal</td><td>Cancelar polos y ceros comunes</td><td>2</td></tr>
+                <tr><td class="mono">laplace / ilaplace</td><td>Transformada de Laplace directa e inversa</td><td>3</td></tr>
+                <tr><td class="mono">dsolve</td><td>Resolver ecuaciones diferenciales simbólicamente</td><td>3</td></tr>
+                <tr><td class="mono">residue</td><td>Fracciones parciales en el dominio s</td><td>3</td></tr>
+                <tr><td class="mono">tf / pole / zero</td><td>Función de transferencia, polos y ceros</td><td>3</td></tr>
+                <tr><td class="mono">pzmap / step / impulse / lsim</td><td>Mapa de polos y respuestas temporales</td><td>3</td></tr>
+                <tr><td class="mono">stepinfo</td><td>Sobreimpulso, tiempos de pico y establecimiento</td><td>3</td></tr>
+                <tr><td class="mono">bode / margin</td><td>Respuesta en frecuencia y márgenes</td><td>3</td></tr>
+                <tr><td class="mono">ztrans / iztrans</td><td>Transformada Z directa e inversa</td><td>4</td></tr>
+                <tr><td class="mono">residuez</td><td>Fracciones parciales en el dominio z</td><td>4</td></tr>
+                <tr><td class="mono">zplane</td><td>Polos y ceros con el círculo unitario</td><td>4</td></tr>
+                <tr><td class="mono">impz / stepz / freqz</td><td>Respuestas de sistemas discretos</td><td>4</td></tr>
+                <tr><td class="mono">filter</td><td>Ejecutar la ecuación de diferencias</td><td>4</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <nav class="paginacion" aria-label="Navegación del sitio">
+          <a href="unidad-4.html"><small>Anterior</small>4. Transformada Z</a>
+          <a class="siguiente" href="formulario.html"><small>Siguiente</small>Formulario y tablas</a>
+        </nav>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer class="pie">
+  <div class="shell">
+    <div>
+      <h2>El curso</h2>
+      <p>Señales y Sistemas</p>
+      <p>Programa de Ingeniería Electrónica</p>
+      <p>Requisitos: Variable Compleja y Ecuaciones Diferenciales</p>
+    </div>
+    <div>
+      <h2>Unidades</h2>
+      <ul>
+        <li><a href="unidad-1.html">1. Fundamentos sobre sistemas</a></li>
+        <li><a href="unidad-2.html">2. Sistemas LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Transformada de Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Material</h2>
+      <ul>
+        <li><a href="matlab.html">Guía de MATLAB</a></li>
+        <li><a href="formulario.html">Formulario y tablas</a></li>
+        <li><a href="talleres.html">Talleres y prácticas</a></li>
+        <li><a href="programa.html">Programa del curso</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Universidad</h2>
+      <ul>
+        <li><a href="https://www.usco.edu.co/">Universidad Surcolombiana</a></li>
+        <li><a href="https://www.usco.edu.co/imagen-institucional/">Identidad e imagen institucional</a></li>
+      </ul>
+      <p>Vigilada Mineducación</p>
+    </div>
+  </div>
+  <div class="pie-legal">
+    <div class="shell">
+      Universidad Surcolombiana · Facultad de Ingeniería · Programa de Ingeniería Electrónica.
+      El logotipo institucional corresponde al archivo oficial publicado en
+      usco.edu.co/imagen-institucional y se emplea sin modificaciones, conforme al Manual de Identidad e Imagen Institucional
+      (Acuerdo 046 de 2016 del CSU) y a la Circular N.º 2 de 2026.
+    </div>
+  </div>
+</footer>
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']]
+  },
+  svg: { fontCache: 'global', scale: 1.02 },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+document.documentElement.className += ' math-pendiente';
+</script>
+<script id="MathJax-script" src="js/tex-svg.js"></script>
+<script src="js/indice.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

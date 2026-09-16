@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Unidad 3 del curso Señales y Sistemas: Transformada de Laplace, región de convergencia, propiedades, transformada inversa por fracciones parciales, función de transferencia, respuesta transitoria, criterio de Routh y circuitos en el dominio s, con ejemplos en MATLAB.">
+<title>Unidad 3 · Transformada de Laplace</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<a class="saltar" href="#principal">Saltar al contenido</a>
+
+<div class="franja">
+  <div class="shell">
+    <span>Facultad de Ingeniería</span>
+    <span>Programa de Ingeniería Electrónica</span>
+    <span class="sede">Neiva, Huila</span>
+  </div>
+</div>
+
+<header class="cabecera">
+  <div class="shell">
+    <a class="marca" href="index.html">
+      <img src="img/universidad-surcolombiana.png" alt="Universidad Surcolombiana" width="347" height="90">
+      <span class="curso">Señales y Sistemas<small>Ingeniería Electrónica</small></span>
+    </a>
+    <form class="buscador" role="search" onsubmit="return false">
+      <label class="sr-only" for="q">Buscar en el sitio</label>
+      <input type="search" id="q" placeholder="Buscar un tema…" autocomplete="off" aria-describedby="q-ayuda">
+      <span class="sr-only" id="q-ayuda">Escribe para buscar entre las secciones del sitio</span>
+      <div class="resultados" id="resultados" hidden></div>
+    </form>
+    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="nav-principal">Menú</button>
+    <nav class="nav" id="nav-principal" aria-label="Navegación principal">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="unidad-1.html">1. Fundamentos</a></li>
+        <li><a href="unidad-2.html">2. LTI y convolución</a></li>
+        <li><a href="unidad-3.html" aria-current="page">3. Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+        <li><a href="matlab.html">MATLAB</a></li>
+        <li><a href="formulario.html">Formulario</a></li>
+        <li><a href="talleres.html">Talleres</a></li>
+        <li><a href="programa.html">Programa</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="principal">
+
+  <div class="unidad-portada">
+    <div class="shell">
+      <p class="miga"><a href="index.html">Inicio</a> › Unidad 3</p>
+      <p class="etiqueta">Unidad 3</p>
+      <h1>Transformada de Laplace</h1>
+      <p>Una ecuación diferencial con condiciones iniciales se convierte en una ecuación algebraica; la convolución se convierte en un producto; y la estabilidad, en una pregunta sobre la posición de unos puntos en el plano complejo.</p>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="disposicion">
+
+      <aside class="rail">
+        <h2>Contenido</h2>
+        <ol>
+          <li><a href="#definicion">3.1 Definición y ROC</a></li>
+          <li><a href="#propiedades">3.2 Propiedades</a></li>
+          <li><a href="#pares">3.3 Pares de transformadas</a></li>
+          <li><a href="#inversa">3.4 Transformada inversa</a></li>
+          <li><a href="#edo">3.5 Ecuaciones diferenciales</a></li>
+          <li><a href="#transferencia">3.6 Función de transferencia</a></li>
+          <li><a href="#transitoria">3.7 Respuesta transitoria</a></li>
+          <li><a href="#routh">3.8 Criterio de Routh-Hurwitz</a></li>
+          <li><a href="#circuitos">3.9 Circuitos en el dominio s</a></li>
+          <li><a href="#matlab">3.10 Laboratorio en MATLAB</a></li>
+        </ol>
+      </aside>
+
+      <article class="articulo">
+
+        <section id="definicion">
+          <h2><span class="num-seccion">3.1</span>Definición y región de convergencia</h2>
+          <div class="ec">
+            \[ \underbrace{X(s) = \int_{-\infty}^{\infty} x(t)\,e^{-st}\,dt}_{\text{bilateral}}
+            \qquad\qquad
+            \underbrace{X(s) = \int_{0^{-}}^{\infty} x(t)\,e^{-st}\,dt}_{\text{unilateral}} \]
+            <span class="nota">s = σ + jω. La versión unilateral es la que se usa para resolver ecuaciones diferenciales con condiciones iniciales.</span>
+          </div>
+          <p>La transformada solo existe donde la integral converge. Ese conjunto de valores de s es la <strong>región de convergencia (ROC)</strong>, y no es un detalle técnico: la misma expresión algebraica X(s) puede corresponder a dos señales distintas según su ROC.</p>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 3.1 — la misma X(s), dos señales</h4>
+            <p class="enunciado">Calcule la transformada de x₁(t) = e<sup>−at</sup>u(t) y de x₂(t) = −e<sup>−at</sup>u(−t).</p>
+            <ol>
+              <li><strong>Señal causal.</strong> X₁(s) = ∫₀<sup>∞</sup>e<sup>−(s+a)t</sup>dt = 1/(s + a), convergente si Re{s} &gt; −a.</li>
+              <li><strong>Señal anticausal.</strong> X₂(s) = −∫<sub>−∞</sub><sup>0</sup>e<sup>−(s+a)t</sup>dt = 1/(s + a), convergente si Re{s} &lt; −a.</li>
+            </ol>
+            <p class="resultado">Misma expresión, ROC opuestas. Sin declarar la ROC, la transformada inversa es ambigua.</p>
+          </div>
+
+          <div class="definicion">
+            <h4>Reglas de la ROC</h4>
+            <ul>
+              <li>Nunca contiene polos.</li>
+              <li>Señal causal → semiplano derecho, a la derecha del polo más a la derecha.</li>
+              <li>Señal anticausal → semiplano izquierdo.</li>
+              <li>Señal bilateral de duración infinita → franja vertical entre dos polos.</li>
+              <li>Señal de duración finita → todo el plano s (salvo, quizá, s = 0 o s = ∞).</li>
+              <li>Si la ROC incluye el eje jω, existe la transformada de Fourier.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="propiedades">
+          <h2><span class="num-seccion">3.2</span>Propiedades</h2>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Propiedades de la Transformada de Laplace</caption>
+              <thead>
+                <tr><th>Propiedad</th><th class="mono">\( x(t) \)</th><th class="mono">\( X(s) \)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Linealidad</td><td class="mono">\( a x_{1}(t) + b x_{2}(t) \)</td><td class="mono">\( a X_{1}(s) + b X_{2}(s) \)</td></tr>
+                <tr><td>Desplazamiento en t</td><td class="mono">\( x(t - t_{0}) u(t - t_{0}) \)</td><td class="mono">\( e^\{-st_{0}\} X(s) \)</td></tr>
+                <tr><td>Desplazamiento en s</td><td class="mono">\( e^\{at\} x(t) \)</td><td class="mono">\( X(s - a) \)</td></tr>
+                <tr><td>Escalamiento</td><td class="mono">\( x(at), \ a &gt; 0 \)</td><td class="mono">\( (1/a) X(s/a) \)</td></tr>
+                <tr><td>Derivada</td><td class="mono">\( dx/dt \)</td><td class="mono">\( s X(s) - x(0^{-}) \)</td></tr>
+                <tr><td>Segunda derivada</td><td class="mono">\( d^{2}x/dt^{2} \)</td><td class="mono">\( s^{2}X(s) - s x(0^{-}) - x'(0^{-}) \)</td></tr>
+                <tr><td>Derivada de orden n</td><td class="mono">\( d^\{n\}x/dt^\{n\} \)</td><td class="mono">\( s^\{n\}X(s) - \sum s^\{n-k\}x^\{(k-1)\}(0^{-}) \)</td></tr>
+                <tr><td>Integral</td><td class="mono">\( \int _{0}^{t} x(\tau )d\tau \)</td><td class="mono">\( X(s)/s \)</td></tr>
+                <tr><td>Convolución</td><td class="mono">\( x(t) \ast h(t) \)</td><td class="mono">\( X(s) H(s) \)</td></tr>
+                <tr><td>Multiplicación por t</td><td class="mono">\( t x(t) \)</td><td class="mono">\( -dX(s)/ds \)</td></tr>
+                <tr><td>Señal periódica</td><td class="mono">x(t) de periodo T</td><td class="mono">\( X_{1}(s)/(1 - e^\{-sT\}) \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Los teoremas de valor inicial y final permiten conocer los extremos de la respuesta sin invertir la transformada:</p>
+          <div class="ec">
+            \[ x(0^{+}) = \lim_{s \to \infty} s\,X(s)
+            \qquad\qquad
+            x(\infty) = \lim_{s \to 0} s\,X(s) \]
+            <span class="nota">El teorema del valor final solo es válido si todos los polos de sX(s) están en el semiplano izquierdo. Aplicarlo a un sistema inestable da resultados sin sentido.</span>
+          </div>
+        </section>
+
+        <section id="pares">
+          <h2><span class="num-seccion">3.3</span>Pares de transformadas más usados</h2>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Pares de transformadas de Laplace</caption>
+              <thead>
+                <tr><th class="mono">\( x(t), \ t \ge 0 \)</th><th class="mono">\( X(s) \)</th><th class="mono">ROC</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mono">\( \delta (t) \)</td><td class="mono">\( 1 \)</td><td class="mono">\( \text\{todo \} s \)</td></tr>
+                <tr><td class="mono">\( u(t) \)</td><td class="mono">\( 1/s \)</td><td class="mono">\( \operatorname{Re}\{s\} &gt; 0 \)</td></tr>
+                <tr><td class="mono">\( t u(t) \)</td><td class="mono">\( 1/s^{2} \)</td><td class="mono">\( \operatorname{Re}\{s\} &gt; 0 \)</td></tr>
+                <tr><td class="mono">\( t^{n} u(t) \)</td><td class="mono">\( n!/s^\{n+1\} \)</td><td class="mono">\( \operatorname{Re}\{s\} &gt; 0 \)</td></tr>
+                <tr><td class="mono">\( e^\{-at\} u(t) \)</td><td class="mono">\( 1/(s + a) \)</td><td class="mono">\( \operatorname{Re}\{s\} &gt; -a \)</td></tr>
+                <tr><td class="mono">\( t e^\{-at\} u(t) \)</td><td class="mono">\( 1/(s + a)^{2} \)</td><td class="mono">\( \operatorname{Re}\{s\} &gt; -a \)</td></tr>
+                <tr><td class="mono">\( \operatorname{sen}(\omega _{0}t) u(t) \)</td><td class="mono">\( \omega _{0}/(s^{2} + \omega _{0}^{2}) \)</td><td class="mono">\( \operatorname{Re}\{s\} &gt; 0 \)</td></tr>
+                <tr><td class="mono">\( \cos(\omega _{0}t) u(t) \)</td><td class="mono">\( s/(s^{2} + \omega _{0}^{2}) \)</td><td class="mono">\( \operatorname{Re}\{s\} &gt; 0 \)</td></tr>
+                <tr><td class="mono">\( e^\{-at\}\operatorname{sen}(\omega _{0}t) u(t) \)</td><td class="mono">\( \omega _{0}/((s+a)^{2} + \omega _{0}^{2}) \)</td><td class="mono">\( \operatorname{Re}\{s\} &gt; -a \)</td></tr>
+                <tr><td class="mono">\( e^\{-at\}\cos(\omega _{0}t) u(t) \)</td><td class="mono">\( (s+a)/((s+a)^{2} + \omega _{0}^{2}) \)</td><td class="mono">\( \operatorname{Re}\{s\} &gt; -a \)</td></tr>
+                <tr><td class="mono">\( \delta (t - t_{0}) \)</td><td class="mono">\( e^\{-st_{0}\} \)</td><td class="mono">\( \text\{todo \} s \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>La tabla completa, junto con la de la Transformada Z, está en el <a href="formulario.html">formulario del curso</a>.</p>
+        </section>
+
+        <section id="inversa">
+          <h2><span class="num-seccion">3.4</span>Transformada inversa por fracciones parciales</h2>
+          <p>Con X(s) racional y propia, la inversión se reduce a descomponer en fracciones simples y leer la tabla. Si el grado del numerador iguala o supera al del denominador, primero se hace división polinómica: el cociente aporta impulsos y sus derivadas.</p>
+
+          <h3>Caso 1 · polos reales distintos</h3>
+          <div class="ec">
+            \[ X(s) = \frac{N(s)}{(s + p_1)(s + p_2)} = \frac{A_1}{s + p_1} + \frac{A_2}{s + p_2} \]
+            <span class="nota">A<sub>k</sub> = [(s + p<sub>k</sub>) X(s)] evaluado en s = −p<sub>k</sub>. Cada término aporta A<sub>k</sub> e<sup>−p<sub>k</sub>t</sup>.</span>
+          </div>
+
+          <h3>Caso 2 · polos repetidos</h3>
+          <div class="ec">
+            \[ X(s) = \frac{A_1}{s + p} + \frac{A_2}{(s + p)^{2}}
+            \quad\longrightarrow\quad \big(A_1 + A_2\,t\big)e^{-pt} \]
+            <span class="nota">A₂ se obtiene evaluando (s+p)²X(s) en s = −p; A₁, derivando esa misma expresión respecto a s antes de evaluar.</span>
+          </div>
+
+          <h3>Caso 3 · polos complejos conjugados</h3>
+          <p>Conviene no separarlos: se completa el cuadrado en el denominador y se identifica un par seno–coseno amortiguado. Así, s² + 6s + 13 = (s + 3)² + 2² conduce a términos e<sup>−3t</sup>cos(2t) y e<sup>−3t</sup>sen(2t).</p>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 3.2 — inversión con polo real y par complejo</h4>
+            <p class="enunciado">G₁(s) = (s + 2)/(s³ + 7s² + 19s + 13), del taller 7.</p>
+            <ol>
+              <li><strong>Factorizar el denominador.</strong> s = −1 lo anula, así que s³ + 7s² + 19s + 13 = (s + 1)(s² + 6s + 13).</li>
+              <li><strong>Completar el cuadrado.</strong> s² + 6s + 13 = (s + 3)² + 2², es decir, polos en s = −3 ± j2.</li>
+              <li><strong>Descomponer.</strong>
+                <div class="ec">
+            \[ G_1(s) = \frac{A}{s + 1} + \frac{Bs + C}{(s + 3)^{2} + 4} \]
+          </div>
+              </li>
+              <li><strong>Hallar A.</strong> A = (s + 2)/(s² + 6s + 13) evaluado en s = −1: A = 1/8.</li>
+              <li><strong>Hallar B y C</strong> igualando coeficientes: B = −1/8 y C = 3/8.</li>
+              <li><strong>Reagrupar</strong> el numerador en términos de (s + 3): −⅛(s + 3) + ¾, para leer la tabla directamente.</li>
+            </ol>
+            <p class="resultado">g₁(t) = ⅛e<sup>−t</sup> − ⅛e<sup>−3t</sup>cos(2t) + ⅜e<sup>−3t</sup>sen(2t), &nbsp; t &gt; 0</p>
+          </div>
+
+          <div class="aviso">
+            <strong>Comprobación rápida.</strong> Evalúe el resultado en t = 0 y compárelo con el teorema del valor inicial: lím<sub>s→∞</sub> sG₁(s) = 0 y, en efecto, ⅛ − ⅛ = 0.
+          </div>
+        </section>
+
+        <section id="edo">
+          <h2><span class="num-seccion">3.5</span>Solución de ecuaciones diferenciales</h2>
+          <p>El procedimiento es siempre el mismo, y las condiciones iniciales entran solas por la propiedad de la derivada:</p>
+          <ol>
+            <li>Transformar término a término, arrastrando y(0⁻) y y′(0⁻).</li>
+            <li>Despejar Y(s) algebraicamente.</li>
+            <li>Separar la respuesta a entrada cero (condiciones iniciales) de la respuesta a estado cero (entrada).</li>
+            <li>Invertir por fracciones parciales.</li>
+            <li>Verificar con los teoremas de valor inicial y final.</li>
+          </ol>
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 3.3 — sistema de segundo orden ante escalón</h4>
+            <p class="enunciado">y″ + 12y′ + 32y = 32u(t), con y(0) = y′(0) = 0 (taller 7, punto 1a).</p>
+            <ol>
+              <li><strong>Transformar.</strong> (s² + 12s + 32)Y(s) = 32/s.</li>
+              <li><strong>Despejar y factorizar.</strong> Y(s) = 32 / [s(s + 4)(s + 8)].</li>
+              <li><strong>Fracciones parciales.</strong> A = 32/(4·8) = 1; B = 32/[(−4)(4)] = −2; C = 32/[(−8)(−4)] = 1.</li>
+              <li><strong>Invertir.</strong> y(t) = 1 − 2e<sup>−4t</sup> + e<sup>−8t</sup>.</li>
+              <li><strong>Verificar.</strong> Valor final: lím<sub>s→0</sub> sY(s) = 1, que coincide con el régimen permanente. Valor inicial: 1 − 2 + 1 = 0. ✔</li>
+            </ol>
+            <p class="resultado">y(t) = 1 − 2e<sup>−4t</sup> + e<sup>−8t</sup>, &nbsp; t &gt; 0. Sistema sobreamortiguado: dos polos reales, sin oscilación.</p>
+          </div>
+          <div class="aviso">
+            <strong>Entrada rampa.</strong> El punto 1b del mismo taller usa r(t), cuya transformada es 1/s². El procedimiento no cambia; solo aparece un polo doble en el origen, que produce un término lineal en la respuesta permanente.
+          </div>
+        </section>
+
+        <section id="transferencia">
+          <h2><span class="num-seccion">3.6</span>Función de transferencia y estabilidad</h2>
+          <div class="definicion">
+            <h4>Función de transferencia</h4>
+            <p>H(s) = Y(s)/X(s) con condiciones iniciales nulas. Es la Transformada de Laplace de la respuesta al impulso: los polos son las raíces del denominador y determinan la forma de la respuesta natural; los ceros, las del numerador, modulan su amplitud.</p>
+          </div>
+          <p>La correspondencia entre la posición de un polo y el comportamiento temporal es directa: parte real negativa ⇒ decaimiento; parte imaginaria distinta de cero ⇒ oscilación; parte real positiva ⇒ crecimiento sin límite. De ahí el criterio: <strong>un sistema causal es estable si y solo si todos sus polos tienen parte real negativa</strong>.</p>
+
+          <div class="lab">
+            <h3>Laboratorio · polos y respuesta al escalón</h3>
+            <p class="ayuda">Sistema de segundo orden H(s) = ω<sub>n</sub>² / (s² + 2ζω<sub>n</sub>s + ω<sub>n</sub>²). Cambia el amortiguamiento y la frecuencia natural para ver cómo se mueven los polos y cómo responde el sistema.</p>
+            <div class="controles">
+              <div class="control">
+                <label for="rng-zeta">Amortiguamiento ζ = <output id="out-zeta" for="rng-zeta">0.35</output></label>
+                <input type="range" id="rng-zeta" min="0.05" max="2" step="0.05" value="0.35">
+              </div>
+              <div class="control">
+                <label for="rng-wn">Frecuencia natural ω<sub>n</sub> = <output id="out-wn" for="rng-wn">4.0</output> rad/s</label>
+                <input type="range" id="rng-wn" min="1" max="10" step="0.5" value="4">
+              </div>
+            </div>
+            <div class="par">
+              <figure>
+                <figcaption>Plano s — polos (×)</figcaption>
+                <canvas id="g-plano-s" class="plano" width="420" height="420" role="img" aria-label="Plano complejo s con la ubicación de los dos polos del sistema."></canvas>
+              </figure>
+              <figure>
+                <figcaption>Respuesta al escalón unitario</figcaption>
+                <canvas id="g-escalon" width="480" height="270" role="img" aria-label="Gráfica de la respuesta del sistema a una entrada escalón unitario."></canvas>
+              </figure>
+            </div>
+            <p class="mono" id="ft-s">H(s) = …</p>
+            <p class="veredicto estable" id="vered-s">…</p>
+          </div>
+        </section>
+
+        <section id="transitoria">
+          <h2><span class="num-seccion">3.7</span>Respuesta transitoria de segundo orden</h2>
+          <p>El sistema de segundo orden normalizado concentra casi todo el vocabulario de diseño del curso. Con ζ y ω<sub>n</sub> se predicen, sin resolver la ecuación, los parámetros que se miden en el osciloscopio.</p>
+          <div class="ec">
+            \[ H(s) = \frac{\omega_n^{2}}{s^{2} + 2\zeta\omega_n s + \omega_n^{2}}
+            \quad\Longrightarrow\quad
+            s_{1,2} = -\zeta\omega_n \pm j\,\omega_n\sqrt{1 - \zeta^{2}} \]
+          </div>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Parámetros de la respuesta transitoria</caption>
+              <thead>
+                <tr><th>Parámetro</th><th class="mono">Expresión</th><th>Significado</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Frecuencia amortiguada</td><td class="mono">\( \omega _\{d\} = \omega _\{n\}\sqrt{1 - \zeta ^{2}} \)</td><td>Frecuencia real de la oscilación</td></tr>
+                <tr><td>Sobreimpulso</td><td class="mono">\( M_\{p\} = e^\{-\pi \zeta /\sqrt{1-\zeta ^{2}}\} \)</td><td>Pico máximo sobre el valor final</td></tr>
+                <tr><td>Tiempo de pico</td><td class="mono">\( t_\{p\} = \pi /\omega _\{d\} \)</td><td>Instante del máximo</td></tr>
+                <tr><td>Tiempo de establecimiento</td><td class="mono">\( t_\{s\} \approx 4/(\zeta \omega _\{n\}) \)</td><td>Criterio del 2 %</td></tr>
+                <tr><td>Tiempo de subida</td><td class="mono">\( t_\{r\} \approx (\pi - \arccos \zeta )/\omega _\{d\} \)</td><td>De 0 % a 100 % del valor final</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Regímenes según el amortiguamiento</caption>
+              <thead>
+                <tr><th class="mono">\( \zeta \)</th><th>Régimen</th><th>Polos</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mono">\( \zeta = 0 \)</td><td>No amortiguado</td><td>Imaginarios puros: oscila sin decaer</td></tr>
+                <tr><td class="mono">\( 0 &lt; \zeta &lt; 1 \)</td><td>Subamortiguado</td><td>Complejos conjugados: oscilación que decae</td></tr>
+                <tr><td class="mono">\( \zeta = 1 \)</td><td>Críticamente amortiguado</td><td>Real doble: el retorno más rápido sin sobreimpulso</td></tr>
+                <tr><td class="mono">\( \zeta &gt; 1 \)</td><td>Sobreamortiguado</td><td>Dos reales distintos: lento, sin oscilación</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="routh">
+          <h2><span class="num-seccion">3.8</span>Criterio de Routh-Hurwitz</h2>
+          <p>Cuando el denominador es de grado alto, no hace falta calcular las raíces para decidir la estabilidad: basta contar cambios de signo en la primera columna del arreglo de Routh.</p>
+          <div class="ec">
+            \[ D(s) = a_0 s^{n} + a_1 s^{\,n-1} + \dots + a_{n-1} s + a_n \]
+            <span class="nota">Condición necesaria: todos los coeficientes presentes y del mismo signo. Si falta uno o cambia de signo, el sistema ya es inestable.</span>
+          </div>
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 3.4 — arreglo de Routh</h4>
+            <p class="enunciado">D(s) = s³ + 7s² + 19s + 13, el denominador del taller 7.</p>
+            <ol>
+              <li>Primera fila (s³): 1, 19. Segunda fila (s²): 7, 13.</li>
+              <li>Fila s¹: (7·19 − 1·13)/7 = 120/7 ≈ 17.14.</li>
+              <li>Fila s⁰: 13.</li>
+              <li>Primera columna: 1, 7, 17.14, 13. Todos positivos, sin cambios de signo.</li>
+            </ol>
+            <p class="resultado">Cero raíces en el semiplano derecho: el sistema es estable. Coincide con las raíces halladas antes: −1 y −3 ± j2.</p>
+          </div>
+        </section>
+
+        <section id="circuitos">
+          <h2><span class="num-seccion">3.9</span>Circuitos en el dominio s</h2>
+          <p>No hace falta plantear la ecuación diferencial para obtener H(s): con condiciones iniciales nulas, cada elemento pasivo tiene una impedancia en s y el circuito se analiza con divisores de tensión y las leyes de Kirchhoff, exactamente igual que en corriente continua.</p>
+          <div class="ec">
+            \[ Z_R(s) = R \qquad\qquad Z_L(s) = sL \qquad\qquad Z_C(s) = \frac{1}{sC} \]
+            <span class="nota">Con condiciones iniciales no nulas se añade una fuente: Li(0⁻) en serie con la inductancia y v<sub>C</sub>(0⁻)/s en serie con el condensador.</span>
+          </div>
+
+          <h3>Filtros elementales</h3>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Funciones de transferencia de filtros básicos</caption>
+              <thead>
+                <tr><th>Circuito</th><th class="mono">\( H(s) \)</th><th>Tipo</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>RC, salida en C</td><td class="mono">\( 1/(RCs + 1) \)</td><td>Pasa-bajas, ω<sub>c</sub> = 1/RC</td></tr>
+                <tr><td>RC, salida en R</td><td class="mono">\( RCs/(RCs + 1) \)</td><td>Pasa-altas</td></tr>
+                <tr><td>RL, salida en R</td><td class="mono">\( R/(Ls + R) \)</td><td>Pasa-bajas, ω<sub>c</sub> = R/L</td></tr>
+                <tr><td>RLC serie, salida en R</td><td class="mono">\( (R/L)s / (s^{2} + (R/L)s + 1/LC) \)</td><td>Pasa-banda</td></tr>
+                <tr><td>RLC serie, salida en C</td><td class="mono">\( (1/LC) / (s^{2} + (R/L)s + 1/LC) \)</td><td>Pasa-bajas de 2.º orden</td></tr>
+                <tr><td>RLC serie, salida en L+C</td><td class="mono">\( (s^{2} + 1/LC) / (s^{2} + (R/L)s + 1/LC) \)</td><td>Rechaza-banda</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 3.5 — el RC pasa-bajas, verificado</h4>
+            <ol>
+              <li><strong>Divisor de tensión en s:</strong> H(s) = Z<sub>C</sub>/(Z<sub>R</sub> + Z<sub>C</sub>) = (1/sC)/(R + 1/sC) = 1/(RCs + 1).</li>
+              <li><strong>Polo:</strong> s = −1/RC, en el semiplano izquierdo: estable para cualquier R, C positivos.</li>
+              <li><strong>Comportamiento en frecuencia:</strong> |H(j0)| = 1 y |H(jω)| → 0 cuando ω → ∞. En ω = 1/RC la ganancia cae a 1/√2, es decir, −3 dB.</li>
+              <li><strong>Respuesta al escalón:</strong> Y(s) = 1/[s(RCs + 1)] ⟹ y(t) = 1 − e<sup>−t/RC</sup>, la carga clásica del condensador.</li>
+            </ol>
+            <p class="resultado">El circuito sí es pasa-bajas: el análisis lo demuestra en tres dominios —polos, frecuencia y tiempo— en lugar de suponerlo por su nombre.</p>
+          </div>
+
+          <p>Ese es exactamente el ejercicio de la <a href="docs/Practica_Final.pdf">práctica final</a>: tomar el esquemático de un filtro, obtener su ecuación diferencial y su función de transferencia, invertir para hallar la respuesta temporal y contrastarla con la simulación numérica para decidir si el circuito hace lo que su nombre promete.</p>
+        </section>
+
+        <section id="matlab">
+          <h2><span class="num-seccion">3.10</span>Laboratorio en MATLAB</h2>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">laplace_simbolico.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Transformada directa e inversa en forma simbólica</span>
+syms t s a w positive
+laplace(exp(-a*t))                 <span class="c">% 1/(s+a)</span>
+laplace(t*exp(-a*t))               <span class="c">% 1/(s+a)^2</span>
+laplace(sin(w*t))                  <span class="c">% w/(s^2+w^2)</span>
+
+G = (s + 2)/(s^3 + 7*s^2 + 19*s + 13);
+g = ilaplace(G);
+g = simplify(g)                    <span class="c">% respuesta temporal del taller 7</span>
+
+<span class="c">%% Fracciones parciales con residuos numéricos</span>
+[r, p, k] = residue([1 2], [1 7 19 13])
+<span class="c">% r: residuos | p: polos | k: término directo</span>
+
+<span class="c">%% Solución de la ecuación diferencial con condiciones iniciales</span>
+syms y(t)
+Dy  = diff(y, t);
+edo = diff(y, t, 2) + 12*Dy + 32*y == 32*heaviside(t);
+sol = dsolve(edo, y(0) == 0, Dy(0) == 0);
+sol = simplify(sol)                <span class="c">% 1 - 2*exp(-4*t) + exp(-8*t)</span></code></pre>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">analisis_sistema.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Análisis completo de una función de transferencia</span>
+H = tf([1 2], [1 7 19 13]);
+
+p = pole(H)
+z = zero(H)
+if all(real(p) &lt; 0)
+    disp('Sistema ESTABLE: todos los polos en el semiplano izquierdo')
+else
+    disp('Sistema INESTABLE')
+end
+
+figure
+subplot(2,2,1), pzmap(H),   title('Polos y ceros'), grid on
+subplot(2,2,2), impulse(H), title('Respuesta al impulso'), grid on
+subplot(2,2,3), step(H),    title('Respuesta al escalón'), grid on
+subplot(2,2,4), bode(H),    title('Respuesta en frecuencia'), grid on
+
+<span class="c">%% Parámetros de la respuesta transitoria</span>
+info = stepinfo(H);
+fprintf('Sobreimpulso: %.2f %%\n', info.Overshoot)
+fprintf('Tiempo de establecimiento: %.3f s\n', info.SettlingTime)
+fprintf('Tiempo de subida: %.3f s\n', info.RiseTime)</code></pre>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">filtro_practica_final.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Verificación de un filtro RC pasa-bajas (guion de la práctica final)</span>
+R = 1e3;  C = 1e-6;                 <span class="c">% componentes del esquemático</span>
+wc = 1/(R*C);
+fprintf('Frecuencia de corte: %.2f rad/s (%.2f Hz)\n', wc, wc/(2*pi))
+
+<span class="c">% 1. Modelo simbólico a partir del divisor de tensión</span>
+syms s t
+Hs = (1/(s*C)) / (R + 1/(s*C));
+Hs = simplify(Hs)
+
+<span class="c">% 2. Respuesta temporal analítica ante escalón</span>
+y_escalon = ilaplace(Hs/s, s, t);
+y_escalon = simplify(y_escalon)     <span class="c">% 1 - exp(-t/(R*C))</span>
+
+<span class="c">% 3. Modelo numérico y simulación ante impulso, escalón y rampa</span>
+H = tf(1, [R*C 1]);
+t_sim = 0:1e-5:5e-3;
+
+figure
+subplot(1,3,1), impulse(H, t_sim), grid on, title('Impulso')
+subplot(1,3,2), step(H, t_sim),    grid on, title('Escalón')
+subplot(1,3,3), lsim(H, t_sim, t_sim), grid on, title('Rampa')
+
+<span class="c">% 4. Contraste simbólico-numérico: el error debe ser despreciable</span>
+y_num = step(H, t_sim);
+y_sym = double(subs(y_escalon, t, t_sim));
+fprintf('Error máximo simbólico-numérico: %.2e\n', max(abs(y_num(:) - y_sym(:))))
+
+<span class="c">% 5. Confirmación del tipo de filtro por su respuesta en frecuencia</span>
+figure, bode(H), grid on, title('|H(j\omega)|: cae 20 dB/década -> pasa-bajas')</code></pre>
+          </div>
+
+          <h3>Material de la unidad</h3>
+          <ul>
+            <li><a href="docs/taller_07.pdf">Taller 7 — Transformada de Laplace</a></li>
+            <li><a href="docs/taller_08.pdf">Taller 8 — Modelado de sistemas: circuitos derivador, integrador y PID</a></li>
+            <li><a href="docs/Quiz_tercer_corte.pdf">Quiz del tercer corte — topologías de filtros pasivos</a></li>
+            <li><a href="docs/Practica_Final.pdf">Práctica final — verificación de un filtro real</a></li>
+          </ul>
+        </section>
+
+        <nav class="paginacion" aria-label="Navegación entre unidades">
+          <a href="unidad-2.html"><small>Unidad anterior</small>2. Sistemas LTI y convolución</a>
+          <a class="siguiente" href="unidad-4.html"><small>Siguiente unidad</small>4. Transformada Z</a>
+        </nav>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer class="pie">
+  <div class="shell">
+    <div>
+      <h2>El curso</h2>
+      <p>Señales y Sistemas</p>
+      <p>Programa de Ingeniería Electrónica</p>
+      <p>Requisitos: Variable Compleja y Ecuaciones Diferenciales</p>
+    </div>
+    <div>
+      <h2>Unidades</h2>
+      <ul>
+        <li><a href="unidad-1.html">1. Fundamentos sobre sistemas</a></li>
+        <li><a href="unidad-2.html">2. Sistemas LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Transformada de Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Material</h2>
+      <ul>
+        <li><a href="matlab.html">Guía de MATLAB</a></li>
+        <li><a href="formulario.html">Formulario y tablas</a></li>
+        <li><a href="talleres.html">Talleres y prácticas</a></li>
+        <li><a href="programa.html">Programa del curso</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Universidad</h2>
+      <ul>
+        <li><a href="https://www.usco.edu.co/">Universidad Surcolombiana</a></li>
+        <li><a href="https://www.usco.edu.co/imagen-institucional/">Identidad e imagen institucional</a></li>
+      </ul>
+      <p>Vigilada Mineducación</p>
+    </div>
+  </div>
+  <div class="pie-legal">
+    <div class="shell">
+      Universidad Surcolombiana · Facultad de Ingeniería · Programa de Ingeniería Electrónica.
+      El logotipo institucional corresponde al archivo oficial publicado en
+      usco.edu.co/imagen-institucional y se emplea sin modificaciones, conforme al Manual de Identidad e Imagen Institucional
+      (Acuerdo 046 de 2016 del CSU) y a la Circular N.º 2 de 2026.
+    </div>
+  </div>
+</footer>
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']]
+  },
+  svg: { fontCache: 'global', scale: 1.02 },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+document.documentElement.className += ' math-pendiente';
+</script>
+<script id="MathJax-script" src="js/tex-svg.js"></script>
+<script src="js/indice.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Formulario del curso Señales y Sistemas: señales básicas, energía y potencia, convolución, tablas de Transformada de Laplace y Z, correspondencia entre planos, impedancias y reglas de diagramas de bloques.">
+<title>Formulario del curso</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<a class="saltar" href="#principal">Saltar al contenido</a>
+
+<div class="franja">
+  <div class="shell">
+    <span>Facultad de Ingeniería</span>
+    <span>Programa de Ingeniería Electrónica</span>
+    <span class="sede">Neiva, Huila</span>
+  </div>
+</div>
+
+<header class="cabecera">
+  <div class="shell">
+    <a class="marca" href="index.html">
+      <img src="img/universidad-surcolombiana.png" alt="Universidad Surcolombiana" width="347" height="90">
+      <span class="curso">Señales y Sistemas<small>Ingeniería Electrónica</small></span>
+    </a>
+    <form class="buscador" role="search" onsubmit="return false">
+      <label class="sr-only" for="q">Buscar en el sitio</label>
+      <input type="search" id="q" placeholder="Buscar un tema…" autocomplete="off" aria-describedby="q-ayuda">
+      <span class="sr-only" id="q-ayuda">Escribe para buscar entre las secciones del sitio</span>
+      <div class="resultados" id="resultados" hidden></div>
+    </form>
+    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="nav-principal">Menú</button>
+    <nav class="nav" id="nav-principal" aria-label="Navegación principal">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="unidad-1.html">1. Fundamentos</a></li>
+        <li><a href="unidad-2.html">2. LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+        <li><a href="matlab.html">MATLAB</a></li>
+        <li><a href="formulario.html" aria-current="page">Formulario</a></li>
+        <li><a href="talleres.html">Talleres</a></li>
+        <li><a href="programa.html">Programa</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="principal">
+
+  <div class="unidad-portada">
+    <div class="shell">
+      <p class="miga"><a href="index.html">Inicio</a> › Formulario</p>
+      <p class="etiqueta">Material de consulta rápida</p>
+      <h1>Formulario del curso</h1>
+      <p>Todas las definiciones, tablas y reglas de las cuatro unidades en una sola página, pensada para consultar durante los talleres y para imprimir antes de una evaluación escrita.</p>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="disposicion">
+
+      <aside class="rail">
+        <h2>Contenido</h2>
+        <ol>
+          <li><a href="#notacion">F.1 Notación</a></li>
+          <li><a href="#senales">F.2 Señales básicas</a></li>
+          <li><a href="#medidas">F.3 Energía, potencia y simetría</a></li>
+          <li><a href="#sistemas">F.4 Propiedades de sistemas</a></li>
+          <li><a href="#convolucion">F.5 Convolución</a></li>
+          <li><a href="#laplace">F.6 Transformada de Laplace</a></li>
+          <li><a href="#zeta">F.7 Transformada Z</a></li>
+          <li><a href="#planos">F.8 Correspondencia s ↔ z</a></li>
+          <li><a href="#segundo">F.9 Sistema de segundo orden</a></li>
+          <li><a href="#circuitos">F.10 Circuitos y bloques</a></li>
+        </ol>
+      </aside>
+
+      <article class="articulo">
+
+        <section id="notacion">
+          <h2><span class="num-seccion">F.1</span>Notación</h2>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Símbolos empleados en el curso</caption>
+              <thead>
+                <tr><th class="mono">Símbolo</th><th>Significado</th><th>Unidad</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mono">\( x(t), x[n] \)</td><td>Señal en tiempo continuo y en tiempo discreto</td><td>—</td></tr>
+                <tr><td class="mono">\( h(t), h[n] \)</td><td>Respuesta al impulso del sistema</td><td>—</td></tr>
+                <tr><td class="mono">\( \delta , u, r \)</td><td>Impulso, escalón y rampa unitarios</td><td>—</td></tr>
+                <tr><td class="mono">\( \omega , \Omega \)</td><td>Frecuencia angular continua y discreta</td><td>rad/s · rad</td></tr>
+                <tr><td class="mono">\( T_{0}, N \)</td><td>Periodo fundamental continuo y discreto</td><td>s · muestras</td></tr>
+                <tr><td class="mono">\( T, f_\{s\} \)</td><td>Periodo y frecuencia de muestreo</td><td>s · Hz</td></tr>
+                <tr><td class="mono">\( s = \sigma + j\omega \)</td><td>Variable compleja de Laplace</td><td>1/s</td></tr>
+                <tr><td class="mono">\( z = re^\{j\Omega \} \)</td><td>Variable compleja de la Transformada Z</td><td>—</td></tr>
+                <tr><td class="mono">\( \zeta , \omega _\{n\} \)</td><td>Amortiguamiento y frecuencia natural</td><td>— · rad/s</td></tr>
+                <tr><td class="mono">\( \ast \)</td><td>Operador de convolución</td><td>—</td></tr>
+                <tr><td class="mono">ROC</td><td>Región de convergencia</td><td>—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="senales">
+          <h2><span class="num-seccion">F.2</span>Señales básicas</h2>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Señales elementales</caption>
+              <thead>
+                <tr><th>Señal</th><th class="mono">Continua</th><th class="mono">Discreta</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Impulso</td><td class="mono">\( \delta (t) \)</td><td class="mono">\( \delta [n] \)</td></tr>
+                <tr><td>Escalón</td><td class="mono">\( u(t) \)</td><td class="mono">\( u[n] \)</td></tr>
+                <tr><td>Rampa</td><td class="mono">\( r(t) = t \cdot u(t) \)</td><td class="mono">\( r[n] = n \cdot u[n] \)</td></tr>
+                <tr><td>Exponencial</td><td class="mono">\( Ce^\{at\} \)</td><td class="mono">\( Ca^{n} \)</td></tr>
+                <tr><td>Senoidal</td><td class="mono">\( A \cos(\omega _{0}t + \varphi ) \)</td><td class="mono">\( A \cos(\Omega _{0}n + \varphi ) \)</td></tr>
+                <tr><td>Pulso</td><td class="mono">\( u(t) - u(t - \tau ) \)</td><td class="mono">\( u[n] - u[n - N] \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="ec">
+            \[ \begin{aligned}
+            \text{Relaciones:}\quad &amp; \delta(t) = \frac{d\,u(t)}{dt} \quad\cdot\quad
+            u(t) = \int_{-\infty}^{t}\delta(\tau)\,d\tau \quad\cdot\quad
+            r(t) = \int_{-\infty}^{t} u(\tau)\,d\tau \\
+            \text{Muestreo:}\quad &amp; \int_{-\infty}^{\infty} x(t)\,\delta(t - t_0)\,dt = x(t_0) \quad\cdot\quad
+            x[n] = \sum_{k} x[k]\,\delta[n-k] \\
+            \text{Euler:}\quad &amp; e^{j\theta} = \cos\theta + j\,\operatorname{sen}\theta
+            \end{aligned} \]
+          </div>
+          <div class="definicion">
+            <h4>Periodicidad</h4>
+            <p>Continua: T₀ = 2π/ω₀, siempre periódica. Discreta: periódica solo si Ω₀/2π es racional; entonces N = m·(2π/Ω₀) con el menor entero m que hace N entero.</p>
+          </div>
+        </section>
+
+        <section id="medidas">
+          <h2><span class="num-seccion">F.3</span>Energía, potencia y simetría</h2>
+          <div class="ec">
+            \[ \begin{aligned}
+            E &amp;= \int_{-\infty}^{\infty}|x(t)|^{2}dt
+            &amp;\qquad P &amp;= \lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{T}|x(t)|^{2}dt \\
+            E &amp;= \sum_{n=-\infty}^{\infty}|x[n]|^{2}
+            &amp;\qquad P &amp;= \lim_{N\to\infty}\frac{1}{2N+1}\sum_{n=-N}^{N}|x[n]|^{2} \\
+            \text{Periódica:}\quad P &amp;= \frac{1}{T_0}\int_{T_0}|x(t)|^{2}dt
+            &amp;\qquad &amp; \Longrightarrow\ \ \text{amplitud } A:\ P = \frac{A^{2}}{2} \\
+            x_p &amp;= \tfrac{1}{2}\big[x(t) + x(-t)\big]
+            &amp;\qquad x_i &amp;= \tfrac{1}{2}\big[x(t) - x(-t)\big]
+            \end{aligned} \]
+          </div>
+        </section>
+
+        <section id="sistemas">
+          <h2><span class="num-seccion">F.4</span>Propiedades de sistemas</h2>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Propiedades de sistemas y su condición</caption>
+              <thead>
+                <tr><th>Propiedad</th><th>Condición general</th><th>Para un sistema LTI</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Linealidad</td><td class="mono">\( T\{ax_{1}+bx_{2}\} = aT\{x_{1}\}+bT\{x_{2}\} \)</td><td>Por definición</td></tr>
+                <tr><td>Invarianza</td><td class="mono">\( x(t-t_{0}) \to y(t-t_{0}) \)</td><td>Por definición</td></tr>
+                <tr><td>Sin memoria</td><td>y(t) depende solo de x(t)</td><td class="mono">\( h(t) = k\delta (t) \)</td></tr>
+                <tr><td>Causalidad</td><td>y(t₀) no depende del futuro</td><td class="mono">\( h(t) = 0, t &lt; 0 \)</td></tr>
+                <tr><td>Estabilidad BIBO</td><td>|x| ≤ M ⟹ |y| ≤ K</td><td class="mono">\( \int |h| &lt; \infty \cdot \sum |h| &lt; \infty \)</td></tr>
+                <tr><td>Invertibilidad</td><td>Entradas distintas → salidas distintas</td><td class="mono">\( h \ast h_\{inv\} = \delta \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="convolucion">
+          <h2><span class="num-seccion">F.5</span>Convolución</h2>
+          <div class="ec">
+            \[ y[n] = \sum_{k=-\infty}^{\infty} x[k]\,h[n-k]
+            \qquad\qquad
+            y(t) = \int_{-\infty}^{\infty} x(\tau)\,h(t-\tau)\,d\tau \]
+            <span class="nota">Pasos: reflejar · desplazar · multiplicar · sumar (o integrar) sobre la zona de solapamiento.</span>
+          </div>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Propiedades de la convolución</caption>
+              <thead>
+                <tr><th>Propiedad</th><th class="mono">Expresión</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Conmutativa</td><td class="mono">\( x \ast h = h \ast x \)</td></tr>
+                <tr><td>Asociativa (cascada)</td><td class="mono">\( (x \ast h_{1}) \ast h_{2} = x \ast (h_{1} \ast h_{2}) \)</td></tr>
+                <tr><td>Distributiva (paralelo)</td><td class="mono">\( x \ast (h_{1} + h_{2}) = x \ast h_{1} + x \ast h_{2} \)</td></tr>
+                <tr><td>Identidad</td><td class="mono">\( x \ast \delta = x \)</td></tr>
+                <tr><td>Desplazamiento</td><td class="mono">\( x(t) \ast \delta (t - t_{0}) = x(t - t_{0}) \)</td></tr>
+                <tr><td>Longitud</td><td class="mono">\( L_\{y\} = L_\{x\} + L_\{h\} - 1 \)</td></tr>
+                <tr><td>Índices</td><td class="mono">\( n_\{y,inicio\} = n_\{x,inicio\} + n_\{h,inicio\} \)</td></tr>
+                <tr><td>Suma total</td><td class="mono">\( \sum y = (\sum x)(\sum h) \)</td></tr>
+                <tr><td>Respuesta al escalón</td><td class="mono">\( s(t) = \int h \cdot h(t) = ds/dt \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="laplace">
+          <h2><span class="num-seccion">F.6</span>Transformada de Laplace</h2>
+          <div class="ec">
+            \[ X(s) = \int_{0^{-}}^{\infty} x(t)\,e^{-st}\,dt \quad\cdot\quad
+            x(0^{+}) = \lim_{s\to\infty} sX(s) \quad\cdot\quad
+            x(\infty) = \lim_{s\to 0} sX(s) \]
+          </div>
+
+          <h3>Pares</h3>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Tabla de pares de la Transformada de Laplace</caption>
+              <thead>
+                <tr><th class="mono">\( x(t), \ t \ge 0 \)</th><th class="mono">\( X(s) \)</th><th class="mono">ROC</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mono">\( \delta (t) \)</td><td class="mono">\( 1 \)</td><td class="mono">\( \text\{todo \} s \)</td></tr>
+                <tr><td class="mono">\( \delta (t - t_{0}) \)</td><td class="mono">\( e^\{-st_{0}\} \)</td><td class="mono">\( \text\{todo \} s \)</td></tr>
+                <tr><td class="mono">\( u(t) \)</td><td class="mono">\( 1/s \)</td><td class="mono">\( \sigma &gt; 0 \)</td></tr>
+                <tr><td class="mono">\( t \)</td><td class="mono">\( 1/s^{2} \)</td><td class="mono">\( \sigma &gt; 0 \)</td></tr>
+                <tr><td class="mono">\( t^{n} \)</td><td class="mono">\( n!/s^\{n+1\} \)</td><td class="mono">\( \sigma &gt; 0 \)</td></tr>
+                <tr><td class="mono">\( e^\{-at\} \)</td><td class="mono">\( 1/(s+a) \)</td><td class="mono">\( \sigma &gt; -a \)</td></tr>
+                <tr><td class="mono">\( te^\{-at\} \)</td><td class="mono">\( 1/(s+a)^{2} \)</td><td class="mono">\( \sigma &gt; -a \)</td></tr>
+                <tr><td class="mono">\( t^\{n\}e^\{-at\} \)</td><td class="mono">\( n!/(s+a)^\{n+1\} \)</td><td class="mono">\( \sigma &gt; -a \)</td></tr>
+                <tr><td class="mono">\( \operatorname{sen} \omega _{0}t \)</td><td class="mono">\( \omega _{0}/(s^{2}+\omega _{0}^{2}) \)</td><td class="mono">\( \sigma &gt; 0 \)</td></tr>
+                <tr><td class="mono">\( \cos \omega _{0}t \)</td><td class="mono">\( s/(s^{2}+\omega _{0}^{2}) \)</td><td class="mono">\( \sigma &gt; 0 \)</td></tr>
+                <tr><td class="mono">\( e^\{-at\}\operatorname{sen} \omega _{0}t \)</td><td class="mono">\( \omega _{0}/[(s+a)^{2}+\omega _{0}^{2}] \)</td><td class="mono">\( \sigma &gt; -a \)</td></tr>
+                <tr><td class="mono">\( e^\{-at\}\cos \omega _{0}t \)</td><td class="mono">\( (s+a)/[(s+a)^{2}+\omega _{0}^{2}] \)</td><td class="mono">\( \sigma &gt; -a \)</td></tr>
+                <tr><td class="mono">\( 1 - e^\{-at\} \)</td><td class="mono">\( a/[s(s+a)] \)</td><td class="mono">\( \sigma &gt; 0 \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Propiedades</h3>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Propiedades de la Transformada de Laplace</caption>
+              <thead>
+                <tr><th class="mono">\( x(t) \)</th><th class="mono">\( X(s) \)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mono">\( ax_{1} + bx_{2} \)</td><td class="mono">\( aX_{1} + bX_{2} \)</td></tr>
+                <tr><td class="mono">\( x(t - t_{0})u(t - t_{0}) \)</td><td class="mono">\( e^\{-st_{0}\}X(s) \)</td></tr>
+                <tr><td class="mono">\( e^\{at\}x(t) \)</td><td class="mono">\( X(s - a) \)</td></tr>
+                <tr><td class="mono">\( x(at), \ a &gt; 0 \)</td><td class="mono">\( (1/a)X(s/a) \)</td></tr>
+                <tr><td class="mono">\( dx/dt \)</td><td class="mono">\( sX(s) - x(0^{-}) \)</td></tr>
+                <tr><td class="mono">\( d^{2}x/dt^{2} \)</td><td class="mono">\( s^{2}X(s) - sx(0^{-}) - x'(0^{-}) \)</td></tr>
+                <tr><td class="mono">\( \int _{0}^{t}x \)</td><td class="mono">\( X(s)/s \)</td></tr>
+                <tr><td class="mono">\( tx(t) \)</td><td class="mono">\( -dX/ds \)</td></tr>
+                <tr><td class="mono">\( x \ast h \)</td><td class="mono">\( X(s)H(s) \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="definicion">
+            <h4>Fracciones parciales</h4>
+            <p><strong>Polo simple:</strong> A<sub>k</sub> = [(s + p<sub>k</sub>)X(s)]|<sub>s = −p<sub>k</sub></sub> → A<sub>k</sub>e<sup>−p<sub>k</sub>t</sup>.<br>
+            <strong>Polo doble:</strong> A₂ = [(s+p)²X]|<sub>−p</sub> y A₁ = d/ds[(s+p)²X]|<sub>−p</sub> → (A₁ + A₂t)e<sup>−pt</sup>.<br>
+            <strong>Par complejo:</strong> completar el cuadrado, (s + a)² + ω², y escribir el numerador en términos de (s + a) y de ω.</p>
+          </div>
+        </section>
+
+        <section id="zeta">
+          <h2><span class="num-seccion">F.7</span>Transformada Z</h2>
+          <div class="ec">
+            \[ X(z) = \sum_{n=0}^{\infty} x[n]\,z^{-n} \quad\cdot\quad
+            x[0] = \lim_{z\to\infty} X(z) \quad\cdot\quad
+            x[\infty] = \lim_{z\to 1} (z-1)X(z) \]
+          </div>
+
+          <h3>Pares</h3>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Tabla de pares de la Transformada Z</caption>
+              <thead>
+                <tr><th class="mono">\( x[n], \ n \ge 0 \)</th><th class="mono">\( X(z) \)</th><th class="mono">ROC</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mono">\( \delta [n] \)</td><td class="mono">\( 1 \)</td><td class="mono">\( \text\{todo \} z \)</td></tr>
+                <tr><td class="mono">\( \delta [n - m] \)</td><td class="mono">\( z^\{-m\} \)</td><td class="mono">\( z \ne 0 \)</td></tr>
+                <tr><td class="mono">\( u[n] \)</td><td class="mono">\( z/(z - 1) \)</td><td class="mono">\( |z| &gt; 1 \)</td></tr>
+                <tr><td class="mono">\( a^{n} \)</td><td class="mono">\( z/(z - a) \)</td><td class="mono">\( |z| &gt; |a| \)</td></tr>
+                <tr><td class="mono">\( n \)</td><td class="mono">\( z/(z - 1)^{2} \)</td><td class="mono">\( |z| &gt; 1 \)</td></tr>
+                <tr><td class="mono">\( n^{2} \)</td><td class="mono">\( z(z + 1)/(z - 1)^{3} \)</td><td class="mono">\( |z| &gt; 1 \)</td></tr>
+                <tr><td class="mono">\( na^{n} \)</td><td class="mono">\( az/(z - a)^{2} \)</td><td class="mono">\( |z| &gt; |a| \)</td></tr>
+                <tr><td class="mono">\( \cos \Omega _{0}n \)</td><td class="mono">\( z(z - \cos\Omega _{0})/(z^{2} - 2zcos\Omega _{0} + 1) \)</td><td class="mono">\( |z| &gt; 1 \)</td></tr>
+                <tr><td class="mono">\( \operatorname{sen} \Omega _{0}n \)</td><td class="mono">\( z \operatorname{sen}\Omega _{0}/(z^{2} - 2zcos\Omega _{0} + 1) \)</td><td class="mono">\( |z| &gt; 1 \)</td></tr>
+                <tr><td class="mono">\( a^{n}\cos \Omega _{0}n \)</td><td class="mono">\( z(z - acos\Omega _{0})/(z^{2} - 2azcos\Omega _{0} + a^{2}) \)</td><td class="mono">\( |z| &gt; |a| \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Propiedades</h3>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Propiedades de la Transformada Z</caption>
+              <thead>
+                <tr><th class="mono">\( x[n] \)</th><th class="mono">\( X(z) \)</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mono">\( ax_{1} + bx_{2} \)</td><td class="mono">\( aX_{1} + bX_{2} \)</td></tr>
+                <tr><td class="mono">\( x[n - n_{0}] \)</td><td class="mono">\( z^\{-n_{0}\}X(z) \)</td></tr>
+                <tr><td class="mono">\( a^{n}x[n] \)</td><td class="mono">\( X(z/a) \)</td></tr>
+                <tr><td class="mono">\( x[-n] \)</td><td class="mono">\( X(1/z) \)</td></tr>
+                <tr><td class="mono">\( nx[n] \)</td><td class="mono">\( -z dX/dz \)</td></tr>
+                <tr><td class="mono">\( x \ast h \)</td><td class="mono">\( X(z)H(z) \)</td></tr>
+                <tr><td class="mono">\( \sum _\{k \le n\}x[k] \)</td><td class="mono">\( zX(z)/(z - 1) \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="aviso">
+            <strong>Regla de oro.</strong> Para invertir, descomponer <span class="mono">X(z)/z</span> en fracciones parciales y multiplicar cada término por z al final: así aparecen las formas z/(z − a) que están en la tabla.
+          </div>
+        </section>
+
+        <section id="planos">
+          <h2><span class="num-seccion">F.8</span>Correspondencia entre el plano s y el plano z</h2>
+          <div class="ec">
+            \[ z = e^{sT} \quad\cdot\quad \Omega = \omega T = 2\pi\,\frac{f}{f_s}
+            \quad\cdot\quad \text{Nyquist:}\ \ f_s &gt; 2f_{\max} \]
+          </div>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Equivalencias entre dominios continuo y discreto</caption>
+              <thead>
+                <tr><th>Concepto</th><th>Continuo</th><th>Discreto</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Variable</td><td class="mono">\( s = \sigma + j\omega \)</td><td class="mono">\( z = re^\{j\Omega \} \)</td></tr>
+                <tr><td>Región estable</td><td class="mono">\( \operatorname{Re}\{s\} &lt; 0 \)</td><td class="mono">\( |z| &lt; 1 \)</td></tr>
+                <tr><td>Frontera</td><td class="mono">eje jω</td><td class="mono">círculo unitario</td></tr>
+                <tr><td>Respuesta en frecuencia</td><td class="mono">\( H(j\omega ) \)</td><td class="mono">\( H(e^\{j\Omega \}) \)</td></tr>
+                <tr><td>Integrador / acumulador</td><td class="mono">\( 1/s \)</td><td class="mono">\( z/(z - 1) \)</td></tr>
+                <tr><td>Retardo</td><td class="mono">\( e^\{-st_{0}\} \)</td><td class="mono">\( z^\{-n_{0}\} \)</td></tr>
+                <tr><td>Modelo del sistema</td><td>Ecuación diferencial</td><td>Ecuación de diferencias</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="segundo">
+          <h2><span class="num-seccion">F.9</span>Sistema de segundo orden</h2>
+          <div class="ec">
+            \[ H(s) = \frac{\omega_n^{2}}{s^{2} + 2\zeta\omega_n s + \omega_n^{2}}
+            \quad\cdot\quad
+            s_{1,2} = -\zeta\omega_n \pm j\,\omega_n\sqrt{1 - \zeta^{2}} \]
+          </div>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Parámetros de la respuesta transitoria</caption>
+              <thead>
+                <tr><th>Parámetro</th><th class="mono">Fórmula</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Frecuencia amortiguada</td><td class="mono">\( \omega _\{d\} = \omega _\{n\}\sqrt{1 - \zeta ^{2}} \)</td></tr>
+                <tr><td>Sobreimpulso</td><td class="mono">\( M_\{p\} = e^\{-\pi \zeta /\sqrt{1-\zeta ^{2}}\} \)</td></tr>
+                <tr><td>Tiempo de pico</td><td class="mono">\( t_\{p\} = \pi /\omega _\{d\} \)</td></tr>
+                <tr><td>Tiempo de establecimiento (2 %)</td><td class="mono">\( t_\{s\} \approx 4/(\zeta \omega _\{n\}) \)</td></tr>
+                <tr><td>Tiempo de subida</td><td class="mono">\( t_\{r\} \approx (\pi - \arccos \zeta )/\omega _\{d\} \)</td></tr>
+                <tr><td>Factor de calidad</td><td class="mono">\( Q = 1/(2\zeta ) \)</td></tr>
+                <tr><td>Ancho de banda (pasa-banda)</td><td class="mono">\( BW = \omega _\{n\}/Q = 2\zeta \omega _\{n\} \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="circuitos">
+          <h2><span class="num-seccion">F.10</span>Circuitos y diagramas de bloques</h2>
+          <div class="ec">
+            \[ Z_R = R \quad\cdot\quad Z_L = sL \quad\cdot\quad Z_C = \frac{1}{sC} \]
+            <span class="nota">Con condiciones iniciales: fuente Li(0⁻) en serie con L y v<sub>C</sub>(0⁻)/s en serie con C.</span>
+          </div>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Funciones de transferencia de filtros y reglas de bloques</caption>
+              <thead>
+                <tr><th>Elemento</th><th class="mono">Expresión</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>RC pasa-bajas</td><td class="mono">\( 1/(RCs + 1), \omega _\{c\} = 1/RC \)</td></tr>
+                <tr><td>RC pasa-altas</td><td class="mono">\( RCs/(RCs + 1) \)</td></tr>
+                <tr><td>RLC pasa-banda (salida en R)</td><td class="mono">\( (R/L)s/(s^{2} + (R/L)s + 1/LC) \)</td></tr>
+                <tr><td>RLC pasa-bajas (salida en C)</td><td class="mono">\( (1/LC)/(s^{2} + (R/L)s + 1/LC) \)</td></tr>
+                <tr><td>Frecuencia de resonancia</td><td class="mono">\( \omega _{0} = 1/\sqrt{LC} \)</td></tr>
+                <tr><td>Bloques en serie</td><td class="mono">\( G_{1}G_{2} \)</td></tr>
+                <tr><td>Bloques en paralelo</td><td class="mono">\( G_{1} \pm G_{2} \)</td></tr>
+                <tr><td>Realimentación negativa</td><td class="mono">\( G/(1 + GH) \)</td></tr>
+                <tr><td>Realimentación positiva</td><td class="mono">\( G/(1 - GH) \)</td></tr>
+                <tr><td>Ecuación característica</td><td class="mono">\( 1 + G(s)H(s) = 0 \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>El desarrollo de cada fórmula está en su unidad: <a href="unidad-1.html">fundamentos</a>, <a href="unidad-2.html">convolución y bloques</a>, <a href="unidad-3.html">Laplace</a> y <a href="unidad-4.html">Transformada Z</a>.</p>
+        </section>
+
+        <nav class="paginacion" aria-label="Navegación del sitio">
+          <a href="matlab.html"><small>Anterior</small>Guía de MATLAB</a>
+          <a class="siguiente" href="talleres.html"><small>Siguiente</small>Talleres y prácticas</a>
+        </nav>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer class="pie">
+  <div class="shell">
+    <div>
+      <h2>El curso</h2>
+      <p>Señales y Sistemas</p>
+      <p>Programa de Ingeniería Electrónica</p>
+      <p>Requisitos: Variable Compleja y Ecuaciones Diferenciales</p>
+    </div>
+    <div>
+      <h2>Unidades</h2>
+      <ul>
+        <li><a href="unidad-1.html">1. Fundamentos sobre sistemas</a></li>
+        <li><a href="unidad-2.html">2. Sistemas LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Transformada de Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Material</h2>
+      <ul>
+        <li><a href="matlab.html">Guía de MATLAB</a></li>
+        <li><a href="formulario.html">Formulario y tablas</a></li>
+        <li><a href="talleres.html">Talleres y prácticas</a></li>
+        <li><a href="programa.html">Programa del curso</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Universidad</h2>
+      <ul>
+        <li><a href="https://www.usco.edu.co/">Universidad Surcolombiana</a></li>
+        <li><a href="https://www.usco.edu.co/imagen-institucional/">Identidad e imagen institucional</a></li>
+      </ul>
+      <p>Vigilada Mineducación</p>
+    </div>
+  </div>
+  <div class="pie-legal">
+    <div class="shell">
+      Universidad Surcolombiana · Facultad de Ingeniería · Programa de Ingeniería Electrónica.
+      El logotipo institucional corresponde al archivo oficial publicado en
+      usco.edu.co/imagen-institucional y se emplea sin modificaciones, conforme al Manual de Identidad e Imagen Institucional
+      (Acuerdo 046 de 2016 del CSU) y a la Circular N.º 2 de 2026.
+    </div>
+  </div>
+</footer>
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']]
+  },
+  svg: { fontCache: 'global', scale: 1.02 },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+document.documentElement.className += ' math-pendiente';
+</script>
+<script id="MathJax-script" src="js/tex-svg.js"></script>
+<script src="js/indice.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

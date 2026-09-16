@@ -1,0 +1,51 @@
+SITIO WEB PUBLICADO — SEÑALES Y SISTEMAS (BEINEL021)
+Programa de Ingeniería Electrónica · Universidad Surcolombiana
+
+DIRECCIÓN WEB (URL) DEL SITIO PUBLICADO
+---------------------------------------
+https://claude.ai/artifact/VWTMMMQkFAboroy9jGC4bv
+
+El sitio está alojado como página publicada (hosting de Anthropic Artifacts) y
+es accesible desde cualquier navegador mediante esa dirección. Si la página
+aparece como privada, se habilita el acceso público desde el menú "Compartir"
+de la propia página publicada.
+
+PÁGINAS DEL SITIO (9)
+---------------------
+index.html        Inicio: presentación, mapa de contenidos y unidades
+unidad-1.html     Unidad 1 · Fundamentos sobre sistemas
+unidad-2.html     Unidad 2 · Sistemas LTI y convolución
+unidad-3.html     Unidad 3 · Transformada de Laplace
+unidad-4.html     Unidad 4 · Transformada Z
+matlab.html       Guía de MATLAB: guiones por tema, listos para ejecutar
+formulario.html   Formulario y tablas de consulta rápida
+talleres.html     Talleres, quiz y práctica final (documentos PDF)
+programa.html     Microdiseño curricular completo
+
+IDENTIDAD INSTITUCIONAL
+-----------------------
+El diseño aplica el Manual de Identidad e Imagen Institucional (Acuerdo 046 de
+2016 del CSU) y la Circular N.º 2 de 2026:
+ · Colores oficiales: vinotinto #8F141B, ocre #DFD4A6 / #C7B363,
+   gris #4D626C / #1E262B.
+ · Logotipo: archivos oficiales descargados de
+   usco.edu.co/imagen-institucional/logo/, sin modificación alguna. Aparece
+   una sola vez por página, arriba a la izquierda, sobre fondo blanco y con su
+   área de protección. Ningún símbolo institucional fue generado ni alterado
+   con inteligencia artificial.
+
+CONTENIDO DE ESTE COMPRIMIDO
+----------------------------
+Todos los archivos fuente del sitio: HTML (9 páginas), CSS (css/estilos.css),
+JavaScript (js/app.js, js/indice.js y js/tex-svg.js, que es la librería MathJax
+usada para componer las fórmulas en LaTeX), imágenes (img/: logotipo oficial en
+sus variantes y favicon propio del sitio) y los documentos PDF del curso (docs/).
+No requiere instalación, compilación ni conexión a internet: basta abrir
+index.html.
+
+PUBLICACIÓN ALTERNATIVA EN GITHUB PAGES
+---------------------------------------
+1. Crear un repositorio en GitHub y subir el contenido de este comprimido a la
+   raíz del repositorio.
+2. Entrar en Settings → Pages y seleccionar la rama "main" y la carpeta "/ (root)".
+3. El sitio queda disponible en https://<usuario>.github.io/<repositorio>/

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Programa del curso Señales y Sistemas: justificación, competencias, resultados de aprendizaje, unidades temáticas y bibliografía.">
+<title>Programa del curso</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<a class="saltar" href="#principal">Saltar al contenido</a>
+
+<div class="franja">
+  <div class="shell">
+    <span>Facultad de Ingeniería</span>
+    <span>Programa de Ingeniería Electrónica</span>
+    <span class="sede">Neiva, Huila</span>
+  </div>
+</div>
+
+<header class="cabecera">
+  <div class="shell">
+    <a class="marca" href="index.html">
+      <img src="img/universidad-surcolombiana.png" alt="Universidad Surcolombiana" width="347" height="90">
+      <span class="curso">Señales y Sistemas<small>Ingeniería Electrónica</small></span>
+    </a>
+    <form class="buscador" role="search" onsubmit="return false">
+      <label class="sr-only" for="q">Buscar en el sitio</label>
+      <input type="search" id="q" placeholder="Buscar un tema…" autocomplete="off" aria-describedby="q-ayuda">
+      <span class="sr-only" id="q-ayuda">Escribe para buscar entre las secciones del sitio</span>
+      <div class="resultados" id="resultados" hidden></div>
+    </form>
+    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="nav-principal">Menú</button>
+    <nav class="nav" id="nav-principal" aria-label="Navegación principal">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="unidad-1.html">1. Fundamentos</a></li>
+        <li><a href="unidad-2.html">2. LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+        <li><a href="matlab.html">MATLAB</a></li>
+        <li><a href="formulario.html">Formulario</a></li>
+        <li><a href="talleres.html">Talleres</a></li>
+        <li><a href="programa.html" aria-current="page">Programa</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="principal">
+
+  <div class="unidad-portada">
+    <div class="shell">
+      <p class="etiqueta">Plan del curso</p>
+      <h1>Programa del curso</h1>
+      <p>Qué se busca con el curso, qué competencias desarrolla, qué resultados de aprendizaje persigue y con qué bibliografía trabaja.</p>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="disposicion">
+
+      <aside class="rail">
+        <h2>Contenido</h2>
+        <ol>
+          <li><a href="#justificacion">Justificación</a></li>
+          <li><a href="#competencias">Competencias</a></li>
+          <li><a href="#resultados">Resultados de aprendizaje</a></li>
+          <li><a href="#unidades">Unidades temáticas</a></li>
+          <li><a href="#bibliografia">Bibliografía</a></li>
+        </ol>
+      </aside>
+
+      <article class="articulo">
+
+        <section id="justificacion">
+          <h2>Justificación</h2>
+          <p>El curso de Señales y Sistemas es fundamental para los estudiantes de ingeniería porque proporciona una base sólida en el análisis y diseño de sistemas en diversas disciplinas. Comprender las señales y su comportamiento en sistemas es esencial en campos como telecomunicaciones, procesamiento de señales y control.</p>
+          <p>El curso permite desarrollar habilidades prácticas y analíticas que preparan al estudiante para enfrentar desafíos tecnológicos y contribuir al avance de la ingeniería. El uso de herramientas como MATLAB garantiza una experiencia de aprendizaje práctica y aplicada.</p>
+        </section>
+
+        <section id="competencias">
+          <h2>Competencias</h2>
+          <p>El curso contribuye a las siguientes competencias del programa, alineadas con los criterios ABET:</p>
+          <ol>
+            <li>Identificar, formular y resolver problemas complejos de ingeniería mediante la aplicación de principios de ingeniería, ciencias y matemáticas.</li>
+            <li>Aplicar el diseño de ingeniería para producir soluciones que satisfagan necesidades específicas, considerando la salud pública, la seguridad y el bienestar, así como factores globales, culturales, sociales, ambientales y económicos.</li>
+            <li>Comunicarse de manera efectiva con una variedad de audiencias.</li>
+            <li>Reconocer responsabilidades éticas y profesionales en situaciones de ingeniería y emitir juicios informados, considerando el impacto de las soluciones en contextos globales, económicos, ambientales y sociales.</li>
+            <li>Funcionar de manera efectiva en un equipo cuyos miembros brindan liderazgo, crean un entorno colaborativo e inclusivo, establecen metas, planifican tareas y cumplen objetivos.</li>
+            <li>Desarrollar y realizar experimentos apropiados, analizar e interpretar datos y utilizar el juicio de ingeniería para sacar conclusiones.</li>
+            <li>Adquirir y aplicar nuevos conocimientos según sea necesario, utilizando estrategias de aprendizaje adecuadas.</li>
+          </ol>
+        </section>
+
+        <section id="resultados">
+          <h2>Resultados de aprendizaje</h2>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Resultados de aprendizaje, actividades y evidencias</caption>
+              <thead>
+                <tr><th>Resultado de aprendizaje</th><th>Actividades</th><th>Cómo se evidencia</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Comprende el concepto de señal y sistema, con sus diferentes clasificaciones.</td>
+                  <td>Sesión dirigida sobre fundamentos. Revisión de literatura sobre clases de señales.</td>
+                  <td>Informe sobre la consulta realizada y socialización.</td>
+                </tr>
+                <tr>
+                  <td>Construye señales arbitrarias a partir de las señales básicas y aplica operaciones sobre la variable independiente.</td>
+                  <td>Sesión dirigida sobre construcción de señales. Actividad virtual con MATLAB.</td>
+                  <td>Revisión del material publicado y sustentación de la construcción realizada en MATLAB.</td>
+                </tr>
+                <tr>
+                  <td>Entiende la convolución gráfica y la aplica en señales.</td>
+                  <td>Sesión dirigida sobre convolución gráfica. Elaboración de un GUIDE de MATLAB.</td>
+                  <td>Informe de construcción del GUIDE y sustentación del aplicativo con explicación de su código.</td>
+                </tr>
+                <tr>
+                  <td>Dibuja y reduce diagramas de bloques de sistemas aplicando las reglas.</td>
+                  <td>Revisión de video sobre reglas de reducción. Taller en clase.</td>
+                  <td>Taller de construcción y reducción, y evaluación escrita.</td>
+                </tr>
+                <tr>
+                  <td>Aplica la Transformada de Laplace y su inversa para la solución de problemas.</td>
+                  <td>Sesión dirigida sobre la técnica de inversión. Solución de ejercicios.</td>
+                  <td>Socialización, informe y sustentación de los ejercicios de transformada inversa.</td>
+                </tr>
+                <tr>
+                  <td>Comprende el concepto de función de transferencia y su aplicación en el análisis de sistemas.</td>
+                  <td>Lectura dirigida. Simulación en MATLAB de función de transferencia, ceros, polos y estabilidad.</td>
+                  <td>Socialización de aportes a la lectura y ejercicios de aplicación en MATLAB.</td>
+                </tr>
+                <tr>
+                  <td>Comprende el concepto de Transformada Z y sus aplicaciones en sistemas discretos.</td>
+                  <td>Sesión dirigida sobre la Transformada Z y sus propiedades. Taller en clase.</td>
+                  <td>Revisión del taller y evaluación escrita que integra Laplace y Z.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="unidades">
+          <h2>Unidades temáticas</h2>
+          <p>El curso se organiza en cuatro unidades. Cada una desarrolla los resultados de aprendizaje anteriores y es requisito de la siguiente.</p>
+          <ol>
+            <li><a href="unidad-1.html">Fundamentos sobre sistemas</a> — clasificación de señales, señales básicas, operaciones sobre la variable independiente, muestreo y propiedades de los sistemas.</li>
+            <li><a href="unidad-2.html">Sistemas LTI y convolución</a> — respuesta al impulso, convolución discreta y continua, interconexión y diagramas de bloques.</li>
+            <li><a href="unidad-3.html">Transformada de Laplace</a> — definición y ROC, transformada inversa, función de transferencia, estabilidad y circuitos en el dominio s.</li>
+            <li><a href="unidad-4.html">Transformada Z</a> — definición y ROC, inversión, H(z), círculo unitario, respuesta en frecuencia y sistemas FIR e IIR.</li>
+          </ol>
+        </section>
+
+        <section id="bibliografia">
+          <h2>Bibliografía</h2>
+          <h3>Básica</h3>
+          <ul class="biblio">
+            <li>
+              <span class="autores">Oppenheim, A. V. y Willsky, A. S.</span>
+              <em>Señales y sistemas.</em> <span class="editorial">Prentice Hall.</span>
+            </li>
+          </ul>
+          <h3>Complementaria</h3>
+          <ul class="biblio">
+            <li>
+              <span class="autores">Haykin, S. y Van Veen, B.</span>
+              <em>Señales y sistemas.</em> <span class="editorial">Limusa Wiley.</span>
+            </li>
+            <li>
+              <span class="autores">Proakis, J. G. y Manolakis, D. G.</span>
+              <em>Digital Signal Processing.</em> <span class="editorial">Prentice Hall.</span>
+            </li>
+            <li>
+              <span class="autores">Mariño, Vallverdú, Rodríguez y Moreno.</span>
+              <em>Tratamiento digital de la señal.</em> <span class="editorial">Alfaomega.</span>
+            </li>
+            <li>
+              <span class="autores">Burrus, C. S. y otros.</span>
+              <em>Ejercicios de tratamiento de la señal.</em> <span class="editorial">Prentice Hall.</span>
+            </li>
+          </ul>
+        </section>
+
+        <nav class="paginacion" aria-label="Navegación del sitio">
+          <a href="talleres.html"><small>Anterior</small>Talleres y prácticas</a>
+          <a class="siguiente" href="unidad-1.html"><small>Empezar por</small>1. Fundamentos sobre sistemas</a>
+        </nav>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer class="pie">
+  <div class="shell">
+    <div>
+      <h2>El curso</h2>
+      <p>Señales y Sistemas</p>
+      <p>Programa de Ingeniería Electrónica</p>
+      <p>Requisitos: Variable Compleja y Ecuaciones Diferenciales</p>
+    </div>
+    <div>
+      <h2>Unidades</h2>
+      <ul>
+        <li><a href="unidad-1.html">1. Fundamentos sobre sistemas</a></li>
+        <li><a href="unidad-2.html">2. Sistemas LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Transformada de Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Material</h2>
+      <ul>
+        <li><a href="matlab.html">Guía de MATLAB</a></li>
+        <li><a href="formulario.html">Formulario y tablas</a></li>
+        <li><a href="talleres.html">Talleres y prácticas</a></li>
+        <li><a href="programa.html">Programa del curso</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Universidad</h2>
+      <ul>
+        <li><a href="https://www.usco.edu.co/">Universidad Surcolombiana</a></li>
+        <li><a href="https://www.usco.edu.co/imagen-institucional/">Identidad e imagen institucional</a></li>
+      </ul>
+      <p>Vigilada Mineducación</p>
+    </div>
+  </div>
+  <div class="pie-legal">
+    <div class="shell">
+      Universidad Surcolombiana · Facultad de Ingeniería · Programa de Ingeniería Electrónica.
+      El logotipo institucional corresponde al archivo oficial publicado en
+      usco.edu.co/imagen-institucional y se emplea sin modificaciones, conforme al Manual de Identidad e Imagen Institucional
+      (Acuerdo 046 de 2016 del CSU) y a la Circular N.º 2 de 2026.
+    </div>
+  </div>
+</footer>
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']]
+  },
+  svg: { fontCache: 'global', scale: 1.02 },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+document.documentElement.className += ' math-pendiente';
+</script>
+<script id="MathJax-script" src="js/tex-svg.js"></script>
+<script src="js/indice.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

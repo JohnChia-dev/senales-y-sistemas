@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Sitio del curso Señales y Sistemas del programa de Ingeniería Electrónica: unidades temáticas, laboratorios interactivos, guía de MATLAB, formulario y talleres.">
+<title>Señales y Sistemas</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<a class="saltar" href="#principal">Saltar al contenido</a>
+
+<div class="franja">
+  <div class="shell">
+    <span>Facultad de Ingeniería</span>
+    <span>Programa de Ingeniería Electrónica</span>
+    <span class="sede">Neiva, Huila</span>
+  </div>
+</div>
+
+<header class="cabecera">
+  <div class="shell">
+    <a class="marca" href="index.html">
+      <img src="img/universidad-surcolombiana.png" alt="Universidad Surcolombiana" width="347" height="90">
+      <span class="curso">Señales y Sistemas<small>Ingeniería Electrónica</small></span>
+    </a>
+    <form class="buscador" role="search" onsubmit="return false">
+      <label class="sr-only" for="q">Buscar en el sitio</label>
+      <input type="search" id="q" placeholder="Buscar un tema…" autocomplete="off" aria-describedby="q-ayuda">
+      <span class="sr-only" id="q-ayuda">Escribe para buscar entre las secciones del sitio</span>
+      <div class="resultados" id="resultados" hidden></div>
+    </form>
+    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="nav-principal">Menú</button>
+    <nav class="nav" id="nav-principal" aria-label="Navegación principal">
+      <ul>
+        <li><a href="index.html" aria-current="page">Inicio</a></li>
+        <li><a href="unidad-1.html">1. Fundamentos</a></li>
+        <li><a href="unidad-2.html">2. LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+        <li><a href="matlab.html">MATLAB</a></li>
+        <li><a href="formulario.html">Formulario</a></li>
+        <li><a href="talleres.html">Talleres</a></li>
+        <li><a href="programa.html">Programa</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="principal">
+
+  <section class="portada">
+    <div class="shell">
+      <div>
+        <p class="etiqueta">Universidad Surcolombiana · Facultad de Ingeniería · Ingeniería Electrónica</p>
+        <h1>Señales y Sistemas</h1>
+        <p class="entrada">Del trazo de una señal en el tiempo a la ubicación de sus polos en el plano complejo: un recorrido por las cuatro unidades del curso, con laboratorios interactivos, guías de MATLAB y talleres resueltos.</p>
+      </div>
+      <figure class="lienzo-marco">
+        <canvas id="g-portada" width="640" height="400" role="img" aria-label="Gráfica de una señal senoidal amortiguada en tiempo continuo junto con sus muestras en tiempo discreto."></canvas>
+        <figcaption class="pie-figura">x(t) = 2.2 e<sup>−0.22t</sup> sen(1.15 t) — en vinotinto la señal continua; en ocre sus muestras x[n] tomadas con T = 1 s. Toda la asignatura vive entre estos dos mundos.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="shell">
+      <div class="encabezado-seccion">
+        <h2>Presentación del curso</h2>
+        <p>Qué se estudia, por qué importa y con qué herramientas se trabaja.</p>
+      </div>
+      <div class="articulo">
+        <p>En este curso se explora el comportamiento de las señales dentro de los sistemas de ingeniería. Su relevancia es transversal: telecomunicaciones, procesamiento de señales, instrumentación y control se apoyan en el mismo conjunto de herramientas.</p>
+        <p>El recorrido inicia con los conceptos básicos de señales y sistemas continuos y discretos, las operaciones sobre la variable independiente y la representación mediante ecuaciones diferenciales y de diferencias. Continúa con la <strong>Transformada de Laplace</strong> como herramienta central de análisis —función de transferencia, polos, ceros y estabilidad— y con la representación de sistemas mediante diagramas de bloques y sus reglas de reducción. Cierra con la <strong>Transformada Z</strong> y sus aplicaciones en sistemas discretos.</p>
+        <p>El uso de <strong>MATLAB</strong> como herramienta de soporte es fundamental: el enfoque no es solo teórico, también práctico, con problemas y proyectos que exigen modelar, simular y contrastar resultados analíticos con resultados numéricos.</p>
+
+        <h3>Resultados de aprendizaje</h3>
+        <ol>
+          <li>Comprende el concepto de señal y sistema, con sus diferentes clasificaciones.</li>
+          <li>Construye señales arbitrarias a partir de las señales básicas y aplica operaciones sobre la variable independiente.</li>
+          <li>Entiende la convolución gráfica y la aplica en señales.</li>
+          <li>Dibuja y reduce diagramas de bloques de sistemas aplicando las reglas.</li>
+          <li>Aplica la Transformada de Laplace y su inversa para la solución de problemas.</li>
+          <li>Comprende el concepto de función de transferencia y su aplicación en el análisis de sistemas.</li>
+          <li>Comprende el concepto de Transformada Z y sus aplicaciones en sistemas discretos.</li>
+        </ol>
+        <p><a href="programa.html">Ver el programa del curso</a> con las competencias que desarrolla y la bibliografía de referencia.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="shell">
+      <div class="encabezado-seccion">
+        <h2>Unidades temáticas</h2>
+        <p>Cuatro unidades encadenadas: cada una se apoya en la anterior, de la definición de señal a la estabilidad de los sistemas discretos.</p>
+      </div>
+      <ul class="unidades">
+        <li>
+          <a class="unidad-tarjeta" href="unidad-1.html">
+            <span class="num">Unidad 1</span>
+            <h3>Fundamentos sobre sistemas</h3>
+            <p>Clasificación de señales, señales básicas, operaciones sobre la variable independiente y propiedades de los sistemas.</p>
+          </a>
+        </li>
+        <li>
+          <a class="unidad-tarjeta" href="unidad-2.html">
+            <span class="num">Unidad 2</span>
+            <h3>Sistemas LTI y convolución</h3>
+            <p>Respuesta al impulso, suma e integral de convolución, interconexión de sistemas y reducción de diagramas de bloques.</p>
+          </a>
+        </li>
+        <li>
+          <a class="unidad-tarjeta" href="unidad-3.html">
+            <span class="num">Unidad 3</span>
+            <h3>Transformada de Laplace</h3>
+            <p>Definición y ROC, propiedades, transformada inversa por fracciones parciales, función de transferencia y estabilidad.</p>
+          </a>
+        </li>
+        <li>
+          <a class="unidad-tarjeta" href="unidad-4.html">
+            <span class="num">Unidad 4</span>
+            <h3>Transformada Z</h3>
+            <p>Señales discretas en el dominio z, región de convergencia, inversión, H(z) y estabilidad en el círculo unitario.</p>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="shell">
+      <div class="encabezado-seccion">
+        <h2>Mapa de contenidos</h2>
+        <p>Qué se estudia en cada unidad y dónde encontrarlo.</p>
+      </div>
+      <div class="tabla-marco">
+        <table>
+          <caption class="sr-only">Contenidos de cada unidad</caption>
+          <thead>
+            <tr><th>Unidad</th><th>Temas</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row"><a href="unidad-1.html">1. Fundamentos sobre sistemas</a></th>
+              <td>Clasificación de señales · energía y potencia · señales básicas · exponencial compleja · operaciones sobre la variable independiente · derivación e integración · muestreo y aliasing · propiedades de los sistemas · ecuaciones diferenciales y de diferencias</td>
+            </tr>
+            <tr>
+              <th scope="row"><a href="unidad-2.html">2. Sistemas LTI y convolución</a></th>
+              <td>Respuesta al impulso · suma e integral de convolución · propiedades e interconexión · causalidad y estabilidad · respuesta al escalón · diagramas de bloques y reglas de reducción</td>
+            </tr>
+            <tr>
+              <th scope="row"><a href="unidad-3.html">3. Transformada de Laplace</a></th>
+              <td>Definición y ROC · propiedades y teoremas de valor · pares · fracciones parciales · solución de ecuaciones diferenciales · función de transferencia y estabilidad · respuesta transitoria · Routh-Hurwitz · circuitos en el dominio s</td>
+            </tr>
+            <tr>
+              <th scope="row"><a href="unidad-4.html">4. Transformada Z</a></th>
+              <td>Definición y ROC · relación z = e<sup>sT</sup> · propiedades · pares · inversión por fracciones parciales y división larga · H(z) y círculo unitario · respuesta en frecuencia · FIR e IIR</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="shell">
+      <div class="encabezado-seccion">
+        <h2>MATLAB, de principio a fin</h2>
+        <p>Cada unidad se acompaña de trabajo en MATLAB: graficar, convolucionar, invertir transformadas y verificar estabilidad.</p>
+      </div>
+      <div class="articulo">
+        <div class="bloque-codigo">
+          <div class="barra-codigo"><span class="archivo">segundo_orden.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% De la ecuación diferencial a la respuesta al escalón</span>
+<span class="c">%  y'' + 2*z*wn*y' + wn^2*y = wn^2*u(t)</span>
+wn = 4;  z = 0.35;
+H  = tf(wn^2, [1 2*z*wn wn^2]);   <span class="c">% función de transferencia</span>
+
+figure
+subplot(1,2,1), pzmap(H),  title('Polos y ceros')
+subplot(1,2,2), step(H),   title('Respuesta al escalón'), grid on
+
+p = pole(H);
+if all(real(p) &lt; 0)
+    disp('Sistema estable: todos los polos en el semiplano izquierdo')
+end
+
+info = stepinfo(H);
+fprintf('Sobreimpulso %.1f %% | establecimiento %.2f s\n', ...
+        info.Overshoot, info.SettlingTime)</code></pre>
+        </div>
+        <p>En las páginas de cada unidad encontrarás el mismo tipo de verificación, pero ejecutándose directamente en el navegador: mueve un control y observa cómo se desplazan los polos y cambia la respuesta. Todos los guiones, ordenados por tema y listos para copiar, están en la <a href="matlab.html">guía de MATLAB</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="seccion alterna">
+    <div class="shell">
+      <div class="encabezado-seccion">
+        <h2>Material de apoyo</h2>
+        <p>Tres páginas transversales que acompañan a las cuatro unidades.</p>
+      </div>
+      <ul class="recursos">
+        <li>
+          <a class="recurso" href="matlab.html">
+            <span class="tipo">WEB</span>
+            <span>
+              <strong>Guía de MATLAB</strong>
+              <em>Dieciséis guiones listos para ejecutar: señales, convolución, bloques, Laplace, Z y filtros digitales, con sus comprobaciones.</em>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="recurso" href="formulario.html">
+            <span class="tipo">WEB</span>
+            <span>
+              <strong>Formulario y tablas</strong>
+              <em>Pares y propiedades de Laplace y Z, correspondencia s ↔ z, parámetros de segundo orden e impedancias.</em>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a class="recurso" href="talleres.html">
+            <span class="tipo">PDF</span>
+            <span>
+              <strong>Talleres y prácticas</strong>
+              <em>Los documentos de trabajo organizados por unidad, más el quiz y la práctica final.</em>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <div class="shell">
+      <div class="encabezado-seccion">
+        <h2>Bibliografía</h2>
+        <p>Texto guía y referencias complementarias del curso.</p>
+      </div>
+      <ul class="biblio">
+        <li>
+          <span class="autores">Oppenheim, A. V. y Willsky, A. S.</span>
+          <em>Señales y sistemas.</em> <span class="editorial">Prentice Hall. — Bibliografía básica del curso.</span>
+        </li>
+        <li>
+          <span class="autores">Haykin, S. y Van Veen, B.</span>
+          <em>Señales y sistemas.</em> <span class="editorial">Limusa Wiley.</span>
+        </li>
+        <li>
+          <span class="autores">Proakis, J. G. y Manolakis, D. G.</span>
+          <em>Digital Signal Processing.</em> <span class="editorial">Prentice Hall.</span>
+        </li>
+        <li>
+          <span class="autores">Mariño, Vallverdú, Rodríguez y Moreno.</span>
+          <em>Tratamiento digital de la señal.</em> <span class="editorial">Alfaomega.</span>
+        </li>
+        <li>
+          <span class="autores">Burrus, C. S. y otros.</span>
+          <em>Ejercicios de tratamiento de la señal.</em> <span class="editorial">Prentice Hall.</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="pie">
+  <div class="shell">
+    <div>
+      <h2>El curso</h2>
+      <p>Señales y Sistemas</p>
+      <p>Programa de Ingeniería Electrónica</p>
+      <p>Requisitos: Variable Compleja y Ecuaciones Diferenciales</p>
+    </div>
+    <div>
+      <h2>Unidades</h2>
+      <ul>
+        <li><a href="unidad-1.html">1. Fundamentos sobre sistemas</a></li>
+        <li><a href="unidad-2.html">2. Sistemas LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Transformada de Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Material</h2>
+      <ul>
+        <li><a href="matlab.html">Guía de MATLAB</a></li>
+        <li><a href="formulario.html">Formulario y tablas</a></li>
+        <li><a href="talleres.html">Talleres y prácticas</a></li>
+        <li><a href="programa.html">Programa del curso</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Universidad</h2>
+      <ul>
+        <li><a href="https://www.usco.edu.co/">Universidad Surcolombiana</a></li>
+        <li><a href="https://www.usco.edu.co/imagen-institucional/">Identidad e imagen institucional</a></li>
+      </ul>
+      <p>Vigilada Mineducación</p>
+    </div>
+  </div>
+  <div class="pie-legal">
+    <div class="shell">
+      Universidad Surcolombiana · Facultad de Ingeniería · Programa de Ingeniería Electrónica.
+      El logotipo institucional corresponde al archivo oficial publicado en
+      usco.edu.co/imagen-institucional y se emplea sin modificaciones, conforme al Manual de Identidad e Imagen Institucional
+      (Acuerdo 046 de 2016 del CSU) y a la Circular N.º 2 de 2026.
+    </div>
+  </div>
+</footer>
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']]
+  },
+  svg: { fontCache: 'global', scale: 1.02 },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+document.documentElement.className += ' math-pendiente';
+</script>
+<script id="MathJax-script" src="js/tex-svg.js"></script>
+<script src="js/indice.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

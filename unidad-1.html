@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Unidad 1 del curso Señales y Sistemas: clasificación de señales, energía y potencia, señales básicas, exponenciales complejas, operaciones sobre la variable independiente, muestreo y propiedades de los sistemas, con ejemplos en MATLAB.">
+<title>Unidad 1 · Fundamentos sobre sistemas</title>
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&amp;family=Source+Sans+3:wght@400;500;600;700&amp;family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&amp;display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+<a class="saltar" href="#principal">Saltar al contenido</a>
+
+<div class="franja">
+  <div class="shell">
+    <span>Facultad de Ingeniería</span>
+    <span>Programa de Ingeniería Electrónica</span>
+    <span class="sede">Neiva, Huila</span>
+  </div>
+</div>
+
+<header class="cabecera">
+  <div class="shell">
+    <a class="marca" href="index.html">
+      <img src="img/universidad-surcolombiana.png" alt="Universidad Surcolombiana" width="347" height="90">
+      <span class="curso">Señales y Sistemas<small>Ingeniería Electrónica</small></span>
+    </a>
+    <form class="buscador" role="search" onsubmit="return false">
+      <label class="sr-only" for="q">Buscar en el sitio</label>
+      <input type="search" id="q" placeholder="Buscar un tema…" autocomplete="off" aria-describedby="q-ayuda">
+      <span class="sr-only" id="q-ayuda">Escribe para buscar entre las secciones del sitio</span>
+      <div class="resultados" id="resultados" hidden></div>
+    </form>
+    <button class="menu-boton" type="button" aria-expanded="false" aria-controls="nav-principal">Menú</button>
+    <nav class="nav" id="nav-principal" aria-label="Navegación principal">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="unidad-1.html" aria-current="page">1. Fundamentos</a></li>
+        <li><a href="unidad-2.html">2. LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+        <li><a href="matlab.html">MATLAB</a></li>
+        <li><a href="formulario.html">Formulario</a></li>
+        <li><a href="talleres.html">Talleres</a></li>
+        <li><a href="programa.html">Programa</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="principal">
+
+  <div class="unidad-portada">
+    <div class="shell">
+      <p class="miga"><a href="index.html">Inicio</a> › Unidad 1</p>
+      <p class="etiqueta">Unidad 1</p>
+      <h1>Fundamentos sobre sistemas</h1>
+      <p>Antes de transformar nada hay que saber qué se está transformando. Esta unidad define qué es una señal, cómo se clasifica, cómo se construye a partir de un puñado de señales básicas, qué ocurre al muestrearla y qué propiedades hacen que un sistema sea tratable analíticamente.</p>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="disposicion">
+
+      <aside class="rail">
+        <h2>Contenido</h2>
+        <ol>
+          <li><a href="#clasificacion">1.1 Señal, sistema y clasificación</a></li>
+          <li><a href="#energia">1.2 Energía y potencia</a></li>
+          <li><a href="#basicas">1.3 Señales básicas</a></li>
+          <li><a href="#exponencial">1.4 Exponencial compleja</a></li>
+          <li><a href="#operaciones">1.5 Operaciones sobre la variable independiente</a></li>
+          <li><a href="#calculo">1.6 Derivación e integración</a></li>
+          <li><a href="#muestreo">1.7 Muestreo y aliasing</a></li>
+          <li><a href="#propiedades">1.8 Propiedades de los sistemas</a></li>
+          <li><a href="#modelos">1.9 Ecuaciones diferenciales y de diferencias</a></li>
+          <li><a href="#matlab">1.10 Laboratorio en MATLAB</a></li>
+        </ol>
+      </aside>
+
+      <article class="articulo">
+
+        <section id="clasificacion">
+          <h2><span class="num-seccion">1.1</span>Señal, sistema y clasificación</h2>
+          <div class="definicion">
+            <h4>Definición</h4>
+            <p>Una <strong>señal</strong> es una función de una o más variables independientes que porta información sobre el comportamiento o la naturaleza de un fenómeno. Un <strong>sistema</strong> es una entidad que transforma una señal de entrada en una señal de salida: y = T{x}.</p>
+          </div>
+          <p>La primera distinción es la del dominio de la variable independiente. En tiempo continuo se escribe x(t) con t ∈ ℝ; en tiempo discreto, x[n] con n ∈ ℤ, donde n no es un tiempo sino un índice de muestra. Los corchetes no son un capricho tipográfico: señalan que entre dos muestras consecutivas la señal sencillamente no está definida.</p>
+
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Clasificaciones de señales</caption>
+              <thead>
+                <tr><th>Criterio</th><th>Clases</th><th>Cómo se verifica</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Variable independiente</td><td>Continua / discreta</td><td class="mono">\( x(t) \ \text\{vs.\} \ x[n] \)</td></tr>
+                <tr><td>Amplitud</td><td>Analógica / cuantizada</td><td>¿La amplitud toma valores en un continuo o en un conjunto finito?</td></tr>
+                <tr><td>Simetría</td><td>Par / impar / ninguna</td><td class="mono">\( x(-t) = x(t) / x(-t) = -x(t) \)</td></tr>
+                <tr><td>Repetición</td><td>Periódica / aperiódica</td><td class="mono">\( x(t) = x(t + T_{0}) \)</td></tr>
+                <tr><td>Predictibilidad</td><td>Determinística / aleatoria</td><td>¿Existe una expresión que la describa por completo?</td></tr>
+                <tr><td>Contenido</td><td>De energía / de potencia</td><td class="mono">\( E &lt; \infty / 0 &lt; P &lt; \infty \)</td></tr>
+                <tr><td>Soporte</td><td>Causal / anticausal / bilateral</td><td class="mono">\( x(t) = 0 \ \text\{para\} \ t &lt; 0 \)</td></tr>
+                <tr><td>Duración</td><td>Finita / infinita</td><td>¿Existe un intervalo fuera del cual la señal es nula?</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h3>Simetría: descomposición par–impar</h3>
+          <p>Toda señal admite una descomposición única en su parte par y su parte impar, útil para simplificar integrales y convoluciones:</p>
+          <div class="ec">
+            \[ x_p(t) = \tfrac{1}{2}\big[\,x(t) + x(-t)\,\big] \qquad x_i(t) = \tfrac{1}{2}\big[\,x(t) - x(-t)\,\big] \]
+            <span class="nota">x(t) = x<sub>p</sub>(t) + x<sub>i</sub>(t) para toda señal real o compleja.</span>
+          </div>
+          <p>Conviene recordar dos consecuencias: el producto de dos señales pares es par, el de dos impares también es par, y el de una par por una impar es impar. Además, la integral de una señal impar sobre un intervalo simétrico es cero, lo que ahorra cálculos completos.</p>
+
+          <h3>Periodicidad: continua frente a discreta</h3>
+          <p>Una senoidal continua siempre es periódica; una discreta no. La exponencial compleja e<sup>jΩn</sup> es periódica solo si Ω/2π es un número racional. Por eso el taller 1 pide calcular por separado el periodo de x(t) = 2 cos(5πt/3) y el de x[n] = 2 cos(5πn/3):</p>
+          <div class="ec">
+            \[ \begin{aligned}
+            \text{Continua:}\quad &amp; \omega_0 = \frac{5\pi}{3} \;\Rightarrow\; T_0 = \frac{2\pi}{\omega_0} = 1.2\ \text{s} \\
+            \text{Discreta:}\quad &amp; \Omega_0 = \frac{5\pi}{3} \;\Rightarrow\; N = m\,\frac{2\pi}{\Omega_0} = m\,\frac{6}{5}
+            \;\Rightarrow\; m = 5,\;\; N = 6 \ \text{muestras}
+            \end{aligned} \]
+            <span class="nota">En tiempo discreto el periodo debe ser entero: se busca el menor entero m que lo consiga.</span>
+          </div>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 1.1 — clasificación completa</h4>
+            <p class="enunciado">Clasifique x[n] = 3 cos(πn/10) − 2 en cuanto a simetría y periodicidad (taller 1, punto 1b).</p>
+            <ol>
+              <li><strong>Simetría.</strong> x[−n] = 3 cos(−πn/10) − 2 = 3 cos(πn/10) − 2 = x[n]. El coseno es par y la constante también, así que la señal es <strong>par</strong>.</li>
+              <li><strong>Periodicidad.</strong> Ω₀ = π/10, de modo que 2π/Ω₀ = 20, un entero. La señal es <strong>periódica</strong> con N = 20 muestras.</li>
+              <li><strong>Potencia.</strong> Al no decaer, tiene energía infinita pero potencia media finita: es una señal de potencia.</li>
+            </ol>
+            <p class="resultado">x[n] es par, periódica con N = 20, señal de potencia. El término −2 desplaza el nivel medio pero no altera ni la simetría ni el periodo.</p>
+          </div>
+        </section>
+
+        <section id="energia">
+          <h2><span class="num-seccion">1.2</span>Energía y potencia</h2>
+          <p>Clasificar una señal por su contenido energético decide qué herramientas se pueden aplicar después: las señales de energía admiten transformada de Fourier ordinaria, las de potencia se describen mejor por series o densidades espectrales.</p>
+          <div class="ec">
+            \[ \begin{aligned}
+            E &amp;= \int_{-\infty}^{\infty} |x(t)|^{2}\,dt
+            &amp;\qquad P &amp;= \lim_{T\to\infty}\frac{1}{2T}\int_{-T}^{T} |x(t)|^{2}\,dt \\
+            E &amp;= \sum_{n=-\infty}^{\infty} |x[n]|^{2}
+            &amp;\qquad P &amp;= \lim_{N\to\infty}\frac{1}{2N+1}\sum_{n=-N}^{N} |x[n]|^{2}
+            \end{aligned} \]
+            <span class="nota">Si E es finita, P = 0. Si P es finita y no nula, E es infinita. Una señal puede no ser ni de energía ni de potencia, como x(t) = t·u(t).</span>
+          </div>
+          <p>Para una señal periódica basta integrar sobre un periodo: P = (1/T₀)∫<sub>T₀</sub>|x(t)|²dt. Así, una senoidal de amplitud A tiene potencia A²/2, y de ahí sale el valor eficaz A/√2 que se usa en circuitos.</p>
+          <div class="aviso">
+            <strong>Atajo útil.</strong> Toda señal de duración finita y amplitud acotada es de energía. Toda señal periódica distinta de cero es de potencia. Con esas dos reglas se resuelve la mayoría de los ejercicios sin integrar.
+          </div>
+        </section>
+
+        <section id="basicas">
+          <h2><span class="num-seccion">1.3</span>Señales básicas</h2>
+          <p>Casi cualquier señal del curso se construye combinando cinco elementos. Conviene memorizar tanto su expresión como su gráfica.</p>
+
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Señales elementales en tiempo continuo y discreto</caption>
+              <thead>
+                <tr><th>Señal</th><th class="mono">Tiempo continuo</th><th class="mono">Tiempo discreto</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Impulso</td><td class="mono">\( \delta (t), \int \delta (t)dt = 1 \)</td><td class="mono">\( \delta [n] = 1 \ \text\{si\} \ n = 0 \)</td></tr>
+                <tr><td>Escalón</td><td class="mono">\( u(t) = 1 \ \text\{si\} \ t \ge 0 \)</td><td class="mono">\( u[n] = 1 \ \text\{si\} \ n \ge 0 \)</td></tr>
+                <tr><td>Rampa</td><td class="mono">\( r(t) = t \cdot u(t) \)</td><td class="mono">\( r[n] = n \cdot u[n] \)</td></tr>
+                <tr><td>Exponencial</td><td class="mono">\( x(t) = C e^\{at\} \)</td><td class="mono">\( x[n] = C a^{n} \)</td></tr>
+                <tr><td>Senoidal</td><td class="mono">\( A \cos(\omega _{0}t + \varphi ) \)</td><td class="mono">\( A \cos(\Omega _{0}n + \varphi ) \)</td></tr>
+                <tr><td>Pulso rectangular</td><td class="mono">\( \Pi (t/\tau ) = u(t+\tau /2) - u(t-\tau /2) \)</td><td class="mono">\( u[n] - u[n - N] \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p>Las tres primeras están encadenadas por derivación e integración, y el impulso tiene una propiedad que se usará durante todo el curso: la <strong>propiedad de muestreo</strong>.</p>
+          <div class="ec">
+            \[ \int_{-\infty}^{\infty} x(t)\,\delta(t - t_0)\,dt = x(t_0)
+            \qquad\qquad x[n] = \sum_{k} x[k]\,\delta[n - k] \]
+            <span class="nota">Toda señal discreta es una suma ponderada de impulsos desplazados. De aquí nace la convolución de la unidad 2.</span>
+          </div>
+          <p>Otras propiedades del impulso que aparecen en los talleres: x(t)δ(t − t₀) = x(t₀)δ(t − t₀), δ(at) = δ(t)/|a| y δ(−t) = δ(t). El impulso continuo no es una función ordinaria sino una distribución: solo tiene sentido dentro de una integral.</p>
+
+          <h3>Construcción de señales por tramos</h3>
+          <p>Un pulso, una escalera o una rampa truncada se escriben como suma de escalones desplazados. Esta forma es la más cómoda para transformar después con Laplace:</p>
+          <div class="ec">
+            \[ x(t) = 2\big[u(t) - u(t-1)\big] + (3 - t)\big[u(t-1) - u(t-3)\big] \]
+            <span class="nota">Cada corchete «enciende» un tramo y lo «apaga» en el instante siguiente.</span>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">senales_basicas.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Señales básicas en tiempo continuo y discreto</span>
+t = -2:0.001:5;            <span class="c">% paso fino: aparenta continuidad</span>
+n = -2:5;                  <span class="c">% índices enteros</span>
+
+u  = @(t) double(t &gt;= 0);  <span class="c">% escalón unitario como función anónima</span>
+r  = @(t) t.*u(t);         <span class="c">% rampa</span>
+
+figure('Name','Señales básicas')
+subplot(2,2,1), plot(t, u(t), 'LineWidth', 1.5), ylim([-0.2 1.2])
+title('Escalón u(t)'), xlabel('t [s]'), grid on
+
+subplot(2,2,2), plot(t, r(t), 'LineWidth', 1.5)
+title('Rampa r(t) = t·u(t)'), xlabel('t [s]'), grid on
+
+subplot(2,2,3), stem(n, double(n == 0), 'filled')
+title('Impulso \delta[n]'), xlabel('n'), grid on
+
+subplot(2,2,4), plot(t, 2*exp(-0.6*t).*u(t), 'LineWidth', 1.5)
+title('Exponencial 2e^{-0.6t}u(t)'), xlabel('t [s]'), grid on
+
+<span class="c">%% Señal definida por tramos con escalones</span>
+x = 2*(u(t) - u(t-1)) + (3 - t).*(u(t-1) - u(t-3));
+figure, plot(t, x, 'LineWidth', 1.6), grid on
+xlabel('t [s]'), ylabel('x(t)'), title('Señal construida por tramos')</code></pre>
+          </div>
+        </section>
+
+        <section id="exponencial">
+          <h2><span class="num-seccion">1.4</span>Exponencial compleja y fasores</h2>
+          <p>La exponencial compleja es la señal más importante del curso: es la única que atraviesa un sistema LTI sin cambiar de forma, solo escalada por un número complejo. Esa propiedad es la razón de ser de Laplace, de Fourier y de la Transformada Z.</p>
+          <div class="ec">
+            \[ e^{j\omega_0 t} = \cos(\omega_0 t) + j\,\operatorname{sen}(\omega_0 t)
+            \quad\Longrightarrow\quad
+            \cos(\omega_0 t) = \frac{e^{j\omega_0 t} + e^{-j\omega_0 t}}{2}
+            \qquad
+            \operatorname{sen}(\omega_0 t) = \frac{e^{j\omega_0 t} - e^{-j\omega_0 t}}{2j} \]
+            <span class="nota">Relación de Euler. Convierte productos de senoidales en sumas de exponenciales, mucho más fáciles de integrar.</span>
+          </div>
+          <p>La forma general x(t) = C e<sup>st</sup> con C = |C|e<sup>jθ</sup> y s = σ + jω₀ describe de una sola vez cuatro comportamientos, según dónde caiga s en el plano complejo:</p>
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Comportamiento de la exponencial compleja según s</caption>
+              <thead>
+                <tr><th class="mono">\( \sigma \)</th><th class="mono">\( \omega _{0} \)</th><th>Comportamiento</th></tr>
+              </thead>
+              <tbody>
+                <tr><td class="mono">\( \sigma = 0 \)</td><td class="mono">\( \omega _{0} = 0 \)</td><td>Constante</td></tr>
+                <tr><td class="mono">\( \sigma = 0 \)</td><td class="mono">\( \omega _{0} \ne 0 \)</td><td>Oscilación sostenida de amplitud constante</td></tr>
+                <tr><td class="mono">\( \sigma &lt; 0 \)</td><td class="mono">\( \omega _{0} \ne 0 \)</td><td>Oscilación amortiguada (envolvente e<sup>σt</sup> decreciente)</td></tr>
+                <tr><td class="mono">\( \sigma &gt; 0 \)</td><td class="mono">\( \omega _{0} \ne 0 \)</td><td>Oscilación creciente sin límite</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Esa tabla es, anticipadamente, el mapa de polos del plano s de la unidad 3: cada polo aporta a la respuesta un término de esta familia.</p>
+          <div class="definicion">
+            <h4>Diferencia clave en tiempo discreto</h4>
+            <p>En e<sup>jΩn</sup> las frecuencias Ω y Ω + 2π producen exactamente la misma secuencia. Por eso el rango de frecuencias discretas útiles se limita a un intervalo de longitud 2π, normalmente −π &lt; Ω ≤ π, y la frecuencia «más rápida» posible es Ω = π, que alterna +1, −1, +1…</p>
+          </div>
+        </section>
+
+        <section id="operaciones">
+          <h2><span class="num-seccion">1.5</span>Operaciones sobre la variable independiente</h2>
+          <p>Tres operaciones, un solo orden correcto. Dada x(t), la señal transformada x(at − t₀) se obtiene siempre en este orden:</p>
+          <ol>
+            <li><strong>Desplazamiento</strong> en t₀: x(t) → x(t − t₀). Hacia la derecha si t₀ &gt; 0.</li>
+            <li><strong>Escalamiento</strong> por |a|: compresión si |a| &gt; 1, expansión si |a| &lt; 1.</li>
+            <li><strong>Reflexión</strong> si a &lt; 0: se espeja respecto al eje vertical.</li>
+          </ol>
+          <p>Si se invierte el orden entre desplazamiento y escalamiento el resultado es otro: x(a(t − t₀)) ≠ x(at − t₀). La regla segura es factorizar el argumento y leerlo como «primero desplazo t₀, luego escalo por a».</p>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 1.2 — punto de control por coordenadas</h4>
+            <p class="enunciado">Si x(t) vale 3 en t = 2, ¿en qué instante vale 3 la señal w(t) = x(−2t + 4)?</p>
+            <ol>
+              <li>Se iguala el argumento al valor conocido: −2t + 4 = 2.</li>
+              <li>Se despeja: t = 1.</li>
+            </ol>
+            <p class="resultado">w(1) = 3. Rastrear dos o tres puntos característicos —inicio, quiebre y final del soporte— es más rápido y más seguro que redibujar la señal completa.</p>
+          </div>
+
+          <div class="definicion">
+            <h4>Caso discreto</h4>
+            <p>En x[an] el escalamiento solo está definido para valores enteros del argumento. Si a &gt; 1 se pierden muestras (diezmado) y la operación no es invertible; si a = 1/M hay que interpolar. Por eso el taller 2 insiste en evaluar muestra a muestra.</p>
+          </div>
+
+          <div class="lab">
+            <h3>Laboratorio · constructor de señales</h3>
+            <p class="ayuda">Elige una señal básica y aplica la transformación x(at − t₀). La curva tenue es la señal original; la resaltada, la transformada.</p>
+            <div class="controles">
+              <div class="control">
+                <label for="sel-tipo">Señal base</label>
+                <select id="sel-tipo">
+                  <option value="escalon">Escalón u</option>
+                  <option value="rampa">Rampa r</option>
+                  <option value="exponencial">Exponencial 2e⁻⁰·⁶ᵗ u</option>
+                  <option value="senoidal" selected>Senoidal 2 sen(πt/3)</option>
+                  <option value="pulso">Pulso rectangular</option>
+                  <option value="triangulo">Pulso triangular</option>
+                </select>
+              </div>
+              <div class="control">
+                <label for="sel-dominio">Dominio</label>
+                <select id="sel-dominio">
+                  <option value="continuo">Tiempo continuo</option>
+                  <option value="discreto">Tiempo discreto</option>
+                </select>
+              </div>
+              <div class="control">
+                <label for="rng-t0">Desplazamiento t₀ = <output id="out-t0" for="rng-t0">2.0</output></label>
+                <input type="range" id="rng-t0" min="-5" max="5" step="0.5" value="2">
+              </div>
+              <div class="control">
+                <label for="rng-a">Escala a = <output id="out-a" for="rng-a">1.00</output></label>
+                <input type="range" id="rng-a" min="-3" max="3" step="0.25" value="1">
+              </div>
+            </div>
+            <canvas id="g-senal" width="720" height="405" role="img" aria-label="Gráfica comparativa entre la señal básica seleccionada y su versión transformada."></canvas>
+            <p class="veredicto">Señal representada: <span class="mono" id="expr-senal">x(t)</span></p>
+            <div class="leyenda">
+              <span class="c-res"><i></i> señal original</span>
+              <span class="c-cont"><i></i> transformada continua</span>
+              <span class="c-disc"><i></i> transformada discreta</span>
+            </div>
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">operaciones_variable.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Operaciones sobre la variable independiente (taller 2)</span>
+u = @(t) double(t &gt;= 0);
+x = @(t) 2*(u(t+1) - u(t-2));      <span class="c">% pulso de amplitud 2 entre -1 y 2</span>
+
+t = -6:0.001:6;
+a  = -2;    t0 = 4;                <span class="c">% se grafica x(a*t - t0)</span>
+
+figure
+plot(t, x(t), '--', 'LineWidth', 1.2), hold on
+plot(t, x(a*t - t0), 'LineWidth', 1.8), hold off
+grid on, legend('x(t)', sprintf('x(%gt %+g)', a, -t0))
+xlabel('t [s]'), title('Desplazamiento, escalamiento y reflexión')
+
+<span class="c">%% Caso discreto: z[n] = x[-n-2] + y[n+2]</span>
+n  = -6:6;
+xn = double(n &gt;= -1 &amp; n &lt;= 2);     <span class="c">% x[n]</span>
+yn = double(n &gt;=  0 &amp; n &lt;= 3);     <span class="c">% y[n]</span>
+
+<span class="c">% Se reindexa con interp1: fuera del soporte el valor es 0</span>
+xr = interp1(n, xn, -n-2, 'nearest', 0);
+yd = interp1(n, yn,  n+2, 'nearest', 0);
+z  = xr + yd;
+
+stem(n, z, 'filled'), grid on
+xlabel('n'), ylabel('z[n]'), title('z[n] = x[-n-2] + y[n+2]')</code></pre>
+          </div>
+        </section>
+
+        <section id="calculo">
+          <h2><span class="num-seccion">1.6</span>Derivación e integración de señales</h2>
+          <p>Derivar una señal continua resalta sus cambios: un salto de amplitud A en t₀ produce un impulso A δ(t − t₀). Integrar hace lo contrario, acumula área y suaviza.</p>
+          <div class="ec">
+            \[ \frac{d\,u(t)}{dt} = \delta(t) \qquad
+            \int_{-\infty}^{t} \delta(\tau)\,d\tau = u(t) \qquad
+            \int_{-\infty}^{t} u(\tau)\,d\tau = r(t) \]
+          </div>
+          <p>Para una señal definida a tramos —como la del taller 3— el procedimiento es sistemático:</p>
+          <ol>
+            <li>Derivar cada tramo por separado (la pendiente de cada recta).</li>
+            <li>Añadir un impulso por cada discontinuidad de salto, con área igual al tamaño del salto.</li>
+            <li>Al integrar, verificar la continuidad de la señal resultante en las fronteras de cada tramo: la integral de una señal acotada nunca salta.</li>
+          </ol>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 1.3 — integración de un semiciclo de seno</h4>
+            <p class="enunciado">Sea x(t) = sen(t) para 0 ≤ t ≤ 2π y cero en otro caso. Obtenga y(t) = ∫<sub>−∞</sub><sup>t</sup> x(τ)dτ (taller 3, punto 2).</p>
+            <ol>
+              <li>Para t &lt; 0 no hay área acumulada: y(t) = 0.</li>
+              <li>Para 0 ≤ t ≤ 2π: y(t) = ∫₀ᵗ sen(τ)dτ = 1 − cos(t). Crece hasta 2 en t = π y vuelve a bajar.</li>
+              <li>Para t &gt; 2π el área total acumulada es 1 − cos(2π) = 0, así que y(t) = 0.</li>
+            </ol>
+            <p class="resultado">y(t) = (1 − cos t)·[u(t) − u(t − 2π)]. La señal integrada es continua en t = 0 y en t = 2π, como debe ser.</p>
+          </div>
+
+          <p>En tiempo discreto los operadores equivalentes son la primera diferencia x[n] − x[n − 1] y la suma acumulada Σ<sub>k ≤ n</sub> x[k], que en MATLAB son <span class="mono">diff</span> y <span class="mono">cumsum</span>.</p>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">derivada_integral.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Derivada e integral numéricas de una señal por tramos</span>
+dt = 1e-3;  t = -1:dt:8;
+x  = sin(t).*(t &gt;= 0 &amp; t &lt;= 2*pi);      <span class="c">% semiciclo de seno</span>
+
+dx = [0 diff(x)/dt];                     <span class="c">% derivada aproximada</span>
+ix = cumsum(x)*dt;                       <span class="c">% integral acumulada</span>
+
+figure
+subplot(3,1,1), plot(t, x,  'LineWidth', 1.5), grid on, ylabel('x(t)')
+subplot(3,1,2), plot(t, dx, 'LineWidth', 1.2), grid on, ylabel('dx/dt')
+subplot(3,1,3), plot(t, ix, 'LineWidth', 1.5), grid on, ylabel('\int x'), xlabel('t [s]')
+
+<span class="c">%% Comprobación simbólica</span>
+syms tau T
+y = int(sin(tau), tau, 0, T)             <span class="c">% devuelve 1 - cos(T)</span></code></pre>
+          </div>
+        </section>
+
+        <section id="muestreo">
+          <h2><span class="num-seccion">1.7</span>Muestreo y aliasing</h2>
+          <p>El taller 1 cierra con una pregunta que parece inocente: ¿se puede reconstruir x(t) = 2cos(2πt) a partir de x[n] = 2cos(2πn)? La respuesta es no, y el motivo es el teorema de muestreo.</p>
+          <div class="ec">
+            \[ f_s &gt; 2 f_{\max} \quad \text{(criterio de Nyquist)}
+            \qquad\qquad \Omega = \omega T = \frac{\omega}{f_s} \]
+            <span class="nota">Al muestrear con T = 1 s una señal de 1 Hz se obtiene Ω = 2π, indistinguible de Ω = 0: todas las muestras valen lo mismo.</span>
+          </div>
+          <p>Cuando f<sub>s</sub> no es suficiente aparece el <strong>aliasing</strong>: una componente de alta frecuencia se disfraza de una de baja frecuencia y la reconstrucción falla. La estrategia que pide el taller para que la secuencia discreta se parezca a la continua es aumentar la frecuencia de muestreo, es decir, reducir T.</p>
+          <div class="aviso">
+            <strong>Relación con la unidad 4.</strong> El cambio de variable z = e<sup>sT</sup> que abre la Transformada Z es exactamente esta operación de muestreo vista en el plano complejo: comprime todo el plano s en el interior y el exterior del círculo unitario, con periodicidad 2π en la frecuencia.
+          </div>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">muestreo_aliasing.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Aliasing: la misma señal muestreada a dos frecuencias</span>
+f  = 1;                       <span class="c">% señal de 1 Hz</span>
+t  = 0:1e-4:5;
+x  = 2*cos(2*pi*f*t);
+
+fs1 = 1;    n1 = 0:1/fs1:5;   <span class="c">% muestreo insuficiente (fs = f)</span>
+fs2 = 20;   n2 = 0:1/fs2:5;   <span class="c">% muestreo holgado  (fs = 20f)</span>
+
+figure
+plot(t, x, 'LineWidth', 1.2), hold on
+stem(n1, 2*cos(2*pi*f*n1), 'filled')
+stem(n2, 2*cos(2*pi*f*n2), 'Marker', 'x')
+hold off, grid on
+legend('x(t)', 'fs = 1 Hz (aliasing)', 'fs = 20 Hz')
+xlabel('t [s]'), title('Criterio de Nyquist: fs &gt; 2·f_{max}')</code></pre>
+          </div>
+        </section>
+
+        <section id="propiedades">
+          <h2><span class="num-seccion">1.8</span>Propiedades de los sistemas</h2>
+          <p>Estas seis propiedades deciden qué herramientas se pueden usar más adelante. Solo un sistema lineal e invariante en el tiempo admite el tratamiento por convolución, Laplace o Z.</p>
+
+          <div class="tabla-marco">
+            <table>
+              <caption class="sr-only">Propiedades de los sistemas</caption>
+              <thead>
+                <tr><th>Propiedad</th><th>Condición</th><th>Ejemplo que la cumple</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Memoria</td><td>La salida en t depende de valores de la entrada distintos de x(t).</td><td class="mono">\( y[n] = x[n] + x[n-1] \)</td></tr>
+                <tr><td>Causalidad</td><td>y(t₀) depende solo de x(t) con t ≤ t₀.</td><td class="mono">\( y[n] = x[n] - x[n-2] \)</td></tr>
+                <tr><td>Estabilidad BIBO</td><td>Toda entrada acotada produce salida acotada.</td><td class="mono">\( y(t) = \cos(x(t)) \)</td></tr>
+                <tr><td>Invarianza en el tiempo</td><td>Si x(t) → y(t), entonces x(t−t₀) → y(t−t₀).</td><td class="mono">\( y(t) = 3x(t) + 1 \)</td></tr>
+                <tr><td>Linealidad</td><td>a x₁ + b x₂ → a y₁ + b y₂.</td><td class="mono">\( y(t) = t \cdot x(t) \)</td></tr>
+                <tr><td>Invertibilidad</td><td>Entradas distintas producen salidas distintas.</td><td class="mono">\( y(t) = 2x(t) \)</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="ejemplo">
+            <h4>Ejemplo resuelto 1.4 — dos sistemas parecidos, propiedades opuestas</h4>
+            <p class="enunciado">Analice y₁(t) = t·x(t) y y₂(t) = 3x(t) + 1.</p>
+            <h4>Sistema 1: y₁(t) = t·x(t)</h4>
+            <ol>
+              <li><strong>Lineal:</strong> T{ax₁ + bx₂} = t(ax₁ + bx₂) = a·tx₁ + b·tx₂. Sí cumple.</li>
+              <li><strong>Invariante:</strong> la respuesta a x(t − t₀) es t·x(t − t₀), pero la salida desplazada es (t − t₀)·x(t − t₀). No coinciden: <strong>variante en el tiempo</strong>.</li>
+              <li><strong>Estable:</strong> con x acotada, t·x(t) crece sin límite. <strong>No es BIBO estable</strong>.</li>
+            </ol>
+            <h4>Sistema 2: y₂(t) = 3x(t) + 1</h4>
+            <ol>
+              <li><strong>Lineal:</strong> con x = 0 la salida es 1, no 0. <strong>No es lineal</strong> (es afín).</li>
+              <li><strong>Invariante:</strong> sí, ningún coeficiente depende de t.</li>
+              <li><strong>Estable y sin memoria:</strong> sí en ambos casos.</li>
+            </ol>
+            <p class="resultado">Ninguno de los dos es LTI: al primero le falla la invarianza y al segundo la linealidad. La prueba de linealidad más rápida es verificar que entrada nula produzca salida nula.</p>
+          </div>
+        </section>
+
+        <section id="modelos">
+          <h2><span class="num-seccion">1.9</span>Ecuaciones diferenciales y de diferencias</h2>
+          <p>Los sistemas LTI de parámetros concentrados se describen con ecuaciones diferenciales lineales de coeficientes constantes, y sus equivalentes discretos con ecuaciones de diferencias:</p>
+          <div class="ec">
+            \[ \begin{aligned}
+            \sum_{k=0}^{N} a_k\,\frac{d^{k} y(t)}{dt^{k}} &amp;= \sum_{k=0}^{M} b_k\,\frac{d^{k} x(t)}{dt^{k}} \\
+            \sum_{k=0}^{N} a_k\,y[n-k] &amp;= \sum_{k=0}^{M} b_k\,x[n-k]
+            \end{aligned} \]
+            <span class="nota">N es el orden del sistema. La solución total es la suma de la respuesta natural (homogénea) y la respuesta forzada (particular).</span>
+          </div>
+          <p>Un circuito RLC serie conduce a una ecuación de segundo orden cuya solución analítica se vuelve laboriosa: hay que proponer una forma, imponer condiciones iniciales y resolver un sistema de ecuaciones. La unidad 3 mostrará cómo la Transformada de Laplace convierte esa ecuación diferencial en una ecuación algebraica y las condiciones iniciales en simples términos adicionales.</p>
+          <div class="definicion">
+            <h4>De la ley física a la ecuación</h4>
+            <p>Para el RLC serie con fuente v(t) y corriente i(t): v(t) = L·di/dt + R·i + (1/C)∫i dt. Derivando una vez para eliminar la integral se obtiene L·i″ + R·i′ + i/C = v′(t), una ecuación de segundo orden en la corriente.</p>
+          </div>
+        </section>
+
+        <section id="matlab">
+          <h2><span class="num-seccion">1.10</span>Laboratorio en MATLAB</h2>
+          <p>Los <em>live scripts</em> del curso —<span class="mono">plot_continuous_signals.mlx</span>, <span class="mono">plot_discrete_signals.mlx</span> y <span class="mono">plot_multiple_signals.mlx</span>— son la base del taller 1. La distinción entre <span class="mono">plot</span> y <span class="mono">stem</span> no es estética: refleja la diferencia entre una señal definida en todo instante y una definida solo en índices enteros.</p>
+
+          <div class="bloque-codigo">
+            <div class="barra-codigo"><span class="archivo">taller01_clasificacion.m</span><button class="copiar" type="button">Copiar</button></div>
+<pre><code><span class="c">%% Taller 1: graficar, clasificar y medir</span>
+t = -5:0.001:5;
+n = -5:5;
+
+x  = 2*cos(5*pi*t/3);        <span class="c">% continua</span>
+xn = 2*cos(5*pi*n/3);        <span class="c">% discreta</span>
+
+figure
+subplot(2,1,1), plot(t, x, 'LineWidth', 1.4), grid on
+xlabel('t [s]'), ylabel('x(t)'), title('Tiempo continuo')
+subplot(2,1,2), stem(n, xn, 'filled'), grid on
+xlabel('n'), ylabel('x[n]'), title('Tiempo discreto')
+
+<span class="c">%% Simetría: comparar x(t) con x(-t)</span>
+par   = (x + fliplr(x))/2;
+impar = (x - fliplr(x))/2;
+if max(abs(impar)) &lt; 1e-9
+    disp('La señal es PAR')
+elseif max(abs(par)) &lt; 1e-9
+    disp('La señal es IMPAR')
+else
+    disp('No es par ni impar')
+end
+
+<span class="c">%% Periodo fundamental de la señal discreta</span>
+Omega = 5*pi/3;
+m = 1;
+while mod(m*2*pi/Omega, 1) &gt; 1e-9
+    m = m + 1;                <span class="c">% se busca el menor m que hace N entero</span>
+end
+N = m*2*pi/Omega;
+fprintf('Periodo discreto: N = %d muestras (con m = %d)\n', N, m)
+
+<span class="c">%% Energía y potencia</span>
+dt = t(2) - t(1);
+E  = sum(abs(x).^2)*dt;                  <span class="c">% energía en la ventana</span>
+P  = E/(t(end) - t(1));                  <span class="c">% potencia media</span>
+fprintf('Energía = %.3f | Potencia media = %.3f\n', E, P)</code></pre>
+          </div>
+
+          <p>El resultado de la potencia media debe acercarse a A²/2 = 2 para una senoidal de amplitud 2, siempre que la ventana contenga un número entero de periodos. Es una buena comprobación de que el código está bien escrito.</p>
+
+          <h3>Talleres de la unidad</h3>
+          <ul>
+            <li><a href="docs/taller_01.pdf">Taller 1 — Gráfica y clasificación de señales con MATLAB</a></li>
+            <li><a href="docs/taller_02.pdf">Taller 2 — Operaciones sobre la variable independiente</a></li>
+            <li><a href="docs/taller_03.pdf">Taller 3 — Operación de integración y derivación</a></li>
+          </ul>
+          <p>Más ejemplos ejecutables, ordenados por tema, en la <a href="matlab.html">guía de MATLAB</a>.</p>
+        </section>
+
+        <nav class="paginacion" aria-label="Navegación entre unidades">
+          <a href="index.html"><small>Anterior</small>Inicio</a>
+          <a class="siguiente" href="unidad-2.html"><small>Siguiente unidad</small>2. Sistemas LTI y convolución</a>
+        </nav>
+
+      </article>
+    </div>
+  </div>
+</main>
+
+<footer class="pie">
+  <div class="shell">
+    <div>
+      <h2>El curso</h2>
+      <p>Señales y Sistemas</p>
+      <p>Programa de Ingeniería Electrónica</p>
+      <p>Requisitos: Variable Compleja y Ecuaciones Diferenciales</p>
+    </div>
+    <div>
+      <h2>Unidades</h2>
+      <ul>
+        <li><a href="unidad-1.html">1. Fundamentos sobre sistemas</a></li>
+        <li><a href="unidad-2.html">2. Sistemas LTI y convolución</a></li>
+        <li><a href="unidad-3.html">3. Transformada de Laplace</a></li>
+        <li><a href="unidad-4.html">4. Transformada Z</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Material</h2>
+      <ul>
+        <li><a href="matlab.html">Guía de MATLAB</a></li>
+        <li><a href="formulario.html">Formulario y tablas</a></li>
+        <li><a href="talleres.html">Talleres y prácticas</a></li>
+        <li><a href="programa.html">Programa del curso</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2>Universidad</h2>
+      <ul>
+        <li><a href="https://www.usco.edu.co/">Universidad Surcolombiana</a></li>
+        <li><a href="https://www.usco.edu.co/imagen-institucional/">Identidad e imagen institucional</a></li>
+      </ul>
+      <p>Vigilada Mineducación</p>
+    </div>
+  </div>
+  <div class="pie-legal">
+    <div class="shell">
+      Universidad Surcolombiana · Facultad de Ingeniería · Programa de Ingeniería Electrónica.
+      El logotipo institucional corresponde al archivo oficial publicado en
+      usco.edu.co/imagen-institucional y se emplea sin modificaciones, conforme al Manual de Identidad e Imagen Institucional
+      (Acuerdo 046 de 2016 del CSU) y a la Circular N.º 2 de 2026.
+    </div>
+  </div>
+</footer>
+
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['\\[', '\\]']]
+  },
+  svg: { fontCache: 'global', scale: 1.02 },
+  options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+};
+document.documentElement.className += ' math-pendiente';
+</script>
+<script id="MathJax-script" src="js/tex-svg.js"></script>
+<script src="js/indice.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
