@@ -5,8 +5,6 @@ Sitio web del curso **Señales y Sistemas** del programa de Ingeniería Electró
 
 Sitio estático: HTML5 + CSS3 + JavaScript (ES5, sin dependencias ni proceso de compilación).
 
-**Sitio publicado:** <https://claude.ai/artifact/VWTMMMQkFAboroy9jGC4bv>
-
 ## Estructura
 
 ```
